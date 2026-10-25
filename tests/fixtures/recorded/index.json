@@ -35,7 +35,7 @@
   "provider": "cftc"
  },
  "https://query1.finance.yahoo.com/v8/finance/chart/SPY?period1=1758326400&period2=*&interval=1d&events=div,splits&includeAdjustedClose=true": {
-  "bytes": 30739,
+  "bytes": 30749,
   "file": "yahoo-b28b34c46f97.bin",
   "provider": "yahoo"
  },
@@ -45,7 +45,7 @@
   "provider": "yahoo"
  },
  "https://query1.finance.yahoo.com/v8/finance/chart/XLK?period1=-2208988800&period2=*&interval=1d&events=div,splits&includeAdjustedClose=true": {
-  "bytes": 748791,
+  "bytes": 748809,
   "file": "yahoo-20f4a43d55db.bin",
   "provider": "yahoo"
  },
