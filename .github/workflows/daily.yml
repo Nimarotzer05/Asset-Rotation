@@ -12,6 +12,7 @@ jobs:
     env:
       FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
       BLS_API_KEY: ${{ secrets.BLS_API_KEY }}
+      STOOQ_API_KEY: ${{ secrets.STOOQ_API_KEY }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
     steps:
@@ -47,6 +48,7 @@ jobs:
           STATE=$(mktemp -d)
           mkdir -p data/store journal reports
           cp -r data/store "$STATE/store"; cp -r journal "$STATE/journal"; cp -r reports "$STATE/reports"
+          rm -rf data/store journal reports        # untracked on main: would block the branch switch
           if git ls-remote --exit-code --heads origin data > /dev/null; then
             git fetch --depth=1 origin data && git checkout -B data FETCH_HEAD
           else
