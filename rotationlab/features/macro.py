@@ -70,7 +70,8 @@ def _direction(s: pd.Series, smooth: int) -> pd.Series:
     """+1 rising, −1 falling (smoothed level vs `smooth` months earlier), NaN without enough history."""
     m = s.rolling(smooth).mean()
     d = pd.Series(np.where(m > m.shift(smooth), 1.0, -1.0), index=s.index)
-    return d.where(m.shift(smooth).notna())
+    # NaN on either side is "unknown", not "falling" (NaN > x is False; second review 2026-10-25)
+    return d.where(m.notna() & m.shift(smooth).notna())
 
 
 def growth_direction(panel: pd.DataFrame, smooth: int = 3, lag: int = 1) -> pd.Series:
