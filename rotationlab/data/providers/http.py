@@ -76,7 +76,7 @@ class UrllibClient:
 
 
 def _redact(url: str) -> str:
-    return re.sub(r"(api_key=)[^&]+", r"\1***", url)
+    return re.sub(r"((?:api_key|apikey|registrationkey)=)[^&]+", r"\1***", url)
 
 
 class FixtureClient:
