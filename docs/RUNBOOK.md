@@ -1,0 +1,86 @@
+# Runbook (Datenbetrieb ab Phase 1, Backtests ab Phase 2; Phase 4 ergänzt Live, Journal, Report)
+
+## Täglich (automatisch)
+`daily.yml` 06:30 UTC Mo–Fr: validate → ingest → live → scenarios → relationships → report → Commit nach `data`.
+
+## Datenschicht (Phase 1)
+
+**Erstinstallation** (einmal, lokal oder per `workflow_dispatch`):
+```bash
+uv sync
+export FRED_API_KEY=…                                   # kostenlos: fred.stlouisfed.org/docs/api/api_key.html
+export BLS_API_KEY=…                                    # optional, höheres Kontingent der BLS-API
+rotationlab validate                                     # 53 Assets · 341 Reihen
+rotationlab ingest --full --provider static              # Forschungshistorie, 426 498 Zeilen, ~11 s
+rotationlab ingest --full                                # Yahoo, Stooq, FRED/ALFRED, French, CFTC
+rotationlab store verify && rotationlab store status
+```
+Ohne `FRED_API_KEY` werden die ALFRED-Reihen übersprungen (Warnung), nie mit dem Lag-Modell gefüllt.
+
+**Täglich** läuft `rotationlab ingest` inkrementell. Exit 3 heisst: mindestens ein blocking Ergebnis.
+
+| Meldung (`rotationlab store quality`) | Bedeutung | Was tun |
+|---|---|---|
+| `staleness … sessions behind` (blocking) | Schlusskurs einer handelbaren Anlage veraltet | Provider-Status prüfen; `rotationlab asof --asset SPY --role close --date <heute>` zeigt, ob Stooq überbrückt (Herkunft); keine Entscheidung bis grün |
+| `schema … rejected … quarantine` (blocking) | Provider lieferte unmögliche Werte | `data/store/quarantine/` ansehen; die Zeilen sind nicht im Store; nächster Lauf holt erneut |
+| `fetch` (warn) | Abruf fehlgeschlagen | nur relevant, wenn daraus Staleness wird |
+| `revision … silent revision(s)` (warn) | gespeicherter Preis geändert > 0.5 % | beide Vintages bleiben; bei Häufung Provider prüfen |
+| `revision … rescaled uniformly` (ok) | Split/Adjustierung, volle Historie neu geholt | nichts |
+| `late_arrival` (warn) | Wert kam > 5 Tage nach seinem Lag | auf Ankunftstag datiert; nichts tun |
+| `cross_source` (warn) | Yahoo und Stooq widersprechen sich > 1 % | Kurs des Tages manuell prüfen |
+| `outliers` (warn) | Tagesrendite > 8 σ | echtes Ereignis oder Datenfehler? beide bleiben |
+| `provider: no FRED_API_KEY` (warn) | Secret fehlt | Secret in GitHub setzen |
+
+**Was war am Tag D bekannt?** `rotationlab asof --date 2008-06-30 --series fred:CPIAUCSL` (mit Vintage je Wert); Makroketten: `rotationlab asof --date … --series macro:CPI` (Herkunft FRED oder BLS).
+
+**Verlauf statt Momentaufnahme:** `rotationlab store health --days 30 --out reports/data_health.md`. Steigen Abruffehler, Verspätungen oder Revisionen eines Providers über Wochen, ist das der Moment, die Ersatzquelle zur primären zu machen (Reihenfolge der Kette in `universe.yaml`/`series.yaml`).
+
+| weitere Meldung | Bedeutung | Was tun |
+|---|---|---|
+| `revision_cluster` (warn) | ≥ 5 kleine Revisionen in 7 Tagen | Provider prüfen; `store health` zeigt, ob es zunimmt |
+| `fetch … need FRED_API_KEY` | ALFRED-Reihe ohne Schlüssel | Secret setzen; die Makroketten liefern bis dahin BLS-Werte |
+| `shiller: no source answered` | Shiller-Datei verschoben | neue URL in `configs/system.yaml` → `providers.shiller.urls`; bis dahin liefert der Spiegel |
+
+**Echte Antworten aufzeichnen:** `rotationlab record-fixtures` (wöchentlich im Workflow `network`, Ergebnis im Branch `recorded-fixtures`; nach dem Merge spielt `tests/integration/test_recorded.py` sie in jeder CI ab).
+
+**FRED-MD-Archiv:** `rotationlab fredmd-archive` (oder Workflow `fredmd-archive`) → Branch mergen → `rotationlab ingest --provider static` → `python scripts/revision_study.py`.
+
+**Alte Historie nachladen:** Lieferte ein Provider bei der Erstladung nur einen Teil der Historie, datiert der Store später nachgelieferte alte Werte auf den Ankunftstag (sie wären im Backtest unsichtbar). Richtiger Weg: `rotationlab ingest --full --series <id>` auf einer *leeren* Reihe (Store ohne diese Reihe neu aufbauen oder vor dem ersten Lauf vollständige Historie sicherstellen). Nach einem Split-Lauf tragen alle neuen Zeilen des Symbols den Lauftag (ADR 034).
+
+**Pflege:** `rotationlab store verify` vor jedem Lauf (Prüfsummen); quartalsweise `rotationlab ingest --full` (holt alle Historien neu, Unterschiede werden Revisionen mit heutigem Datum, nichts geht verloren) und danach `rotationlab store compact` (fasst die Deltas zu einer Basisdatei zusammen; as-of-Antworten bleiben identisch, getestet).
+
+**Neue Reihe:** Eintrag in `configs/series.yaml` (oder Rolle in `universe.yaml`) → `rotationlab validate` → `rotationlab ingest --series <id>`; die Erstladung datiert Historie nach dem Lag-Modell.
+
+## Module und Backtests (Phase 2)
+
+```bash
+rotationlab golden                                   # die fünf Module gegen die Forschung (≈ 60 s); Exit 1 bei Abweichung
+rotationlab golden --walkforward                     # + Walk-forward Multi-Asset (≈ 96 s)
+rotationlab golden --execution next_close            # dieselben Läufe mit Produktions-Timing (ADR 011)
+rotationlab backtest --strategy multi_asset_rotation                         # Forschungsuniversum, Produktions-Timing, Kosten aus universe.yaml
+rotationlab backtest --strategy multi_asset_rotation --costs research --execution same_close   # wie die Studie
+rotationlab backtest --strategy us_sector_rotation --universe live --start 2004-01-31          # ETFs (braucht Live-Daten)
+rotationlab walkforward --strategy multi_asset_rotation --costs research
+```
+
+Jeder Lauf schreibt `output/runs/<run_id>/` (`record.json` mit Git-SHA, Config-Hash, Datenstand und Kennzahlen;
+`decisions.csv`, `weights.csv`, `proposals.jsonl`). Golden rot nach einer Änderung: `rotationlab golden --strategy <id>`
+zeigt die Abweichung je Kennzahl; die Gewichts-Tests in `tests/golden/test_module_goldens.py` zeigen, ob die Logik
+oder nur die Kosten/Timing abweichen. Gold/Silber-Hedge-Varianten: `python scripts/precious_hedge_study.py`.
+
+## Wenn Telegram meldet …
+| Meldung | Bedeutung | Was tun |
+|---|---|---|
+| `quality blocking` | Pflichtreihe fehlt/veraltet oder Schema verletzt | Report lesen; Provider prüfen; bei Yahoo-Ausfall `--provider stooq`; keine Trades bis grün |
+| `RISK HALT` | Daten-Kill-Switch | Positionen halten; Ursache wie oben |
+| `stop fired` | Modul-Stop (z. B. Ratio −15 %) | Zielgewichte im Report sind bereits angepasst; umsetzen |
+| `targets changed` | Entscheidungstag | Report §5: Ziel vs. Ist; zu Schlusskurs D+1 umsetzen; Journal übernimmt Referenzkurs automatisch |
+| `signal health red` | 36M-IC ≤ 0 | keine automatische Reaktion; Entscheidung dokumentieren (ADR), ggf. neue Version |
+| `drift` | Live-Sharpe unter Backtest-Band | Umsetzungsdifferenz prüfen (Report §8), Kosten, dann Modelle |
+| `daily run FAILED` (Heartbeat) | Workflow abgebrochen | Actions-Log; Lauf manuell über `workflow_dispatch` wiederholen |
+
+## Manuell
+- Neuaufbau: `rotationlab ingest --full` (quartalsweise, Vergleich mit inkrementellem Stand im Report).
+- Backtest/Golden lokal: `rotationlab golden --walkforward`, `rotationlab backtest --strategy <id>`.
+- Konfiguration ändern: PR mit `version`-Erhöhung, Golden-Update, ADR-Zeile; Merge nur bei grüner CI.
+- Journal ist append-only; Korrektur = neuer Eintrag mit `supersedes`.

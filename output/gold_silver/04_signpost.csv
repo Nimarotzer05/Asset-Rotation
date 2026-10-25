@@ -1,0 +1,15 @@
+Signal,Stand,Wert,spricht für,historisch signifikant
+Ratio-Trend 3M,2026-02,-0.3062154882855701,Silber,nein
+Ratio-Trend 6M,2026-02,-0.4344723489772129,Gold,nein
+Ratio-Trend 12M,2026-02,-0.4641307846480931,Silber,nein
+Ratio über 10M-Schnitt,2026-02,-0.283848837068712,Silber,nein
+Ratio-z 60M (hoch = Gold teuer),2026-02,-2.8021966870059254,Gold,nein
+Ratio-z 120M,2026-02,-2.829903598816831,Gold,nein
+Δ Kreditspread 3M,2026-02,-0.08999999999999997,Gold,nein
+VIX über 20,2026-02,-0.14000000000000057,Silber,nein
+Aktien unter 10M-Schnitt,2025-12,-0.08391086476217624,Silber,nein
+Δ IP-Jahresrate 3M (lag 1),2026-02,-0.7858630000000001,Silber,nein
+Kupfer-Momentum 6M,2026-01,0.19828837008785904,Gold,nein
+Δ log Dollar 3M,2025-12,-0.0032615971062215365,Silber,nein
+Δ Realzins 3M (lag 1),2026-01,0.38926799999999995,Silber,nein
+Δ Fed Funds 3M,2026-02,-0.23999999999999977,Silber,nein
