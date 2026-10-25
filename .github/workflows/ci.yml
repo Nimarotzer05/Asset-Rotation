@@ -1,0 +1,20 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv python install 3.12
+      - run: uv sync --extra dev
+      - run: uv run ruff format --check rotationlab tests
+      - run: uv run ruff check rotationlab tests
+      - run: uv run mypy rotationlab
+      - run: uv run rotationlab validate
+      - run: uv run pytest --cov --cov-report=term-missing -m "not network and not golden"
+      - name: golden figures (store reproduces the research panel)
+        run: uv run pytest -m golden -q
