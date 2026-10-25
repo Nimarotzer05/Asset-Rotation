@@ -69,6 +69,13 @@ class PitIndex:
         a = self._s.get(series_id)
         return a is not None and a.simple
 
+    def is_causal(self, series_id: str) -> bool:
+        """Simple and every row published on its observation date: the series can be merged into another
+        one by position (dividends into closes) without consulting vintages. A late-ingested row
+        (vintage after obs_date) breaks that – the as-of filter would hide it, a positional merge not."""
+        a = self._s.get(series_id)
+        return a is not None and a.simple and bool((a.vintage == a.obs).all())
+
     def prefix_len(self, series_id: str, d: pd.Timestamp) -> int:
         """For a simple series, as_of(d) is the first k rows of its full history; returns k."""
         a = self._s[series_id]
