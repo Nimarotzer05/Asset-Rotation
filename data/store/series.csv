@@ -1,0 +1,479 @@
+series_id,provider,provider_code,kind,frequency,lag,vintages,required,unit,name,first_obs,last_obs,rows,vintage_dates
+bls:CES0000000001,bls,CES0000000001,macro,M,1M,none,False,thousands,Nonfarm payrolls (BLS),,,0,0
+bls:CUSR0000SA0,bls,CUSR0000SA0,macro,M,1M,none,False,index,CPI-U all items SA (BLS),,,0,0
+bls:CUSR0000SA0L1E,bls,CUSR0000SA0L1E,macro,M,1M,none,False,index,CPI-U less food and energy SA (BLS),,,0,0
+bls:LNS14000000,bls,LNS14000000,macro,M,1M,none,False,pct,Unemployment rate (BLS),,,0,0
+cftc:067651:noncomm_net,cftc,067651:noncomm_net,positioning,W,7D,none,False,,WTI NYMEX non-commercial net,1986-01-15,2026-10-20,1938,1938
+cftc:084691:noncomm_net,cftc,084691:noncomm_net,positioning,W,7D,none,False,,Silver COMEX non-commercial net,1986-01-15,2026-10-20,1939,1939
+cftc:084691:open_interest,cftc,084691:open_interest,positioning,W,7D,none,False,,Silver COMEX open interest,1986-01-15,2026-10-20,1939,1939
+cftc:085692:noncomm_net,cftc,085692:noncomm_net,positioning,W,7D,none,False,,Copper COMEX non-commercial net,1989-07-31,2026-10-20,1854,1854
+cftc:088691:noncomm_net,cftc,088691:noncomm_net,positioning,W,7D,none,False,,Gold COMEX non-commercial net,1986-01-15,2026-10-20,1939,1939
+cftc:088691:open_interest,cftc,088691:open_interest,positioning,W,7D,none,False,,Gold COMEX open interest,1986-01-15,2026-10-20,1939,1939
+cftc:13874A:noncomm_net,cftc,13874A:noncomm_net,positioning,W,7D,none,False,,E-mini S&P 500 non-commercial net,1997-09-16,2026-10-20,1514,1514
+fred:AAA,fred,AAA,yield,M,0D,none,False,pct,"Moody's Aaa, monthly average",1919-01-31,2026-09-30,1293,1293
+fred:BAA,fred,BAA,yield,M,0D,none,False,pct,"Moody's Baa, monthly average",1919-01-31,2026-09-30,1293,1293
+fred:BAMLC0A0CM,fred,BAMLC0A0CM,yield,D,1D,none,False,pct,ICE BofA US IG OAS,2023-10-24,2026-10-22,785,785
+fred:BAMLH0A0HYM2,fred,BAMLH0A0HYM2,yield,D,1D,none,False,pct,ICE BofA US HY OAS,2023-10-24,2026-10-22,786,786
+fred:CPIAUCSL,fred,CPIAUCSL,macro,M,1M,alfred,False,index,CPI-U SA,1947-01-31,2026-09-30,3121,687
+fred:CPILFESL,fred,CPILFESL,macro,M,1M,alfred,False,index,Core CPI SA,1957-01-31,2026-09-30,2737,854
+fred:DFII10,fred,DFII10,yield,D,1D,none,False,pct,10Y TIPS real yield,2003-01-02,2026-10-22,5956,5956
+fred:DGS10,fred,DGS10,yield,D,1D,none,False,pct,10Y Treasury CMT,1962-01-02,2026-10-22,16187,16187
+fred:DGS2,fred,DGS2,yield,D,1D,none,False,pct,2Y Treasury CMT,1976-06-01,2026-10-22,12595,12595
+fred:DGS3MO,fred,DGS3MO,yield,D,1D,none,False,pct,3M Treasury CMT,1981-09-01,2026-10-22,11285,11285
+fred:DTWEXBGS,fred,DTWEXBGS,index,D,7D,none,False,,"Broad trade-weighted dollar (H.10, weekly release)",2006-01-02,2026-10-16,5212,5212
+fred:FEDFUNDS,fred,FEDFUNDS,yield,M,0D,none,False,pct,"Fed funds, monthly average",1954-07-31,2026-09-30,867,867
+fred:GS10,fred,GS10,yield,M,0D,none,False,pct,"10Y Treasury CMT, monthly average",1953-04-30,2026-09-30,882,882
+fred:HOUST,fred,HOUST,macro,M,1M,alfred,False,thousands,Housing starts,1959-01-31,2026-09-30,4621,807
+fred:ICSA,fred,ICSA,macro,W,6D,alfred,False,claims,"Initial claims (week ending Saturday, released Thursday)",1967-01-07,2026-10-17,10008,3110
+fred:INDPRO,fred,INDPRO,macro,M,1M,alfred,False,index,Industrial production,1919-01-31,2026-09-30,38862,1318
+fred:M2SL,fred,M2SL,macro,M,1M,alfred,False,bn USD,M2 money stock,1959-01-31,2026-08-31,28842,2182
+fred:MICH,fred,MICH,macro,M,1M,alfred,False,pct,Michigan 1Y inflation expectations,1978-01-31,2026-09-30,840,585
+fred:NFCI,fred,NFCI,macro,W,6D,alfred,False,index,"Chicago Fed financial conditions (Friday, released Wednesday)",1971-01-08,2026-10-16,933537,2799
+fred:PAYEMS,fred,PAYEMS,macro,M,1M,alfred,False,thousands,Nonfarm payrolls,1939-01-31,2026-09-30,13741,911
+fred:PCEPILFE,fred,PCEPILFE,macro,M,2M,alfred,False,index,Core PCE price index,1959-01-31,2026-08-31,8700,812
+fred:T10YIE,fred,T10YIE,yield,D,1D,none,False,pct,10Y breakeven inflation,2003-01-02,2026-10-23,5957,5957
+fred:TB3MS,fred,TB3MS,yield,M,0D,none,False,pct,"3M T-bill, monthly average",1934-01-31,2026-09-30,1113,1113
+fred:UMCSENT,fred,UMCSENT,macro,M,1M,alfred,False,index,Michigan sentiment,1952-11-30,2026-09-30,1118,681
+fred:UNRATE,fred,UNRATE,macro,M,1M,alfred,False,pct,Unemployment rate,1948-01-31,2026-09-30,2342,944
+fred:VIXCLS,fred,VIXCLS,index,D,1D,none,False,,VIX close (FRED),1990-01-02,2026-10-22,9301,9301
+french:ff3:HML,french,ff3:HML,return,M,0D,none,False,,,1926-07-31,2026-08-31,1202,1202
+french:ff3:MKT_RF,french,ff3:MKT_RF,return,M,0D,none,False,,,1926-07-31,2026-08-31,1202,1202
+french:ff3:RF,french,ff3:RF,return,M,0D,none,False,,,1926-07-31,2026-08-31,1202,1202
+french:ff3:SMB,french,ff3:SMB,return,M,0D,none,False,,,1926-07-31,2026-08-31,1202,1202
+french:ff5:CMA,french,ff5:CMA,return,M,0D,none,False,,,1963-07-31,2026-08-31,758,758
+french:ff5:RMW,french,ff5:RMW,return,M,0D,none,False,,,1963-07-31,2026-08-31,758,758
+french:ind10:DURBL,french,ind10:DURBL,return,M,0D,none,False,,,1926-07-31,2026-08-31,1202,1202
+french:ind10:ENRGY,french,ind10:ENRGY,return,M,0D,none,False,,,1926-07-31,2026-08-31,1202,1202
+french:ind10:HITEC,french,ind10:HITEC,return,M,0D,none,False,,,1926-07-31,2026-08-31,1202,1202
+french:ind10:HLTH,french,ind10:HLTH,return,M,0D,none,False,,,1926-07-31,2026-08-31,1202,1202
+french:ind10:MANUF,french,ind10:MANUF,return,M,0D,none,False,,,1926-07-31,2026-08-31,1202,1202
+french:ind10:NODUR,french,ind10:NODUR,return,M,0D,none,False,,,1926-07-31,2026-08-31,1202,1202
+french:ind10:OTHER,french,ind10:OTHER,return,M,0D,none,False,,,1926-07-31,2026-08-31,1202,1202
+french:ind10:SHOPS,french,ind10:SHOPS,return,M,0D,none,False,,,1926-07-31,2026-08-31,1202,1202
+french:ind10:TELCM,french,ind10:TELCM,return,M,0D,none,False,,,1926-07-31,2026-08-31,1202,1202
+french:ind10:UTILS,french,ind10:UTILS,return,M,0D,none,False,,,1926-07-31,2026-08-31,1202,1202
+french:mom:MOM,french,mom:MOM,return,M,0D,none,False,,,1927-01-31,2026-08-31,1196,1196
+shiller:CAPE,shiller,CAPE,macro,M,6M,none,False,,Cyclically adjusted P/E (Shiller),1881-01-31,2023-09-30,1713,1713
+shiller:CPI,shiller,CPI,macro,M,1M,none,False,,CPI-U NSA (Shiller),1871-01-31,2023-09-30,1833,1833
+shiller:D,shiller,D,macro,M,6M,none,False,,"S&P dividends, interpolated (Shiller)",1871-01-31,2023-06-30,1830,1830
+shiller:E,shiller,E,macro,M,6M,none,False,,"S&P earnings, interpolated (Shiller)",1871-01-31,2023-06-30,1830,1830
+shiller:GS10,shiller,GS10,yield,M,0D,none,False,pct,"10y Treasury, monthly average (Shiller)",1871-01-31,2023-09-30,1833,1833
+shiller:P,shiller,P,index,M,0D,none,False,,"S&P composite, monthly average (Shiller)",1871-01-31,2023-09-30,1833,1833
+static:FF_DURBL,static,ind10:Durbl,return,M,0D,none,False,,French industry Durbl (value-weighted),1926-07-31,2026-07-31,1201,1201
+static:FF_ENRGY,static,ind10:Enrgy,return,M,0D,none,False,,French industry Enrgy (value-weighted),1926-07-31,2026-07-31,1201,1201
+static:FF_HITEC,static,ind10:HiTec,return,M,0D,none,False,,French industry HiTec (value-weighted),1926-07-31,2026-07-31,1201,1201
+static:FF_HLTH,static,ind10:Hlth,return,M,0D,none,False,,French industry Hlth (value-weighted),1926-07-31,2026-07-31,1201,1201
+static:FF_MANUF,static,ind10:Manuf,return,M,0D,none,False,,French industry Manuf (value-weighted),1926-07-31,2026-07-31,1201,1201
+static:FF_MKT,static,constructs:FF_MKT,return,M,0D,none,False,,US total market return (French Mkt-RF + RF),1926-07-31,2026-07-31,1201,1201
+static:FF_NODUR,static,ind10:NoDur,return,M,0D,none,False,,French industry NoDur (value-weighted),1926-07-31,2026-07-31,1201,1201
+static:FF_OTHER,static,ind10:Other,return,M,0D,none,False,,French industry Other (value-weighted),1926-07-31,2026-07-31,1201,1201
+static:FF_SHOPS,static,ind10:Shops,return,M,0D,none,False,,French industry Shops (value-weighted),1926-07-31,2026-07-31,1201,1201
+static:FF_TELCM,static,ind10:Telcm,return,M,0D,none,False,,French industry Telcm (value-weighted),1926-07-31,2026-07-31,1201,1201
+static:FF_UTILS,static,ind10:Utils,return,M,0D,none,False,,French industry Utils (value-weighted),1926-07-31,2026-07-31,1201,1201
+static:GOLD,static,constructs:GOLD,price,M,0D,none,False,,"Gold: LBMA month-end, World Bank average before 1968-04",1960-01-31,2026-02-28,794,794
+static:TBILL,static,constructs:TBILL,total_return,M,0D,none,False,,T-bill index from TB3MS (month t earns TB3MS(t-1)/12),1959-02-28,2026-08-31,811,811
+static:USD_IDX,static,constructs:USD_IDX,index,M,0D,none,False,,"Dollar index: major currencies, broad from first overlap (chained)",1973-01-31,2025-12-31,636,636
+static:UST1,static,constructs:UST1,total_return,M,0D,none,False,,"Synthetic 1y Treasury total return (par bond, GS1)",1959-02-28,2026-08-31,811,811
+static:UST10,static,constructs:UST10,total_return,M,0D,none,False,,"Synthetic 10y Treasury total return (par bond, GS10)",1959-02-28,2026-08-31,811,811
+static:UST5,static,constructs:UST5,total_return,M,0D,none,False,,"Synthetic 5y Treasury total return (par bond, GS5)",1959-02-28,2026-08-31,811,811
+static:WB_AGRI,static,wb_indices:WB_AGRI,index,M,0D,none,False,,"World Bank index WB_AGRI (2010=100, monthly average)",1960-01-31,2026-01-31,793,793
+static:WB_ALUMINUM,static,wb_prices:Aluminum,price,M,0D,none,False,,World Bank Aluminum (monthly average),1960-01-31,2026-01-31,793,793
+static:WB_BASEMETALS,static,wb_indices:WB_BASEMETALS,index,M,0D,none,False,,"World Bank index WB_BASEMETALS (2010=100, monthly average)",1960-01-31,2026-01-31,793,793
+static:WB_COPPER,static,wb_prices:Copper,price,M,0D,none,False,,World Bank Copper (monthly average),1960-01-31,2026-01-31,793,793
+static:WB_ENERGY,static,wb_indices:WB_ENERGY,index,M,0D,none,False,,"World Bank index WB_ENERGY (2010=100, monthly average)",1960-01-31,2026-01-31,793,793
+static:WB_FERT,static,wb_indices:WB_FERT,index,M,0D,none,False,,"World Bank index WB_FERT (2010=100, monthly average)",1960-01-31,2026-01-31,793,793
+static:WB_GOLD_AVG,static,wb_prices:Gold,price,M,0D,none,False,,World Bank Gold (monthly average),1960-01-31,2026-01-31,793,793
+static:WB_METALS,static,wb_indices:WB_METALS,index,M,0D,none,False,,"World Bank index WB_METALS (2010=100, monthly average)",1960-01-31,2026-01-31,793,793
+static:WB_NATGAS,static,"wb_prices:Natural gas, US",price,M,0D,none,False,,"World Bank Natural gas, US (monthly average)",1960-01-31,2026-01-31,793,793
+static:WB_NICKEL,static,wb_prices:Nickel,price,M,0D,none,False,,World Bank Nickel (monthly average),1960-01-31,2026-01-31,793,793
+static:WB_NONENERGY,static,wb_indices:WB_NONENERGY,index,M,0D,none,False,,"World Bank index WB_NONENERGY (2010=100, monthly average)",1960-01-31,2026-01-31,793,793
+static:WB_OIL,static,"wb_prices:Crude oil, average",price,M,0D,none,False,,"World Bank Crude oil, average (monthly average)",1960-01-31,2026-01-31,793,793
+static:WB_PLATINUM,static,wb_prices:Platinum,price,M,0D,none,False,,World Bank Platinum (monthly average),1960-01-31,2026-01-31,793,793
+static:WB_PRECIOUS,static,wb_indices:WB_PRECIOUS,index,M,0D,none,False,,"World Bank index WB_PRECIOUS (2010=100, monthly average)",1960-01-31,2026-01-31,793,793
+static:WB_SILVER_AVG,static,wb_prices:Silver,price,M,0D,none,False,,World Bank Silver (monthly average),1960-01-31,2026-01-31,793,793
+static:WB_TOTAL,static,wb_indices:WB_TOTAL,index,M,0D,none,False,,"World Bank index WB_TOTAL (2010=100, monthly average)",1960-01-31,2026-01-31,793,793
+static:WB_WTI,static,"wb_prices:Crude oil, WTI",price,M,0D,none,False,,"World Bank Crude oil, WTI (monthly average)",1982-01-31,2026-01-31,529,529
+static:cboe:VIX,static,vix:CLOSE,index,D,0D,none,False,,CBOE VIX close,1990-01-02,2026-09-22,9278,9278
+static:fred:DTWEXBGS,static,usd:DTWEXBGS,index,D,0D,none,False,,"Trade-weighted dollar, broad",2006-01-02,2025-12-31,5013,5013
+static:fred:DTWEXM,static,usd:DTWEXM,index,D,0D,none,False,,"Trade-weighted dollar, major currencies",1973-01-02,2019-12-31,11834,11834
+static:fredmd:AAA,static,fredmd:AAA,yield,M,0D,none,False,,FRED-MD AAA,1959-01-31,2026-08-31,812,812
+static:fredmd:AAAFFM,static,fredmd:AAAFFM,yield,M,0D,none,False,,FRED-MD AAAFFM,1959-01-31,2026-08-31,812,812
+static:fredmd:ACOGNO,static,fredmd:ACOGNO,macro,M,2M,none,False,,FRED-MD ACOGNO,1992-02-29,2026-07-31,414,414
+static:fredmd:AMDMNOx,static,fredmd:AMDMNOx,macro,M,2M,none,False,,FRED-MD AMDMNOx,1959-01-31,2026-08-31,812,812
+static:fredmd:AMDMUOx,static,fredmd:AMDMUOx,macro,M,2M,none,False,,FRED-MD AMDMUOx,1959-01-31,2026-08-31,812,812
+static:fredmd:ANDENOx,static,fredmd:ANDENOx,macro,M,2M,none,False,,FRED-MD ANDENOx,1968-02-29,2026-08-31,703,703
+static:fredmd:AWHMAN,static,fredmd:AWHMAN,macro,M,1M,none,False,,FRED-MD AWHMAN,1959-01-31,2026-08-31,812,812
+static:fredmd:AWOTMAN,static,fredmd:AWOTMAN,macro,M,1M,none,False,,FRED-MD AWOTMAN,1959-01-31,2026-08-31,812,812
+static:fredmd:BAA,static,fredmd:BAA,yield,M,0D,none,False,,FRED-MD BAA,1959-01-31,2026-08-31,812,812
+static:fredmd:BAAFFM,static,fredmd:BAAFFM,yield,M,0D,none,False,,FRED-MD BAAFFM,1959-01-31,2026-08-31,812,812
+static:fredmd:BOGMBASE,static,fredmd:BOGMBASE,macro,M,1M,none,False,,FRED-MD BOGMBASE,1959-01-31,2026-08-31,812,812
+static:fredmd:BUSINVx,static,fredmd:BUSINVx,macro,M,2M,none,False,,FRED-MD BUSINVx,1959-01-31,2026-07-31,811,811
+static:fredmd:BUSLOANS,static,fredmd:BUSLOANS,macro,M,1M,none,False,,FRED-MD BUSLOANS,1959-01-31,2026-08-31,812,812
+static:fredmd:CE16OV,static,fredmd:CE16OV,macro,M,1M,none,False,,FRED-MD CE16OV,1959-01-31,2026-08-31,811,811
+static:fredmd:CES0600000007,static,fredmd:CES0600000007,macro,M,1M,none,False,,FRED-MD CES0600000007,1959-01-31,2026-08-31,812,812
+static:fredmd:CES0600000008,static,fredmd:CES0600000008,macro,M,1M,none,False,,FRED-MD CES0600000008,1959-01-31,2026-08-31,812,812
+static:fredmd:CES1021000001,static,fredmd:CES1021000001,macro,M,1M,none,False,,FRED-MD CES1021000001,1959-01-31,2026-08-31,812,812
+static:fredmd:CES2000000008,static,fredmd:CES2000000008,macro,M,1M,none,False,,FRED-MD CES2000000008,1959-01-31,2026-08-31,812,812
+static:fredmd:CES3000000008,static,fredmd:CES3000000008,macro,M,1M,none,False,,FRED-MD CES3000000008,1959-01-31,2026-08-31,812,812
+static:fredmd:CLAIMSx,static,fredmd:CLAIMSx,macro,M,1M,none,False,,FRED-MD CLAIMSx,1959-01-31,2026-08-31,812,812
+static:fredmd:CLF16OV,static,fredmd:CLF16OV,macro,M,1M,none,False,,FRED-MD CLF16OV,1959-01-31,2026-08-31,811,811
+static:fredmd:CMRMTSPLx,static,fredmd:CMRMTSPLx,macro,M,2M,none,False,,FRED-MD CMRMTSPLx,1959-01-31,2026-07-31,811,811
+static:fredmd:COMPAPFFx,static,fredmd:COMPAPFFx,yield,M,0D,none,False,,FRED-MD COMPAPFFx,1959-01-31,2026-08-31,811,811
+static:fredmd:CONSPI,static,fredmd:CONSPI,macro,M,2M,none,False,,FRED-MD CONSPI,1959-01-31,2026-07-31,811,811
+static:fredmd:CP3Mx,static,fredmd:CP3Mx,yield,M,0D,none,False,,FRED-MD CP3Mx,1959-01-31,2026-08-31,811,811
+static:fredmd:CPIAPPSL,static,fredmd:CPIAPPSL,macro,M,1M,none,False,,FRED-MD CPIAPPSL,1959-01-31,2026-08-31,811,811
+static:fredmd:CPIAUCSL,static,fredmd:CPIAUCSL,macro,M,1M,none,False,,FRED-MD CPIAUCSL,1959-01-31,2026-08-31,811,811
+static:fredmd:CPIMEDSL,static,fredmd:CPIMEDSL,macro,M,1M,none,False,,FRED-MD CPIMEDSL,1959-01-31,2026-08-31,811,811
+static:fredmd:CPITRNSL,static,fredmd:CPITRNSL,macro,M,1M,none,False,,FRED-MD CPITRNSL,1959-01-31,2026-08-31,811,811
+static:fredmd:CPIULFSL,static,fredmd:CPIULFSL,macro,M,1M,none,False,,FRED-MD CPIULFSL,1959-01-31,2026-08-31,811,811
+static:fredmd:CUMFNS,static,fredmd:CUMFNS,macro,M,1M,none,False,,FRED-MD CUMFNS,1959-01-31,2026-08-31,812,812
+static:fredmd:CUSR0000SA0L2,static,fredmd:CUSR0000SA0L2,macro,M,1M,none,False,,FRED-MD CUSR0000SA0L2,1959-01-31,2026-08-31,811,811
+static:fredmd:CUSR0000SA0L5,static,fredmd:CUSR0000SA0L5,macro,M,1M,none,False,,FRED-MD CUSR0000SA0L5,1959-01-31,2026-08-31,811,811
+static:fredmd:CUSR0000SAC,static,fredmd:CUSR0000SAC,macro,M,1M,none,False,,FRED-MD CUSR0000SAC,1959-01-31,2026-08-31,811,811
+static:fredmd:CUSR0000SAD,static,fredmd:CUSR0000SAD,macro,M,1M,none,False,,FRED-MD CUSR0000SAD,1959-01-31,2026-08-31,811,811
+static:fredmd:CUSR0000SAS,static,fredmd:CUSR0000SAS,macro,M,1M,none,False,,FRED-MD CUSR0000SAS,1959-01-31,2026-08-31,811,811
+static:fredmd:DDURRG3M086SBEA,static,fredmd:DDURRG3M086SBEA,macro,M,2M,none,False,,FRED-MD DDURRG3M086SBEA,1959-01-31,2026-08-31,812,812
+static:fredmd:DMANEMP,static,fredmd:DMANEMP,macro,M,1M,none,False,,FRED-MD DMANEMP,1959-01-31,2026-08-31,812,812
+static:fredmd:DNDGRG3M086SBEA,static,fredmd:DNDGRG3M086SBEA,macro,M,2M,none,False,,FRED-MD DNDGRG3M086SBEA,1959-01-31,2026-08-31,812,812
+static:fredmd:DPCERA3M086SBEA,static,fredmd:DPCERA3M086SBEA,macro,M,2M,none,False,,FRED-MD DPCERA3M086SBEA,1959-01-31,2026-08-31,812,812
+static:fredmd:DSERRG3M086SBEA,static,fredmd:DSERRG3M086SBEA,macro,M,2M,none,False,,FRED-MD DSERRG3M086SBEA,1959-01-31,2026-08-31,812,812
+static:fredmd:DTCOLNVHFNM,static,fredmd:DTCOLNVHFNM,macro,M,2M,none,False,,FRED-MD DTCOLNVHFNM,1959-01-31,2026-07-31,811,811
+static:fredmd:DTCTHFNM,static,fredmd:DTCTHFNM,macro,M,2M,none,False,,FRED-MD DTCTHFNM,1959-01-31,2026-07-31,811,811
+static:fredmd:EXCAUSx,static,fredmd:EXCAUSx,index,M,0D,none,False,,FRED-MD EXCAUSx,1959-01-31,2026-08-31,812,812
+static:fredmd:EXJPUSx,static,fredmd:EXJPUSx,index,M,0D,none,False,,FRED-MD EXJPUSx,1959-01-31,2026-08-31,812,812
+static:fredmd:EXSZUSx,static,fredmd:EXSZUSx,index,M,0D,none,False,,FRED-MD EXSZUSx,1959-01-31,2026-08-31,812,812
+static:fredmd:EXUSUKx,static,fredmd:EXUSUKx,index,M,0D,none,False,,FRED-MD EXUSUKx,1959-01-31,2026-08-31,812,812
+static:fredmd:FEDFUNDS,static,fredmd:FEDFUNDS,yield,M,0D,none,False,,FRED-MD FEDFUNDS,1959-01-31,2026-08-31,812,812
+static:fredmd:GS1,static,fredmd:GS1,yield,M,0D,none,False,,FRED-MD GS1,1959-01-31,2026-08-31,812,812
+static:fredmd:GS10,static,fredmd:GS10,yield,M,0D,none,False,,FRED-MD GS10,1959-01-31,2026-08-31,812,812
+static:fredmd:GS5,static,fredmd:GS5,yield,M,0D,none,False,,FRED-MD GS5,1959-01-31,2026-08-31,812,812
+static:fredmd:HOUST,static,fredmd:HOUST,macro,M,1M,none,False,,FRED-MD HOUST,1959-01-31,2026-08-31,812,812
+static:fredmd:HOUSTMW,static,fredmd:HOUSTMW,macro,M,1M,none,False,,FRED-MD HOUSTMW,1959-01-31,2026-08-31,812,812
+static:fredmd:HOUSTNE,static,fredmd:HOUSTNE,macro,M,1M,none,False,,FRED-MD HOUSTNE,1959-01-31,2026-08-31,812,812
+static:fredmd:HOUSTS,static,fredmd:HOUSTS,macro,M,1M,none,False,,FRED-MD HOUSTS,1959-01-31,2026-08-31,812,812
+static:fredmd:HOUSTW,static,fredmd:HOUSTW,macro,M,1M,none,False,,FRED-MD HOUSTW,1959-01-31,2026-08-31,812,812
+static:fredmd:HWI,static,fredmd:HWI,macro,M,2M,none,False,,FRED-MD HWI,1959-01-31,2026-08-31,812,812
+static:fredmd:HWIURATIO,static,fredmd:HWIURATIO,macro,M,2M,none,False,,FRED-MD HWIURATIO,1959-01-31,2026-08-31,811,811
+static:fredmd:INDPRO,static,fredmd:INDPRO,macro,M,1M,none,False,,FRED-MD INDPRO,1959-01-31,2026-08-31,812,812
+static:fredmd:INVEST,static,fredmd:INVEST,macro,M,1M,none,False,,FRED-MD INVEST,1959-01-31,2026-08-31,812,812
+static:fredmd:IPB51222S,static,fredmd:IPB51222S,macro,M,1M,none,False,,FRED-MD IPB51222S,1959-01-31,2026-08-31,812,812
+static:fredmd:IPBUSEQ,static,fredmd:IPBUSEQ,macro,M,1M,none,False,,FRED-MD IPBUSEQ,1959-01-31,2026-08-31,812,812
+static:fredmd:IPCONGD,static,fredmd:IPCONGD,macro,M,1M,none,False,,FRED-MD IPCONGD,1959-01-31,2026-08-31,812,812
+static:fredmd:IPDCONGD,static,fredmd:IPDCONGD,macro,M,1M,none,False,,FRED-MD IPDCONGD,1959-01-31,2026-08-31,812,812
+static:fredmd:IPDMAT,static,fredmd:IPDMAT,macro,M,1M,none,False,,FRED-MD IPDMAT,1959-01-31,2026-08-31,812,812
+static:fredmd:IPFINAL,static,fredmd:IPFINAL,macro,M,1M,none,False,,FRED-MD IPFINAL,1959-01-31,2026-08-31,812,812
+static:fredmd:IPFPNSS,static,fredmd:IPFPNSS,macro,M,1M,none,False,,FRED-MD IPFPNSS,1959-01-31,2026-08-31,812,812
+static:fredmd:IPFUELS,static,fredmd:IPFUELS,macro,M,1M,none,False,,FRED-MD IPFUELS,1959-01-31,2026-08-31,812,812
+static:fredmd:IPMANSICS,static,fredmd:IPMANSICS,macro,M,1M,none,False,,FRED-MD IPMANSICS,1959-01-31,2026-08-31,812,812
+static:fredmd:IPMAT,static,fredmd:IPMAT,macro,M,1M,none,False,,FRED-MD IPMAT,1959-01-31,2026-08-31,812,812
+static:fredmd:IPNCONGD,static,fredmd:IPNCONGD,macro,M,1M,none,False,,FRED-MD IPNCONGD,1959-01-31,2026-08-31,812,812
+static:fredmd:IPNMAT,static,fredmd:IPNMAT,macro,M,1M,none,False,,FRED-MD IPNMAT,1959-01-31,2026-08-31,812,812
+static:fredmd:ISRATIOx,static,fredmd:ISRATIOx,macro,M,2M,none,False,,FRED-MD ISRATIOx,1959-01-31,2026-07-31,811,811
+static:fredmd:M1SL,static,fredmd:M1SL,macro,M,1M,none,False,,FRED-MD M1SL,1959-01-31,2026-08-31,812,812
+static:fredmd:M2REAL,static,fredmd:M2REAL,macro,M,1M,none,False,,FRED-MD M2REAL,1959-01-31,2026-08-31,811,811
+static:fredmd:M2SL,static,fredmd:M2SL,macro,M,1M,none,False,,FRED-MD M2SL,1959-01-31,2026-08-31,812,812
+static:fredmd:MANEMP,static,fredmd:MANEMP,macro,M,1M,none,False,,FRED-MD MANEMP,1959-01-31,2026-08-31,812,812
+static:fredmd:NDMANEMP,static,fredmd:NDMANEMP,macro,M,1M,none,False,,FRED-MD NDMANEMP,1959-01-31,2026-08-31,812,812
+static:fredmd:NONBORRES,static,fredmd:NONBORRES,macro,M,1M,none,False,,FRED-MD NONBORRES,1959-01-31,2026-08-31,812,812
+static:fredmd:NONREVSL,static,fredmd:NONREVSL,macro,M,2M,none,False,,FRED-MD NONREVSL,1959-01-31,2026-07-31,811,811
+static:fredmd:OILPRICEx,static,fredmd:OILPRICEx,price,M,0D,none,False,,FRED-MD OILPRICEx,1959-01-31,2026-08-31,812,812
+static:fredmd:PAYEMS,static,fredmd:PAYEMS,macro,M,1M,none,False,,FRED-MD PAYEMS,1959-01-31,2026-08-31,812,812
+static:fredmd:PCEPI,static,fredmd:PCEPI,macro,M,2M,none,False,,FRED-MD PCEPI,1959-01-31,2026-08-31,812,812
+static:fredmd:PERMIT,static,fredmd:PERMIT,macro,M,1M,none,False,,FRED-MD PERMIT,1960-01-31,2026-08-31,800,800
+static:fredmd:PERMITMW,static,fredmd:PERMITMW,macro,M,1M,none,False,,FRED-MD PERMITMW,1960-01-31,2026-08-31,800,800
+static:fredmd:PERMITNE,static,fredmd:PERMITNE,macro,M,1M,none,False,,FRED-MD PERMITNE,1960-01-31,2026-08-31,800,800
+static:fredmd:PERMITS,static,fredmd:PERMITS,macro,M,1M,none,False,,FRED-MD PERMITS,1960-01-31,2026-08-31,800,800
+static:fredmd:PERMITW,static,fredmd:PERMITW,macro,M,1M,none,False,,FRED-MD PERMITW,1960-01-31,2026-08-31,800,800
+static:fredmd:PPICMM,static,fredmd:PPICMM,macro,M,1M,none,False,,FRED-MD PPICMM,1959-01-31,2026-08-31,812,812
+static:fredmd:REALLN,static,fredmd:REALLN,macro,M,1M,none,False,,FRED-MD REALLN,1959-01-31,2026-08-31,812,812
+static:fredmd:RETAILx,static,fredmd:RETAILx,macro,M,1M,none,False,,FRED-MD RETAILx,1959-01-31,2026-08-31,812,812
+static:fredmd:RPI,static,fredmd:RPI,macro,M,2M,none,False,,FRED-MD RPI,1959-01-31,2026-08-31,812,812
+static:fredmd:SP500,static,fredmd:S&P 500,index,M,0D,none,False,,FRED-MD S&P 500,1959-01-31,2026-08-31,812,812
+static:fredmd:SP_DIVYIELD,static,fredmd:S&P div yield,macro,M,6M,none,False,,FRED-MD S&P div yield,1959-01-31,2026-06-30,810,810
+static:fredmd:SP_PE,static,fredmd:S&P PE ratio,macro,M,6M,none,False,,FRED-MD S&P PE ratio,1959-01-31,2026-07-31,811,811
+static:fredmd:SRVPRD,static,fredmd:SRVPRD,macro,M,1M,none,False,,FRED-MD SRVPRD,1959-01-31,2026-08-31,812,812
+static:fredmd:T10YFFM,static,fredmd:T10YFFM,yield,M,0D,none,False,,FRED-MD T10YFFM,1959-01-31,2026-08-31,812,812
+static:fredmd:T1YFFM,static,fredmd:T1YFFM,yield,M,0D,none,False,,FRED-MD T1YFFM,1959-01-31,2026-08-31,812,812
+static:fredmd:T5YFFM,static,fredmd:T5YFFM,yield,M,0D,none,False,,FRED-MD T5YFFM,1959-01-31,2026-08-31,812,812
+static:fredmd:TB3MS,static,fredmd:TB3MS,yield,M,0D,none,False,,FRED-MD TB3MS,1959-01-31,2026-08-31,812,812
+static:fredmd:TB3SMFFM,static,fredmd:TB3SMFFM,yield,M,0D,none,False,,FRED-MD TB3SMFFM,1959-01-31,2026-08-31,812,812
+static:fredmd:TB6MS,static,fredmd:TB6MS,yield,M,0D,none,False,,FRED-MD TB6MS,1959-01-31,2026-08-31,812,812
+static:fredmd:TB6SMFFM,static,fredmd:TB6SMFFM,yield,M,0D,none,False,,FRED-MD TB6SMFFM,1959-01-31,2026-08-31,812,812
+static:fredmd:TOTRESNS,static,fredmd:TOTRESNS,macro,M,1M,none,False,,FRED-MD TOTRESNS,1959-01-31,2026-08-31,812,812
+static:fredmd:TWEXAFEGSMTHx,static,fredmd:TWEXAFEGSMTHx,index,M,0D,none,False,,FRED-MD TWEXAFEGSMTHx,1973-01-31,2026-08-31,644,644
+static:fredmd:UEMP15OV,static,fredmd:UEMP15OV,macro,M,1M,none,False,,FRED-MD UEMP15OV,1959-01-31,2026-08-31,811,811
+static:fredmd:UEMP15T26,static,fredmd:UEMP15T26,macro,M,1M,none,False,,FRED-MD UEMP15T26,1959-01-31,2026-08-31,811,811
+static:fredmd:UEMP27OV,static,fredmd:UEMP27OV,macro,M,1M,none,False,,FRED-MD UEMP27OV,1959-01-31,2026-08-31,811,811
+static:fredmd:UEMP5TO14,static,fredmd:UEMP5TO14,macro,M,1M,none,False,,FRED-MD UEMP5TO14,1959-01-31,2026-08-31,811,811
+static:fredmd:UEMPLT5,static,fredmd:UEMPLT5,macro,M,1M,none,False,,FRED-MD UEMPLT5,1959-01-31,2026-08-31,811,811
+static:fredmd:UEMPMEAN,static,fredmd:UEMPMEAN,macro,M,1M,none,False,,FRED-MD UEMPMEAN,1959-01-31,2026-08-31,811,811
+static:fredmd:UMCSENTx,static,fredmd:UMCSENTx,macro,M,1M,none,False,,FRED-MD UMCSENTx,1959-05-31,2026-08-31,658,658
+static:fredmd:UNRATE,static,fredmd:UNRATE,macro,M,1M,none,False,,FRED-MD UNRATE,1959-01-31,2026-08-31,811,811
+static:fredmd:USCONS,static,fredmd:USCONS,macro,M,1M,none,False,,FRED-MD USCONS,1959-01-31,2026-08-31,812,812
+static:fredmd:USFIRE,static,fredmd:USFIRE,macro,M,1M,none,False,,FRED-MD USFIRE,1959-01-31,2026-08-31,812,812
+static:fredmd:USGOOD,static,fredmd:USGOOD,macro,M,1M,none,False,,FRED-MD USGOOD,1959-01-31,2026-08-31,812,812
+static:fredmd:USGOVT,static,fredmd:USGOVT,macro,M,1M,none,False,,FRED-MD USGOVT,1959-01-31,2026-08-31,812,812
+static:fredmd:USTPU,static,fredmd:USTPU,macro,M,1M,none,False,,FRED-MD USTPU,1959-01-31,2026-08-31,812,812
+static:fredmd:USTRADE,static,fredmd:USTRADE,macro,M,1M,none,False,,FRED-MD USTRADE,1959-01-31,2026-08-31,812,812
+static:fredmd:USWTRADE,static,fredmd:USWTRADE,macro,M,1M,none,False,,FRED-MD USWTRADE,1959-01-31,2026-08-31,812,812
+static:fredmd:VIXCLSx,static,fredmd:VIXCLSx,index,M,0D,none,False,,FRED-MD VIXCLSx,1962-07-31,2026-08-31,770,770
+static:fredmd:W875RX1,static,fredmd:W875RX1,macro,M,2M,none,False,,FRED-MD W875RX1,1959-01-31,2026-08-31,812,812
+static:fredmd:WPSFD49207,static,fredmd:WPSFD49207,macro,M,1M,none,False,,FRED-MD WPSFD49207,1959-01-31,2026-08-31,812,812
+static:fredmd:WPSFD49502,static,fredmd:WPSFD49502,macro,M,1M,none,False,,FRED-MD WPSFD49502,1959-01-31,2026-08-31,812,812
+static:fredmd:WPSID61,static,fredmd:WPSID61,macro,M,1M,none,False,,FRED-MD WPSID61,1959-01-31,2026-08-31,812,812
+static:fredmd:WPSID62,static,fredmd:WPSID62,macro,M,1M,none,False,,FRED-MD WPSID62,1959-01-31,2026-08-31,812,812
+static:fredmd_rt:AAA,static,fredmd_rt:AAA,yield,M,0D,archive,False,,"FRED-MD AAA, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:AAAFFM,static,fredmd_rt:AAAFFM,yield,M,0D,archive,False,,"FRED-MD AAAFFM, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:ACOGNO,static,fredmd_rt:ACOGNO,macro,M,2M,archive,False,,"FRED-MD ACOGNO, real time from archived vintages",1992-02-29,2026-07-31,736,3
+static:fredmd_rt:AMDMNOx,static,fredmd_rt:AMDMNOx,macro,M,2M,archive,False,,"FRED-MD AMDMNOx, real time from archived vintages",1959-01-31,2026-08-31,1136,3
+static:fredmd_rt:AMDMUOx,static,fredmd_rt:AMDMUOx,macro,M,2M,archive,False,,"FRED-MD AMDMUOx, real time from archived vintages",1959-01-31,2026-08-31,1134,3
+static:fredmd_rt:ANDENOx,static,fredmd_rt:ANDENOx,macro,M,2M,archive,False,,"FRED-MD ANDENOx, real time from archived vintages",1968-02-29,2026-08-31,1027,3
+static:fredmd_rt:AWHMAN,static,fredmd_rt:AWHMAN,macro,M,1M,archive,False,,"FRED-MD AWHMAN, real time from archived vintages",1959-01-31,2026-08-31,911,3
+static:fredmd_rt:AWOTMAN,static,fredmd_rt:AWOTMAN,macro,M,1M,archive,False,,"FRED-MD AWOTMAN, real time from archived vintages",1959-01-31,2026-08-31,908,3
+static:fredmd_rt:BAA,static,fredmd_rt:BAA,yield,M,0D,archive,False,,"FRED-MD BAA, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:BAAFFM,static,fredmd_rt:BAAFFM,yield,M,0D,archive,False,,"FRED-MD BAAFFM, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:BOGMBASE,static,fredmd_rt:BOGMBASE,macro,M,1M,archive,False,,"FRED-MD BOGMBASE, real time from archived vintages",1959-01-31,2026-08-31,1559,2
+static:fredmd_rt:BUSINVx,static,fredmd_rt:BUSINVx,macro,M,2M,archive,False,,"FRED-MD BUSINVx, real time from archived vintages",1959-01-31,2026-07-31,1731,3
+static:fredmd_rt:BUSLOANS,static,fredmd_rt:BUSLOANS,macro,M,1M,archive,False,,"FRED-MD BUSLOANS, real time from archived vintages",1959-01-31,2026-08-31,1663,3
+static:fredmd_rt:CE16OV,static,fredmd_rt:CE16OV,macro,M,1M,archive,False,,"FRED-MD CE16OV, real time from archived vintages",1959-01-31,2026-08-31,918,3
+static:fredmd_rt:CES0600000007,static,fredmd_rt:CES0600000007,macro,M,1M,archive,False,,"FRED-MD CES0600000007, real time from archived vintages",1959-01-31,2026-08-31,924,3
+static:fredmd_rt:CES0600000008,static,fredmd_rt:CES0600000008,macro,M,1M,archive,False,,"FRED-MD CES0600000008, real time from archived vintages",1959-01-31,2026-08-31,967,3
+static:fredmd_rt:CES1021000001,static,fredmd_rt:CES1021000001,macro,M,1M,archive,False,,"FRED-MD CES1021000001, real time from archived vintages",1959-01-31,2026-08-31,1212,3
+static:fredmd_rt:CES2000000008,static,fredmd_rt:CES2000000008,macro,M,1M,archive,False,,"FRED-MD CES2000000008, real time from archived vintages",1959-01-31,2026-08-31,905,3
+static:fredmd_rt:CES3000000008,static,fredmd_rt:CES3000000008,macro,M,1M,archive,False,,"FRED-MD CES3000000008, real time from archived vintages",1959-01-31,2026-08-31,1023,3
+static:fredmd_rt:CLAIMSx,static,fredmd_rt:CLAIMSx,macro,M,1M,archive,False,,"FRED-MD CLAIMSx, real time from archived vintages",1959-01-31,2026-08-31,913,3
+static:fredmd_rt:CLF16OV,static,fredmd_rt:CLF16OV,macro,M,1M,archive,False,,"FRED-MD CLF16OV, real time from archived vintages",1959-01-31,2026-08-31,918,3
+static:fredmd_rt:CMRMTSPLx,static,fredmd_rt:CMRMTSPLx,macro,M,2M,archive,False,,"FRED-MD CMRMTSPLx, real time from archived vintages",1959-01-31,2026-07-31,1612,3
+static:fredmd_rt:COMPAPFFx,static,fredmd_rt:COMPAPFFx,yield,M,0D,archive,False,,"FRED-MD COMPAPFFx, real time from archived vintages",1959-01-31,2026-08-31,827,3
+static:fredmd_rt:CONSPI,static,fredmd_rt:CONSPI,macro,M,2M,archive,False,,"FRED-MD CONSPI, real time from archived vintages",1959-01-31,2026-07-31,1671,3
+static:fredmd_rt:CP3Mx,static,fredmd_rt:CP3Mx,yield,M,0D,archive,False,,"FRED-MD CP3Mx, real time from archived vintages",1959-01-31,2026-08-31,811,3
+static:fredmd_rt:CPIAPPSL,static,fredmd_rt:CPIAPPSL,macro,M,1M,archive,False,,"FRED-MD CPIAPPSL, real time from archived vintages",1959-01-31,2026-08-31,918,3
+static:fredmd_rt:CPIAUCSL,static,fredmd_rt:CPIAUCSL,macro,M,1M,archive,False,,"FRED-MD CPIAUCSL, real time from archived vintages",1959-01-31,2026-08-31,918,3
+static:fredmd_rt:CPIMEDSL,static,fredmd_rt:CPIMEDSL,macro,M,1M,archive,False,,"FRED-MD CPIMEDSL, real time from archived vintages",1959-01-31,2026-08-31,918,3
+static:fredmd_rt:CPITRNSL,static,fredmd_rt:CPITRNSL,macro,M,1M,archive,False,,"FRED-MD CPITRNSL, real time from archived vintages",1959-01-31,2026-08-31,918,3
+static:fredmd_rt:CPIULFSL,static,fredmd_rt:CPIULFSL,macro,M,1M,archive,False,,"FRED-MD CPIULFSL, real time from archived vintages",1959-01-31,2026-08-31,918,3
+static:fredmd_rt:CUMFNS,static,fredmd_rt:CUMFNS,macro,M,1M,archive,False,,"FRED-MD CUMFNS, real time from archived vintages",1959-01-31,2026-08-31,1455,3
+static:fredmd_rt:CUSR0000SA0L2,static,fredmd_rt:CUSR0000SA0L2,macro,M,1M,archive,False,,"FRED-MD CUSR0000SA0L2, real time from archived vintages",1959-01-31,2026-08-31,917,3
+static:fredmd_rt:CUSR0000SA0L5,static,fredmd_rt:CUSR0000SA0L5,macro,M,1M,archive,False,,"FRED-MD CUSR0000SA0L5, real time from archived vintages",1959-01-31,2026-08-31,917,3
+static:fredmd_rt:CUSR0000SAC,static,fredmd_rt:CUSR0000SAC,macro,M,1M,archive,False,,"FRED-MD CUSR0000SAC, real time from archived vintages",1959-01-31,2026-08-31,917,3
+static:fredmd_rt:CUSR0000SAD,static,fredmd_rt:CUSR0000SAD,macro,M,1M,archive,False,,"FRED-MD CUSR0000SAD, real time from archived vintages",1959-01-31,2026-08-31,918,3
+static:fredmd_rt:CUSR0000SAS,static,fredmd_rt:CUSR0000SAS,macro,M,1M,archive,False,,"FRED-MD CUSR0000SAS, real time from archived vintages",1959-01-31,2026-08-31,918,3
+static:fredmd_rt:DDURRG3M086SBEA,static,fredmd_rt:DDURRG3M086SBEA,macro,M,2M,archive,False,,"FRED-MD DDURRG3M086SBEA, real time from archived vintages",1959-01-31,2026-08-31,1615,3
+static:fredmd_rt:DMANEMP,static,fredmd_rt:DMANEMP,macro,M,1M,archive,False,,"FRED-MD DMANEMP, real time from archived vintages",1959-01-31,2026-08-31,1106,3
+static:fredmd_rt:DNDGRG3M086SBEA,static,fredmd_rt:DNDGRG3M086SBEA,macro,M,2M,archive,False,,"FRED-MD DNDGRG3M086SBEA, real time from archived vintages",1959-01-31,2026-08-31,1615,3
+static:fredmd_rt:DPCERA3M086SBEA,static,fredmd_rt:DPCERA3M086SBEA,macro,M,2M,archive,False,,"FRED-MD DPCERA3M086SBEA, real time from archived vintages",1959-01-31,2026-08-31,1615,3
+static:fredmd_rt:DSERRG3M086SBEA,static,fredmd_rt:DSERRG3M086SBEA,macro,M,2M,archive,False,,"FRED-MD DSERRG3M086SBEA, real time from archived vintages",1959-01-31,2026-08-31,1614,3
+static:fredmd_rt:DTCOLNVHFNM,static,fredmd_rt:DTCOLNVHFNM,macro,M,2M,archive,False,,"FRED-MD DTCOLNVHFNM, real time from archived vintages",1959-01-31,2026-07-31,857,3
+static:fredmd_rt:DTCTHFNM,static,fredmd_rt:DTCTHFNM,macro,M,2M,archive,False,,"FRED-MD DTCTHFNM, real time from archived vintages",1959-01-31,2026-07-31,868,3
+static:fredmd_rt:EXCAUSx,static,fredmd_rt:EXCAUSx,index,M,0D,archive,False,,"FRED-MD EXCAUSx, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:EXJPUSx,static,fredmd_rt:EXJPUSx,index,M,0D,archive,False,,"FRED-MD EXJPUSx, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:EXSZUSx,static,fredmd_rt:EXSZUSx,index,M,0D,archive,False,,"FRED-MD EXSZUSx, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:EXUSUKx,static,fredmd_rt:EXUSUKx,index,M,0D,archive,False,,"FRED-MD EXUSUKx, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:FEDFUNDS,static,fredmd_rt:FEDFUNDS,yield,M,0D,archive,False,,"FRED-MD FEDFUNDS, real time from archived vintages",1959-01-31,2026-08-31,828,3
+static:fredmd_rt:GS1,static,fredmd_rt:GS1,yield,M,0D,archive,False,,"FRED-MD GS1, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:GS10,static,fredmd_rt:GS10,yield,M,0D,archive,False,,"FRED-MD GS10, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:GS5,static,fredmd_rt:GS5,yield,M,0D,archive,False,,"FRED-MD GS5, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:HOUST,static,fredmd_rt:HOUST,macro,M,1M,archive,False,,"FRED-MD HOUST, real time from archived vintages",1959-01-31,2026-08-31,929,3
+static:fredmd_rt:HOUSTMW,static,fredmd_rt:HOUSTMW,macro,M,1M,archive,False,,"FRED-MD HOUSTMW, real time from archived vintages",1959-01-31,2026-08-31,907,3
+static:fredmd_rt:HOUSTNE,static,fredmd_rt:HOUSTNE,macro,M,1M,archive,False,,"FRED-MD HOUSTNE, real time from archived vintages",1959-01-31,2026-08-31,895,3
+static:fredmd_rt:HOUSTS,static,fredmd_rt:HOUSTS,macro,M,1M,archive,False,,"FRED-MD HOUSTS, real time from archived vintages",1959-01-31,2026-08-31,925,3
+static:fredmd_rt:HOUSTW,static,fredmd_rt:HOUSTW,macro,M,1M,archive,False,,"FRED-MD HOUSTW, real time from archived vintages",1959-01-31,2026-08-31,922,3
+static:fredmd_rt:HWI,static,fredmd_rt:HWI,macro,M,2M,archive,False,,"FRED-MD HWI, real time from archived vintages",1959-01-31,2026-08-31,1084,3
+static:fredmd_rt:HWIURATIO,static,fredmd_rt:HWIURATIO,macro,M,2M,archive,False,,"FRED-MD HWIURATIO, real time from archived vintages",1959-01-31,2026-08-31,1083,3
+static:fredmd_rt:INDPRO,static,fredmd_rt:INDPRO,macro,M,1M,archive,False,,"FRED-MD INDPRO, real time from archived vintages",1959-01-31,2026-08-31,1564,3
+static:fredmd_rt:INVEST,static,fredmd_rt:INVEST,macro,M,1M,archive,False,,"FRED-MD INVEST, real time from archived vintages",1959-01-31,2026-08-31,1664,3
+static:fredmd_rt:IPB51222S,static,fredmd_rt:IPB51222S,macro,M,1M,archive,False,,"FRED-MD IPB51222S, real time from archived vintages",1959-01-31,2026-08-31,1563,3
+static:fredmd_rt:IPBUSEQ,static,fredmd_rt:IPBUSEQ,macro,M,1M,archive,False,,"FRED-MD IPBUSEQ, real time from archived vintages",1959-01-31,2026-08-31,1564,3
+static:fredmd_rt:IPCONGD,static,fredmd_rt:IPCONGD,macro,M,1M,archive,False,,"FRED-MD IPCONGD, real time from archived vintages",1959-01-31,2026-08-31,1564,3
+static:fredmd_rt:IPDCONGD,static,fredmd_rt:IPDCONGD,macro,M,1M,archive,False,,"FRED-MD IPDCONGD, real time from archived vintages",1959-01-31,2026-08-31,1564,3
+static:fredmd_rt:IPDMAT,static,fredmd_rt:IPDMAT,macro,M,1M,archive,False,,"FRED-MD IPDMAT, real time from archived vintages",1959-01-31,2026-08-31,1564,3
+static:fredmd_rt:IPFINAL,static,fredmd_rt:IPFINAL,macro,M,1M,archive,False,,"FRED-MD IPFINAL, real time from archived vintages",1959-01-31,2026-08-31,1564,3
+static:fredmd_rt:IPFPNSS,static,fredmd_rt:IPFPNSS,macro,M,1M,archive,False,,"FRED-MD IPFPNSS, real time from archived vintages",1959-01-31,2026-08-31,1564,3
+static:fredmd_rt:IPFUELS,static,fredmd_rt:IPFUELS,macro,M,1M,archive,False,,"FRED-MD IPFUELS, real time from archived vintages",1959-01-31,2026-08-31,1562,3
+static:fredmd_rt:IPMANSICS,static,fredmd_rt:IPMANSICS,macro,M,1M,archive,False,,"FRED-MD IPMANSICS, real time from archived vintages",1959-01-31,2026-08-31,1564,3
+static:fredmd_rt:IPMAT,static,fredmd_rt:IPMAT,macro,M,1M,archive,False,,"FRED-MD IPMAT, real time from archived vintages",1959-01-31,2026-08-31,1564,3
+static:fredmd_rt:IPNCONGD,static,fredmd_rt:IPNCONGD,macro,M,1M,archive,False,,"FRED-MD IPNCONGD, real time from archived vintages",1959-01-31,2026-08-31,1564,3
+static:fredmd_rt:IPNMAT,static,fredmd_rt:IPNMAT,macro,M,1M,archive,False,,"FRED-MD IPNMAT, real time from archived vintages",1959-01-31,2026-08-31,1564,3
+static:fredmd_rt:ISRATIOx,static,fredmd_rt:ISRATIOx,macro,M,2M,archive,False,,"FRED-MD ISRATIOx, real time from archived vintages",1959-01-31,2026-07-31,919,3
+static:fredmd_rt:M1SL,static,fredmd_rt:M1SL,macro,M,1M,archive,False,,"FRED-MD M1SL, real time from archived vintages",1959-01-31,2026-08-31,1092,3
+static:fredmd_rt:M2REAL,static,fredmd_rt:M2REAL,macro,M,1M,archive,False,,"FRED-MD M2REAL, real time from archived vintages",1959-01-31,2026-08-31,1582,3
+static:fredmd_rt:M2SL,static,fredmd_rt:M2SL,macro,M,1M,archive,False,,"FRED-MD M2SL, real time from archived vintages",1959-01-31,2026-08-31,1593,3
+static:fredmd_rt:MANEMP,static,fredmd_rt:MANEMP,macro,M,1M,archive,False,,"FRED-MD MANEMP, real time from archived vintages",1959-01-31,2026-08-31,1137,3
+static:fredmd_rt:NDMANEMP,static,fredmd_rt:NDMANEMP,macro,M,1M,archive,False,,"FRED-MD NDMANEMP, real time from archived vintages",1959-01-31,2026-08-31,1002,3
+static:fredmd_rt:NONBORRES,static,fredmd_rt:NONBORRES,macro,M,1M,archive,False,,"FRED-MD NONBORRES, real time from archived vintages",1959-01-31,2026-08-31,2285,3
+static:fredmd_rt:NONREVSL,static,fredmd_rt:NONREVSL,macro,M,2M,archive,False,,"FRED-MD NONREVSL, real time from archived vintages",1959-01-31,2026-07-31,1671,3
+static:fredmd_rt:OILPRICEx,static,fredmd_rt:OILPRICEx,price,M,0D,archive,False,,"FRED-MD OILPRICEx, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:PAYEMS,static,fredmd_rt:PAYEMS,macro,M,1M,archive,False,,"FRED-MD PAYEMS, real time from archived vintages",1959-01-31,2026-08-31,1517,3
+static:fredmd_rt:PCEPI,static,fredmd_rt:PCEPI,macro,M,2M,archive,False,,"FRED-MD PCEPI, real time from archived vintages",1959-01-31,2026-08-31,1615,3
+static:fredmd_rt:PERMIT,static,fredmd_rt:PERMIT,macro,M,1M,archive,False,,"FRED-MD PERMIT, real time from archived vintages",1960-01-31,2026-08-31,938,3
+static:fredmd_rt:PERMITMW,static,fredmd_rt:PERMITMW,macro,M,1M,archive,False,,"FRED-MD PERMITMW, real time from archived vintages",1960-01-31,2026-08-31,923,3
+static:fredmd_rt:PERMITNE,static,fredmd_rt:PERMITNE,macro,M,1M,archive,False,,"FRED-MD PERMITNE, real time from archived vintages",1960-01-31,2026-08-31,931,3
+static:fredmd_rt:PERMITS,static,fredmd_rt:PERMITS,macro,M,1M,archive,False,,"FRED-MD PERMITS, real time from archived vintages",1960-01-31,2026-08-31,941,3
+static:fredmd_rt:PERMITW,static,fredmd_rt:PERMITW,macro,M,1M,archive,False,,"FRED-MD PERMITW, real time from archived vintages",1960-01-31,2026-08-31,936,3
+static:fredmd_rt:PPICMM,static,fredmd_rt:PPICMM,macro,M,1M,archive,False,,"FRED-MD PPICMM, real time from archived vintages",1959-01-31,2026-08-31,820,3
+static:fredmd_rt:REALLN,static,fredmd_rt:REALLN,macro,M,1M,archive,False,,"FRED-MD REALLN, real time from archived vintages",1959-01-31,2026-08-31,1663,3
+static:fredmd_rt:RETAILx,static,fredmd_rt:RETAILx,macro,M,1M,archive,False,,"FRED-MD RETAILx, real time from archived vintages",1959-01-31,2026-08-31,1674,3
+static:fredmd_rt:RPI,static,fredmd_rt:RPI,macro,M,2M,archive,False,,"FRED-MD RPI, real time from archived vintages",1959-01-31,2026-08-31,1615,3
+static:fredmd_rt:SP500,static,fredmd_rt:S&P 500,index,M,0D,archive,False,,"FRED-MD S&P 500, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:SP_DIVYIELD,static,fredmd_rt:S&P div yield,macro,M,6M,archive,False,,"FRED-MD S&P div yield, real time from archived vintages",1959-01-31,2026-06-30,812,3
+static:fredmd_rt:SP_PE,static,fredmd_rt:S&P PE ratio,macro,M,6M,archive,False,,"FRED-MD S&P PE ratio, real time from archived vintages",1959-01-31,2026-07-31,937,3
+static:fredmd_rt:SRVPRD,static,fredmd_rt:SRVPRD,macro,M,1M,archive,False,,"FRED-MD SRVPRD, real time from archived vintages",1959-01-31,2026-08-31,1524,3
+static:fredmd_rt:T10YFFM,static,fredmd_rt:T10YFFM,yield,M,0D,archive,False,,"FRED-MD T10YFFM, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:T1YFFM,static,fredmd_rt:T1YFFM,yield,M,0D,archive,False,,"FRED-MD T1YFFM, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:T5YFFM,static,fredmd_rt:T5YFFM,yield,M,0D,archive,False,,"FRED-MD T5YFFM, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:TB3MS,static,fredmd_rt:TB3MS,yield,M,0D,archive,False,,"FRED-MD TB3MS, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:TB3SMFFM,static,fredmd_rt:TB3SMFFM,yield,M,0D,archive,False,,"FRED-MD TB3SMFFM, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:TB6MS,static,fredmd_rt:TB6MS,yield,M,0D,archive,False,,"FRED-MD TB6MS, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:TB6SMFFM,static,fredmd_rt:TB6SMFFM,yield,M,0D,archive,False,,"FRED-MD TB6SMFFM, real time from archived vintages",1959-01-31,2026-08-31,812,3
+static:fredmd_rt:TOTRESNS,static,fredmd_rt:TOTRESNS,macro,M,1M,archive,False,,"FRED-MD TOTRESNS, real time from archived vintages",1959-01-31,2026-08-31,1530,3
+static:fredmd_rt:TWEXAFEGSMTHx,static,fredmd_rt:TWEXAFEGSMTHx,index,M,0D,archive,False,,"FRED-MD TWEXAFEGSMTHx, real time from archived vintages",1973-01-31,2026-08-31,737,2
+static:fredmd_rt:UEMP15OV,static,fredmd_rt:UEMP15OV,macro,M,1M,archive,False,,"FRED-MD UEMP15OV, real time from archived vintages",1959-01-31,2026-08-31,916,3
+static:fredmd_rt:UEMP15T26,static,fredmd_rt:UEMP15T26,macro,M,1M,archive,False,,"FRED-MD UEMP15T26, real time from archived vintages",1959-01-31,2026-08-31,916,3
+static:fredmd_rt:UEMP27OV,static,fredmd_rt:UEMP27OV,macro,M,1M,archive,False,,"FRED-MD UEMP27OV, real time from archived vintages",1959-01-31,2026-08-31,916,3
+static:fredmd_rt:UEMP5TO14,static,fredmd_rt:UEMP5TO14,macro,M,1M,archive,False,,"FRED-MD UEMP5TO14, real time from archived vintages",1959-01-31,2026-08-31,915,3
+static:fredmd_rt:UEMPLT5,static,fredmd_rt:UEMPLT5,macro,M,1M,archive,False,,"FRED-MD UEMPLT5, real time from archived vintages",1959-01-31,2026-08-31,916,3
+static:fredmd_rt:UEMPMEAN,static,fredmd_rt:UEMPMEAN,macro,M,1M,archive,False,,"FRED-MD UEMPMEAN, real time from archived vintages",1959-01-31,2026-08-31,895,3
+static:fredmd_rt:UMCSENTx,static,fredmd_rt:UMCSENTx,macro,M,1M,archive,False,,"FRED-MD UMCSENTx, real time from archived vintages",1959-05-31,2026-08-31,658,3
+static:fredmd_rt:UNRATE,static,fredmd_rt:UNRATE,macro,M,1M,archive,False,,"FRED-MD UNRATE, real time from archived vintages",1959-01-31,2026-08-31,834,3
+static:fredmd_rt:USCONS,static,fredmd_rt:USCONS,macro,M,1M,archive,False,,"FRED-MD USCONS, real time from archived vintages",1959-01-31,2026-08-31,910,3
+static:fredmd_rt:USFIRE,static,fredmd_rt:USFIRE,macro,M,1M,archive,False,,"FRED-MD USFIRE, real time from archived vintages",1959-01-31,2026-08-31,1267,3
+static:fredmd_rt:USGOOD,static,fredmd_rt:USGOOD,macro,M,1M,archive,False,,"FRED-MD USGOOD, real time from archived vintages",1959-01-31,2026-08-31,1164,3
+static:fredmd_rt:USGOVT,static,fredmd_rt:USGOVT,macro,M,1M,archive,False,,"FRED-MD USGOVT, real time from archived vintages",1959-01-31,2026-08-31,913,3
+static:fredmd_rt:USTPU,static,fredmd_rt:USTPU,macro,M,1M,archive,False,,"FRED-MD USTPU, real time from archived vintages",1959-01-31,2026-08-31,1535,3
+static:fredmd_rt:USTRADE,static,fredmd_rt:USTRADE,macro,M,1M,archive,False,,"FRED-MD USTRADE, real time from archived vintages",1959-01-31,2026-08-31,1243,3
+static:fredmd_rt:USWTRADE,static,fredmd_rt:USWTRADE,macro,M,1M,archive,False,,"FRED-MD USWTRADE, real time from archived vintages",1959-01-31,2026-08-31,1219,3
+static:fredmd_rt:VIXCLSx,static,fredmd_rt:VIXCLSx,index,M,0D,archive,False,,"FRED-MD VIXCLSx, real time from archived vintages",1962-07-31,2026-08-31,770,1
+static:fredmd_rt:W875RX1,static,fredmd_rt:W875RX1,macro,M,2M,archive,False,,"FRED-MD W875RX1, real time from archived vintages",1959-01-31,2026-08-31,1615,3
+static:fredmd_rt:WPSFD49207,static,fredmd_rt:WPSFD49207,macro,M,1M,archive,False,,"FRED-MD WPSFD49207, real time from archived vintages",1959-01-31,2026-08-31,897,3
+static:fredmd_rt:WPSFD49502,static,fredmd_rt:WPSFD49502,macro,M,1M,archive,False,,"FRED-MD WPSFD49502, real time from archived vintages",1959-01-31,2026-08-31,909,3
+static:fredmd_rt:WPSID61,static,fredmd_rt:WPSID61,macro,M,1M,archive,False,,"FRED-MD WPSID61, real time from archived vintages",1959-01-31,2026-08-31,898,3
+static:fredmd_rt:WPSID62,static,fredmd_rt:WPSID62,macro,M,1M,archive,False,,"FRED-MD WPSID62, real time from archived vintages",1959-01-31,2026-08-31,909,3
+static:french:ff3:HML,static,ff3:HML,return,M,0D,none,False,,French FF3 HML,1926-07-31,2026-07-31,1201,1201
+static:french:ff3:MKT_RF,static,ff3:Mkt-RF,return,M,0D,none,False,,French FF3 Mkt-RF,1926-07-31,2026-07-31,1201,1201
+static:french:ff3:RF,static,ff3:RF,return,M,0D,none,False,,French FF3 RF,1926-07-31,2026-07-31,1201,1201
+static:french:ff3:SMB,static,ff3:SMB,return,M,0D,none,False,,French FF3 SMB,1926-07-31,2026-07-31,1201,1201
+static:french:ff5:CMA,static,ff5:CMA,return,M,0D,none,False,,French FF5+Mom CMA,1963-07-31,2026-08-31,758,758
+static:french:ff5:HML,static,ff5:HML,return,M,0D,none,False,,French FF5+Mom HML,1963-07-31,2026-08-31,758,758
+static:french:ff5:MKT_RF,static,ff5:MKT_RF,return,M,0D,none,False,,French FF5+Mom MKT_RF,1963-07-31,2026-08-31,758,758
+static:french:ff5:MOM,static,ff5:Mom,return,M,0D,none,False,,French FF5+Mom Mom,1963-07-31,2026-08-31,758,758
+static:french:ff5:RF,static,ff5:RF,return,M,0D,none,False,,French FF5+Mom RF,1963-07-31,2026-08-31,758,758
+static:french:ff5:RMW,static,ff5:RMW,return,M,0D,none,False,,French FF5+Mom RMW,1963-07-31,2026-08-31,758,758
+static:french:ff5:SMB,static,ff5:SMB,return,M,0D,none,False,,French FF5+Mom SMB,1963-07-31,2026-08-31,758,758
+static:ice:HY_OAS,static,hyoas:BAMLH0A0HYM2,yield,D,1D,none,False,pct,ICE BofA US HY OAS,1996-12-31,2021-03-19,6322,6322
+static:lbma:GOLD,static,lbma:GOLD,price,D,0D,none,False,USD/oz,LBMA gold PM fix USD,1968-04-01,2026-02-25,14544,14544
+static:lbma:SILVER,static,lbma:SILVER,price,D,0D,none,False,USD/oz,LBMA silver fix USD,1968-01-02,2026-02-25,14688,14688
+static:shiller:Consumer_Price_Index,static,shiller:Consumer Price Index,macro,M,1M,none,False,,Shiller Consumer Price Index,1871-01-31,2023-09-30,1833,1833
+static:shiller:Dividend,static,shiller:Dividend,macro,M,6M,none,False,,Shiller Dividend,1871-01-31,2023-06-30,1830,1830
+static:shiller:Earnings,static,shiller:Earnings,macro,M,6M,none,False,,Shiller Earnings,1871-01-31,2023-06-30,1830,1830
+static:shiller:Long_Interest_Rate,static,shiller:Long Interest Rate,yield,M,0D,none,False,,Shiller Long Interest Rate,1871-01-31,2023-09-30,1833,1833
+static:shiller:PE10,static,shiller:PE10,macro,M,6M,none,False,,Shiller PE10,1881-01-31,2023-09-30,1713,1713
+static:shiller:SP500,static,shiller:SP500,index,M,0D,none,False,,Shiller SP500,1871-01-31,2026-09-30,1869,1869
+static:usmkt:CLOSE,static,usmkt:Close,index,D,0D,none,False,,US equities price index,1885-03-20,2025-12-19,35254,35254
+static:usmkt:TR,static,usmkt:Adjusted Close,total_return,D,0D,none,False,,"US equities total return (S&P, dividends reinvested)",1885-03-20,2025-12-19,35254,35254
+stooq:BIL:close,stooq,BIL:close,price,D,0D,none,False,,1-3M T-Bill ETF close,,,0,0
+stooq:CPER:close,stooq,CPER:close,price,D,0D,none,False,,Copper ETF close,,,0,0
+stooq:DBA:close,stooq,DBA:close,price,D,0D,none,False,,Agriculture ETF close,,,0,0
+stooq:DBC:close,stooq,DBC:close,price,D,0D,none,False,,Commodity basket ETF close,,,0,0
+stooq:EEM:close,stooq,EEM:close,price,D,0D,none,False,,MSCI EM ETF close,,,0,0
+stooq:EFA:close,stooq,EFA:close,price,D,0D,none,False,,MSCI EAFE ETF close,,,0,0
+stooq:GLD:close,stooq,GLD:close,price,D,0D,none,False,,Gold ETF close,,,0,0
+stooq:IEF:close,stooq,IEF:close,price,D,0D,none,False,,7-10y Treasury ETF close,,,0,0
+stooq:PPLT:close,stooq,PPLT:close,price,D,0D,none,False,,Platinum ETF close,,,0,0
+stooq:SLV:close,stooq,SLV:close,price,D,0D,none,False,,Silver ETF close,,,0,0
+stooq:SPY:close,stooq,SPY:close,price,D,0D,none,False,,S&P 500 ETF close,,,0,0
+stooq:TIP:close,stooq,TIP:close,price,D,0D,none,False,,TIPS ETF close,,,0,0
+stooq:TLT:close,stooq,TLT:close,price,D,0D,none,False,,20y+ Treasury ETF close,,,0,0
+stooq:UNG:close,stooq,UNG:close,price,D,0D,none,False,,Natural gas ETF close,,,0,0
+stooq:USO:close,stooq,USO:close,price,D,0D,none,False,,Crude oil ETF close,,,0,0
+stooq:VNQ:close,stooq,VNQ:close,price,D,0D,none,False,,US REIT ETF close,,,0,0
+stooq:XLB:close,stooq,XLB:close,price,D,0D,none,False,,Materials sector SPDR close,,,0,0
+stooq:XLC:close,stooq,XLC:close,price,D,0D,none,False,,Communication services sector SPDR close,,,0,0
+stooq:XLE:close,stooq,XLE:close,price,D,0D,none,False,,Energy sector SPDR close,,,0,0
+stooq:XLF:close,stooq,XLF:close,price,D,0D,none,False,,Financials sector SPDR close,,,0,0
+stooq:XLI:close,stooq,XLI:close,price,D,0D,none,False,,Industrials sector SPDR close,,,0,0
+stooq:XLK:close,stooq,XLK:close,price,D,0D,none,False,,Technology sector SPDR close,,,0,0
+stooq:XLP:close,stooq,XLP:close,price,D,0D,none,False,,Consumer staples sector SPDR close,,,0,0
+stooq:XLRE:close,stooq,XLRE:close,price,D,0D,none,False,,Real estate sector SPDR close,,,0,0
+stooq:XLU:close,stooq,XLU:close,price,D,0D,none,False,,Utilities sector SPDR close,,,0,0
+stooq:XLV:close,stooq,XLV:close,price,D,0D,none,False,,Health care sector SPDR close,,,0,0
+stooq:XLY:close,stooq,XLY:close,price,D,0D,none,False,,Consumer discretionary sector SPDR close,,,0,0
+yahoo:BIL:close,yahoo,BIL:close,price,D,0D,none,True,,1-3M T-Bill ETF close,2007-05-30,2026-10-23,4883,4883
+yahoo:BIL:dividend,yahoo,BIL:dividend,dividend,D,0D,none,False,,1-3M T-Bill ETF dividend,2007-07-02,2026-10-01,128,128
+yahoo:BIL:split,yahoo,BIL:split,split,D,0D,none,False,,1-3M T-Bill ETF split,2017-11-30,2017-11-30,1,1
+yahoo:CL=F:close,yahoo,CL=F:close,price,D,0D,none,False,,WTI crude futures (front),2000-08-23,2026-10-23,6570,6570
+yahoo:CPER:close,yahoo,CPER:close,price,D,0D,none,True,,Copper ETF close,2011-11-15,2026-10-23,3756,3756
+yahoo:CPER:split,yahoo,CPER:split,split,D,0D,none,False,,Copper ETF split,,,0,0
+yahoo:DBA:close,yahoo,DBA:close,price,D,0D,none,True,,Agriculture ETF close,2007-01-05,2026-10-23,4982,4982
+yahoo:DBA:split,yahoo,DBA:split,split,D,0D,none,False,,Agriculture ETF split,,,0,0
+yahoo:DBC:close,yahoo,DBC:close,price,D,0D,none,True,,Commodity basket ETF close,2006-02-06,2026-10-23,5212,5212
+yahoo:DBC:split,yahoo,DBC:split,split,D,0D,none,False,,Commodity basket ETF split,,,0,0
+yahoo:DX-Y.NYB:close,yahoo,DX-Y.NYB:close,index,D,0D,none,False,,ICE US dollar index,1971-01-04,2026-10-23,14171,14171
+yahoo:EEM:close,yahoo,EEM:close,price,D,0D,none,True,,MSCI EM ETF close,2003-04-14,2026-10-23,5921,5921
+yahoo:EEM:dividend,yahoo,EEM:dividend,dividend,D,0D,none,False,,MSCI EM ETF dividend,2003-12-22,2026-06-15,47,47
+yahoo:EEM:split,yahoo,EEM:split,split,D,0D,none,False,,MSCI EM ETF split,2005-06-09,2008-07-24,2,2
+yahoo:EFA:close,yahoo,EFA:close,price,D,0D,none,True,,MSCI EAFE ETF close,2001-08-27,2026-10-23,6327,6327
+yahoo:EFA:dividend,yahoo,EFA:dividend,dividend,D,0D,none,False,,MSCI EAFE ETF dividend,2001-10-02,2026-06-15,47,47
+yahoo:EFA:split,yahoo,EFA:split,split,D,0D,none,False,,MSCI EAFE ETF split,2005-06-09,2005-06-09,1,1
+yahoo:GC=F:close,yahoo,GC=F:close,price,D,0D,none,False,,Gold futures (front),2000-08-30,2026-10-23,6563,6563
+yahoo:GLD:close,yahoo,GLD:close,price,D,0D,none,True,,Gold ETF close,2004-11-18,2026-10-23,5517,5517
+yahoo:GLD:split,yahoo,GLD:split,split,D,0D,none,False,,Gold ETF split,,,0,0
+yahoo:HG=F:close,yahoo,HG=F:close,price,D,0D,none,False,,Copper futures (front),2000-08-30,2026-10-23,6567,6567
+yahoo:IEF:close,yahoo,IEF:close,price,D,0D,none,True,,7-10y Treasury ETF close,2002-07-30,2026-10-23,6099,6099
+yahoo:IEF:dividend,yahoo,IEF:dividend,dividend,D,0D,none,False,,7-10y Treasury ETF dividend,2002-09-03,2026-10-01,291,291
+yahoo:IEF:split,yahoo,IEF:split,split,D,0D,none,False,,7-10y Treasury ETF split,,,0,0
+yahoo:PPLT:close,yahoo,PPLT:close,price,D,0D,none,True,,Platinum ETF close,2010-01-08,2026-10-23,4224,4224
+yahoo:PPLT:split,yahoo,PPLT:split,split,D,0D,none,False,,Platinum ETF split,2026-05-18,2026-05-18,1,1
+yahoo:SI=F:close,yahoo,SI=F:close,price,D,0D,none,False,,Silver futures (front),2000-08-30,2026-10-23,6564,6564
+yahoo:SLV:close,yahoo,SLV:close,price,D,0D,none,True,,Silver ETF close,2006-04-28,2026-10-23,5155,5155
+yahoo:SLV:split,yahoo,SLV:split,split,D,0D,none,False,,Silver ETF split,2008-07-24,2008-07-24,1,1
+yahoo:SPY:close,yahoo,SPY:close,price,D,0D,none,True,,S&P 500 ETF close,1993-01-29,2026-10-23,8492,8492
+yahoo:SPY:dividend,yahoo,SPY:dividend,dividend,D,0D,none,False,,S&P 500 ETF dividend,1993-03-19,2026-09-18,136,136
+yahoo:SPY:split,yahoo,SPY:split,split,D,0D,none,False,,S&P 500 ETF split,,,0,0
+yahoo:TIP:close,yahoo,TIP:close,price,D,0D,none,True,,TIPS ETF close,2003-12-05,2026-10-23,5757,5757
+yahoo:TIP:dividend,yahoo,TIP:dividend,dividend,D,0D,none,False,,TIPS ETF dividend,2003-12-31,2026-08-03,202,202
+yahoo:TIP:split,yahoo,TIP:split,split,D,0D,none,False,,TIPS ETF split,,,0,0
+yahoo:TLT:close,yahoo,TLT:close,price,D,0D,none,True,,20y+ Treasury ETF close,2002-07-30,2026-10-23,6099,6099
+yahoo:TLT:dividend,yahoo,TLT:dividend,dividend,D,0D,none,False,,20y+ Treasury ETF dividend,2002-09-03,2026-10-01,289,289
+yahoo:TLT:split,yahoo,TLT:split,split,D,0D,none,False,,20y+ Treasury ETF split,,,0,0
+yahoo:UNG:close,yahoo,UNG:close,price,D,0D,none,True,,Natural gas ETF close,2007-04-18,2026-10-23,4912,4912
+yahoo:UNG:split,yahoo,UNG:split,split,D,0D,none,False,,Natural gas ETF split,2011-03-09,2024-01-24,4,4
+yahoo:USO:close,yahoo,USO:close,price,D,0D,none,True,,Crude oil ETF close,2006-04-10,2026-10-23,5168,5168
+yahoo:USO:split,yahoo,USO:split,split,D,0D,none,False,,Crude oil ETF split,2020-04-29,2020-04-29,1,1
+yahoo:VNQ:close,yahoo,VNQ:close,price,D,0D,none,True,,US REIT ETF close,2004-09-29,2026-10-23,5553,5553
+yahoo:VNQ:dividend,yahoo,VNQ:dividend,dividend,D,0D,none,False,,US REIT ETF dividend,2004-12-22,2026-09-23,88,88
+yahoo:VNQ:split,yahoo,VNQ:split,split,D,0D,none,False,,US REIT ETF split,,,0,0
+yahoo:XLB:close,yahoo,XLB:close,price,D,0D,none,True,,Materials sector SPDR close,1998-12-22,2026-10-23,7002,7002
+yahoo:XLB:dividend,yahoo,XLB:dividend,dividend,D,0D,none,False,,Materials sector SPDR dividend,1999-03-19,2026-09-21,111,111
+yahoo:XLB:split,yahoo,XLB:split,split,D,0D,none,False,,Materials sector SPDR split,2025-12-05,2025-12-05,1,1
+yahoo:XLC:close,yahoo,XLC:close,price,D,0D,none,True,,Communication services sector SPDR close,2018-06-19,2026-10-23,2099,2099
+yahoo:XLC:dividend,yahoo,XLC:dividend,dividend,D,0D,none,False,,Communication services sector SPDR dividend,2018-09-21,2026-09-21,33,33
+yahoo:XLC:split,yahoo,XLC:split,split,D,0D,none,False,,Communication services sector SPDR split,,,0,0
+yahoo:XLE:close,yahoo,XLE:close,price,D,0D,none,True,,Energy sector SPDR close,1998-12-22,2026-10-23,7002,7002
+yahoo:XLE:dividend,yahoo,XLE:dividend,dividend,D,0D,none,False,,Energy sector SPDR dividend,1999-03-19,2026-09-21,112,112
+yahoo:XLE:split,yahoo,XLE:split,split,D,0D,none,False,,Energy sector SPDR split,2025-12-05,2025-12-05,1,1
+yahoo:XLF:close,yahoo,XLF:close,price,D,0D,none,True,,Financials sector SPDR close,1998-12-22,2026-10-23,7002,7002
+yahoo:XLF:dividend,yahoo,XLF:dividend,dividend,D,0D,none,False,,Financials sector SPDR dividend,1999-03-19,2026-09-21,111,111
+yahoo:XLF:split,yahoo,XLF:split,split,D,0D,none,False,,Financials sector SPDR split,2016-09-19,2016-09-19,1,1
+yahoo:XLI:close,yahoo,XLI:close,price,D,0D,none,True,,Industrials sector SPDR close,1998-12-22,2026-10-23,7002,7002
+yahoo:XLI:dividend,yahoo,XLI:dividend,dividend,D,0D,none,False,,Industrials sector SPDR dividend,1999-03-19,2026-09-21,110,110
+yahoo:XLI:split,yahoo,XLI:split,split,D,0D,none,False,,Industrials sector SPDR split,,,0,0
+yahoo:XLK:close,yahoo,XLK:close,price,D,0D,none,True,,Technology sector SPDR close,1998-12-22,2026-10-23,7002,7002
+yahoo:XLK:dividend,yahoo,XLK:dividend,dividend,D,0D,none,False,,Technology sector SPDR dividend,1999-12-17,2026-09-21,85,85
+yahoo:XLK:split,yahoo,XLK:split,split,D,0D,none,False,,Technology sector SPDR split,2025-12-05,2025-12-05,1,1
+yahoo:XLP:close,yahoo,XLP:close,price,D,0D,none,True,,Consumer staples sector SPDR close,1998-12-22,2026-10-23,7002,7002
+yahoo:XLP:dividend,yahoo,XLP:dividend,dividend,D,0D,none,False,,Consumer staples sector SPDR dividend,1999-03-19,2026-09-21,111,111
+yahoo:XLP:split,yahoo,XLP:split,split,D,0D,none,False,,Consumer staples sector SPDR split,,,0,0
+yahoo:XLRE:close,yahoo,XLRE:close,price,D,0D,none,True,,Real estate sector SPDR close,2015-10-08,2026-10-23,2777,2777
+yahoo:XLRE:dividend,yahoo,XLRE:dividend,dividend,D,0D,none,False,,Real estate sector SPDR dividend,2015-12-18,2026-09-21,44,44
+yahoo:XLRE:split,yahoo,XLRE:split,split,D,0D,none,False,,Real estate sector SPDR split,,,0,0
+yahoo:XLU:close,yahoo,XLU:close,price,D,0D,none,True,,Utilities sector SPDR close,1998-12-22,2026-10-23,7002,7002
+yahoo:XLU:dividend,yahoo,XLU:dividend,dividend,D,0D,none,False,,Utilities sector SPDR dividend,1999-03-19,2026-09-21,112,112
+yahoo:XLU:split,yahoo,XLU:split,split,D,0D,none,False,,Utilities sector SPDR split,2025-12-05,2025-12-05,1,1
+yahoo:XLV:close,yahoo,XLV:close,price,D,0D,none,True,,Health care sector SPDR close,1998-12-22,2026-10-23,7002,7002
+yahoo:XLV:dividend,yahoo,XLV:dividend,dividend,D,0D,none,False,,Health care sector SPDR dividend,1999-12-20,2026-09-21,106,106
+yahoo:XLV:split,yahoo,XLV:split,split,D,0D,none,False,,Health care sector SPDR split,,,0,0
+yahoo:XLY:close,yahoo,XLY:close,price,D,0D,none,True,,Consumer discretionary sector SPDR close,1998-12-22,2026-10-23,7002,7002
+yahoo:XLY:dividend,yahoo,XLY:dividend,dividend,D,0D,none,False,,Consumer discretionary sector SPDR dividend,1999-03-19,2026-09-21,111,111
+yahoo:XLY:split,yahoo,XLY:split,split,D,0D,none,False,,Consumer discretionary sector SPDR split,2025-12-05,2025-12-05,1,1
+yahoo:^GSPC:close,yahoo,^GSPC:close,index,D,0D,none,False,,S&P 500 price index,1927-12-30,2026-10-23,24821,24821
+yahoo:^VIX:close,yahoo,^VIX:close,index,D,0D,none,False,,CBOE VIX,1990-01-02,2026-10-23,9273,9273

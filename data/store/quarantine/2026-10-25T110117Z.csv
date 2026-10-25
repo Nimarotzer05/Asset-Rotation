@@ -1,0 +1,2 @@
+obs_date,vintage_date,value,reason,series_id,ingested_at
+2020-04-20,2020-04-20,-37.630001068115234,non-positive price,yahoo:CL=F:close,2026-10-25T11:01:17Z
