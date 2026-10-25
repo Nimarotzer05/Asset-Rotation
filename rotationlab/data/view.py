@@ -237,8 +237,11 @@ class StoreViewFactory:
                 return None
             div = None
             if div_chain:
+                # dividends enter the index by *position* in the close series, so every dividend row must
+                # be public on its ex-date; one late-published row would leak into the level before its
+                # vintage (second review 2026-10-25) – then the reference path, which filters by vintage
                 if self.spec(div_chain[0]).lag != "0D" or (
-                    div_chain[0] in self._index and not self._index.is_simple(div_chain[0])
+                    div_chain[0] in self._index and not self._index.is_causal(div_chain[0])
                 ):
                     return None
                 div = self._index.full(div_chain[0]) if div_chain[0] in self._index else None
