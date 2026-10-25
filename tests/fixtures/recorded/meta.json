@@ -1,0 +1,109 @@
+{
+ "recorded_on": "2026-10-25",
+ "series": [
+  {
+   "provider": "yahoo",
+   "series_id": "yahoo:SPY:close",
+   "since": "2026-09-10",
+   "rows": 32,
+   "first": "2026-09-10",
+   "last": "2026-10-23",
+   "error": null
+  },
+  {
+   "provider": "yahoo",
+   "series_id": "yahoo:SPY:dividend",
+   "since": "2025-09-20",
+   "rows": 4,
+   "first": "2025-12-19",
+   "last": "2026-09-18",
+   "error": null
+  },
+  {
+   "provider": "yahoo",
+   "series_id": "yahoo:XLK:split",
+   "since": null,
+   "rows": 1,
+   "first": "2025-12-05",
+   "last": "2025-12-05",
+   "error": null
+  },
+  {
+   "provider": "stooq",
+   "series_id": "stooq:SPY:close",
+   "since": "2026-09-10",
+   "rows": null,
+   "error": "DataError: stooq: HTML page instead of CSV \u2013 API key missing or invalid (STOOQ_API_KEY)"
+  },
+  {
+   "provider": "fred",
+   "series_id": "fred:DGS10",
+   "since": "2026-09-10",
+   "rows": 30,
+   "first": "2026-09-10",
+   "last": "2026-10-22",
+   "error": null
+  },
+  {
+   "provider": "fred",
+   "series_id": "fred:TB3MS",
+   "since": "2025-09-20",
+   "rows": 13,
+   "first": "2025-09-30",
+   "last": "2026-09-30",
+   "error": null
+  },
+  {
+   "provider": "fred",
+   "series_id": "fred:CPIAUCSL",
+   "since": null,
+   "rows": 3121,
+   "first": "1947-01-31",
+   "last": "2026-09-30",
+   "error": null
+  },
+  {
+   "provider": "french",
+   "series_id": "french:ff3:RF",
+   "since": null,
+   "rows": 1202,
+   "first": "1926-07-31",
+   "last": "2026-08-31",
+   "error": null
+  },
+  {
+   "provider": "french",
+   "series_id": "french:ind10:HITEC",
+   "since": null,
+   "rows": 1202,
+   "first": "1926-07-31",
+   "last": "2026-08-31",
+   "error": null
+  },
+  {
+   "provider": "cftc",
+   "series_id": "cftc:088691:noncomm_net",
+   "since": "2026-06-27",
+   "rows": 17,
+   "first": "2026-06-30",
+   "last": "2026-10-20",
+   "error": null
+  },
+  {
+   "provider": "bls",
+   "series_id": "bls:CUSR0000SA0",
+   "since": null,
+   "rows": null,
+   "error": "DataError: giving up after 4 attempts: https://api.bls.gov/publicAPI/v2/timeseries/data/ (HTTP Error 503: Service Unavailable)"
+  },
+  {
+   "provider": "shiller",
+   "series_id": "shiller:E",
+   "since": null,
+   "rows": 1830,
+   "first": "1871-01-31",
+   "last": "2023-06-30",
+   "error": null
+  }
+ ]
+}
