@@ -27,7 +27,10 @@ def replay_all(directory: Path, bundle: Bundle) -> int:
     catalog = build_catalog(bundle)
     client = ReplayClient(directory)
     providers = make_providers(
-        bundle, today, env={"FRED_API_KEY": "replay"}, http_factory=lambda name, pc: client
+        bundle,
+        today,
+        env={"FRED_API_KEY": "replay", "STOOQ_API_KEY": "replay"},
+        http_factory=lambda name, pc: client,
     )
     checked = 0
     for entry in meta["series"]:
