@@ -1,0 +1,19 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+# state lives on the `data` branch, never on main
+data/store/
+journal/
+reports/
+# downloaded market data from the old scripts
+data/prices_daily.csv
+data/fred_daily.csv
+data/fred_monthly.csv
+output/synthetic/
+output/etf/
