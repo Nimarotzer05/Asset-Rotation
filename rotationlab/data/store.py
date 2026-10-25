@@ -77,8 +77,11 @@ def _decode(raw: bytes) -> pd.DataFrame:
     text = gzip.decompress(raw).decode()
     if not text.strip():
         return empty_observations()
-    f = pd.read_csv(io.StringIO(text), dtype={"series_id": str, "ingested_at": str, "value": float},
-                    keep_default_na=False, na_values=[], float_precision="round_trip")
+    # values are read as text and parsed by Python's float(): exact round trip of the "%.17g" encoding on
+    # every pandas version (pandas' own `float_precision="round_trip"` is deprecated in newer releases)
+    f = pd.read_csv(io.StringIO(text), dtype={"series_id": str, "ingested_at": str, "value": str},
+                    keep_default_na=False, na_values=[])
+    f["value"] = np.fromiter((float(v) if v else np.nan for v in f["value"]), dtype=float, count=len(f))
     f["obs_date"] = pd.to_datetime(f["obs_date"], format="%Y-%m-%d")
     f["vintage_date"] = pd.to_datetime(f["vintage_date"], format="%Y-%m-%d")
     return f.loc[:, COLUMNS]
@@ -422,5 +425,6 @@ class PointInTimeStore:
                 if f["name"] != name:
                     (self.obs_dir / f["name"]).unlink(missing_ok=True)
         self._obs = None
+
         self._by_series = None
         return name
