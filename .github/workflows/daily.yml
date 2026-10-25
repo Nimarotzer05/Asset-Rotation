@@ -1,0 +1,70 @@
+name: daily
+on:
+  schedule:
+    - cron: "30 6 * * 1-5"      # 06:30 UTC, Mon–Fri: after US close, before Europe opens
+  workflow_dispatch:
+concurrency: daily
+env:
+  PHASE: 1          # built phases (docs/ARCHITECTURE.md §12); later steps switch on as phases land
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      BLS_API_KEY: ${{ secrets.BLS_API_KEY }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main }
+      - name: restore state from branch data
+        run: |
+          if git ls-remote --exit-code --heads origin data > /dev/null; then
+            git fetch --depth=1 origin data
+            for p in data/store journal reports; do git restore --source=FETCH_HEAD --worktree -- "$p" 2>/dev/null || true; done
+          fi
+      - uses: astral-sh/setup-uv@v3
+      - run: uv python install 3.12
+      - run: uv sync
+      - run: uv run rotationlab validate
+      - run: uv run rotationlab store verify      # checksums of the observation log (exit 3 on tampering/partial writes)
+      - run: uv run rotationlab ingest            # blocking quality result -> exit 3 stops the job here
+      - run: uv run rotationlab live              # exit 4 = risk halt; still produce the report below
+        if: ${{ env.PHASE >= 4 }}
+        continue-on-error: true
+        id: live
+      - run: uv run rotationlab scenarios
+        if: ${{ env.PHASE >= 3 }}
+      - run: uv run rotationlab relationships
+        if: ${{ env.PHASE >= 3 }}
+      - run: uv run rotationlab report
+        if: ${{ env.PHASE >= 4 }}
+      - name: commit state to branch data
+        if: always()                              # keep what was ingested even if a later step failed
+        run: |
+          git config user.name "rotationlab-bot"
+          git config user.email "bot@users.noreply.github.com"
+          STATE=$(mktemp -d)
+          mkdir -p data/store journal reports
+          cp -r data/store "$STATE/store"; cp -r journal "$STATE/journal"; cp -r reports "$STATE/reports"
+          if git ls-remote --exit-code --heads origin data > /dev/null; then
+            git fetch --depth=1 origin data && git checkout -B data FETCH_HEAD
+          else
+            git switch --orphan data
+          fi
+          rm -rf data/store journal reports && mkdir -p data
+          cp -r "$STATE/store" data/store; cp -r "$STATE/journal" journal; cp -r "$STATE/reports" reports
+          git add -A -f data/store journal reports
+          git commit -m "daily run $(date -u +%F)" || echo "nothing to commit"
+          git push origin data
+      - name: fail job if live halted
+        if: steps.live.outcome == 'failure'
+        run: exit 1
+  heartbeat:
+    needs: run
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" -d text="rotationlab daily run FAILED: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
