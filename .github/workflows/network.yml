@@ -1,0 +1,39 @@
+name: network
+# Weekly: (1) live format checks (tests/integration/test_network.py, incl. the FRED real-time oracle for the
+# ALFRED logic); (2) record real provider answers (rotationlab record-fixtures) and push them to the branch
+# `recorded-fixtures` – merged into main, tests/integration/test_recorded.py replays them on every CI run.
+on:
+  schedule:
+    - cron: "15 7 * * 6"      # Saturdays 07:15 UTC
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  network:
+    runs-on: ubuntu-latest
+    env:
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      BLS_API_KEY: ${{ secrets.BLS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv python install 3.12
+      - run: uv sync --extra dev
+      - run: uv run pytest -m network -o addopts="" -v
+        continue-on-error: true
+        id: live
+      - run: uv run rotationlab record-fixtures --out tests/fixtures/recorded
+      - run: uv run pytest tests/integration/test_recorded.py -o addopts="" -v
+      - uses: actions/upload-artifact@v4
+        with: { name: recorded-fixtures, path: tests/fixtures/recorded }
+      - name: push recording to branch recorded-fixtures
+        run: |
+          git config user.name "rotationlab-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git checkout -B recorded-fixtures
+          git add tests/fixtures/recorded
+          git commit -m "recorded provider answers $(date -u +%F)" || echo "nothing new"
+          git push -f origin recorded-fixtures
+      - name: fail if live checks failed
+        if: steps.live.outcome == 'failure'
+        run: exit 1
