@@ -1,0 +1,57 @@
+{
+ "http://www.econ.yale.edu/~shiller/data/ie_data.xls": {
+  "bytes": 1628672,
+  "file": "shiller-e433cf55b452.bin",
+  "provider": "shiller"
+ },
+ "https://api.stlouisfed.org/fred/series/observations?series_id=CPIAUCSL&realtime_start=1776-07-04&realtime_end=9999-12-31&output_type=1&api_key=***&file_type=json&limit=100000&offset=0": {
+  "bytes": 324568,
+  "file": "fred-005645b31e19.bin",
+  "provider": "fred"
+ },
+ "https://api.stlouisfed.org/fred/series/observations?series_id=DGS10&observation_start=2026-09-09&api_key=***&file_type=json&limit=100000&offset=0": {
+  "bytes": 3308,
+  "file": "fred-eef211d48f48.bin",
+  "provider": "fred"
+ },
+ "https://api.stlouisfed.org/fred/series/observations?series_id=TB3MS&observation_start=2025-09-19&api_key=***&file_type=json&limit=100000&offset=0": {
+  "bytes": 1508,
+  "file": "fred-a85053a14569.bin",
+  "provider": "fred"
+ },
+ "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/10_Industry_Portfolios_CSV.zip": {
+  "bytes": 118996,
+  "file": "french-23c5cc9df733.bin",
+  "provider": "french"
+ },
+ "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip": {
+  "bytes": 13065,
+  "file": "french-74f2f55f8082.bin",
+  "provider": "french"
+ },
+ "https://publicreporting.cftc.gov/resource/6dca-aqww.json?cftc_contract_market_code=088691&$order=report_date_as_yyyy_mm_dd&$limit=50000&$where=report_date_as_yyyy_mm_dd+%3E%3D+%272026-06-27T00:00:00%27": {
+  "bytes": 79196,
+  "file": "cftc-4cfacb439ba9.bin",
+  "provider": "cftc"
+ },
+ "https://query1.finance.yahoo.com/v8/finance/chart/SPY?period1=1758326400&period2=*&interval=1d&events=div,splits&includeAdjustedClose=true": {
+  "bytes": 30739,
+  "file": "yahoo-b28b34c46f97.bin",
+  "provider": "yahoo"
+ },
+ "https://query1.finance.yahoo.com/v8/finance/chart/SPY?period1=1788998400&period2=*&interval=1d&events=div,splits&includeAdjustedClose=true": {
+  "bytes": 4628,
+  "file": "yahoo-3ff6ef3aa04d.bin",
+  "provider": "yahoo"
+ },
+ "https://query1.finance.yahoo.com/v8/finance/chart/XLK?period1=-2208988800&period2=*&interval=1d&events=div,splits&includeAdjustedClose=true": {
+  "bytes": 748791,
+  "file": "yahoo-20f4a43d55db.bin",
+  "provider": "yahoo"
+ },
+ "https://stooq.com/q/d/l/?s=spy.us&i=d&d1=20260910": {
+  "bytes": 796,
+  "file": "stooq-3e79b3f7728a.bin",
+  "provider": "stooq"
+ }
+}
