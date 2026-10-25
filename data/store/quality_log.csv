@@ -154,3 +154,137 @@ ingested_at,series_id,check,status,detail
 2026-10-25T11:01:17Z,yahoo:GC=F:close,cross_source,warn,returns differ by 3.41% on 2026-02-02 vs static:lbma:GOLD (last 20 common days)
 2026-10-25T11:01:17Z,yahoo:SI=F:close,cross_source,warn,returns differ by 18.63% on 2026-02-02 vs static:lbma:SILVER (last 20 common days)
 2026-10-25T11:01:17Z,static:usmkt:TR,tr_vs_price,warn,"110 historical day(s) with TR return below price return (largest -0.26%, last 1988-05-31); none recent"
+2026-10-25T11:11:32Z,stooq:BIL:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:CPER:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:DBA:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:DBC:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:EEM:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:EFA:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:GLD:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:IEF:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:PPLT:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:SLV:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:SPY:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:TIP:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:TLT:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:UNG:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:USO:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:VNQ:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:XLB:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:XLC:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:XLE:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:XLF:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:XLI:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:XLK:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:XLP:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:XLRE:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:XLU:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:XLV:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,stooq:XLY:close,fetch,warn,DataError: stooq: HTML page instead of CSV – API key missing or invalid (STOOQ_API_KEY)
+2026-10-25T11:11:32Z,bls:CES0000000001,fetch,warn,DataError: giving up after 4 attempts: https://api.bls.gov/publicAPI/v2/timeseries/data/ (HTTP Error 503: Service Unavailable)
+2026-10-25T11:11:32Z,bls:CUSR0000SA0,fetch,warn,DataError: giving up after 4 attempts: https://api.bls.gov/publicAPI/v2/timeseries/data/ (HTTP Error 503: Service Unavailable)
+2026-10-25T11:11:32Z,bls:CUSR0000SA0L1E,fetch,warn,DataError: giving up after 4 attempts: https://api.bls.gov/publicAPI/v2/timeseries/data/ (HTTP Error 503: Service Unavailable)
+2026-10-25T11:11:32Z,bls:LNS14000000,fetch,warn,DataError: giving up after 4 attempts: https://api.bls.gov/publicAPI/v2/timeseries/data/ (HTTP Error 503: Service Unavailable)
+2026-10-25T11:11:32Z,fred:DTWEXBGS,staleness,warn,"last obs 2026-10-16, 5 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,stooq:SPY:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:SPY:dividend,staleness,warn,"last obs 2026-09-18, 25 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:SPY:split,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,stooq:EFA:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:EFA:dividend,staleness,warn,"last obs 2026-06-15, 91 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:EFA:split,staleness,warn,"last obs 2005-06-09, 5377 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,stooq:EEM:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:EEM:dividend,staleness,warn,"last obs 2026-06-15, 91 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:EEM:split,staleness,warn,"last obs 2008-07-24, 4591 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,stooq:TLT:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:TLT:dividend,staleness,warn,"last obs 2026-10-01, 16 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:TLT:split,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,stooq:IEF:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:IEF:dividend,staleness,warn,"last obs 2026-10-01, 16 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:IEF:split,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,stooq:TIP:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:TIP:dividend,staleness,warn,"last obs 2026-08-03, 58 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:TIP:split,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,stooq:GLD:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:GLD:split,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,stooq:SLV:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:SLV:split,staleness,warn,"last obs 2008-07-24, 4591 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,stooq:PPLT:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:PPLT:split,staleness,warn,"last obs 2026-05-18, 110 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,stooq:DBC:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:DBC:split,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,stooq:USO:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:USO:split,staleness,warn,"last obs 2020-04-29, 1630 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,stooq:UNG:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:UNG:split,staleness,warn,"last obs 2024-01-24, 690 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,stooq:CPER:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:CPER:split,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,stooq:DBA:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:DBA:split,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,stooq:VNQ:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:VNQ:dividend,staleness,warn,"last obs 2026-09-23, 22 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:VNQ:split,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,stooq:XLB:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:XLB:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:XLB:split,staleness,warn,"last obs 2025-12-05, 221 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,stooq:XLC:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:XLC:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:XLC:split,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,stooq:XLE:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:XLE:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:XLE:split,staleness,warn,"last obs 2025-12-05, 221 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,stooq:XLF:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:XLF:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:XLF:split,staleness,warn,"last obs 2016-09-19, 2538 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,stooq:XLI:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:XLI:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:XLI:split,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,stooq:XLK:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:XLK:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:XLK:split,staleness,warn,"last obs 2025-12-05, 221 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,stooq:XLP:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:XLP:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:XLP:split,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,stooq:XLRE:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:XLRE:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:XLRE:split,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,stooq:XLU:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:XLU:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:XLU:split,staleness,warn,"last obs 2025-12-05, 221 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,stooq:XLV:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:XLV:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:XLV:split,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,stooq:XLY:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:XLY:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:XLY:split,staleness,warn,"last obs 2025-12-05, 221 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,stooq:BIL:close,staleness,warn,no observations at all
+2026-10-25T11:11:32Z,yahoo:BIL:dividend,staleness,warn,"last obs 2026-10-01, 16 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:BIL:split,staleness,warn,"last obs 2017-11-30, 2235 sessions behind 2026-10-23"
+2026-10-25T11:11:32Z,yahoo:BIL:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:CPER:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:DBA:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:DBC:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:EEM:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:EFA:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:GLD:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:IEF:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:PPLT:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:SLV:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:SPY:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:TIP:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:TLT:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:UNG:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:USO:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:VNQ:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:XLB:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:XLC:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:XLE:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:XLF:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:XLI:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:XLK:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:XLP:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:XLRE:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:XLU:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:XLV:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:XLY:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:11:32Z,yahoo:GC=F:close,cross_source,warn,returns differ by 3.41% on 2026-02-02 vs static:lbma:GOLD (last 20 common days)
+2026-10-25T11:11:32Z,yahoo:SI=F:close,cross_source,warn,returns differ by 18.63% on 2026-02-02 vs static:lbma:SILVER (last 20 common days)
