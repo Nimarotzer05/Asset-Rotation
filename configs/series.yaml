@@ -1,0 +1,140 @@
+# Series catalog: every series the store may hold.
+#
+# Three sources, merged by rotationlab/data/catalog.py:
+#   1. explicit entries under `series` (FRED, Yahoo futures/indices, French live, CFTC);
+#   2. series referenced in universe.yaml from a provider listed in `derive_from_universe`
+#      (ETF closes, dividends, splits; kind from `role_kinds`);
+#   3. the static provider's built-in catalog (data/raw: the frozen research history),
+#      see rotationlab/data/providers/static.py.
+#
+# Conventions (docs/ARCHITECTURE.md §3, ADR 021/022):
+#   obs_date  = END of the period a value refers to (monthly → calendar month-end).
+#   lag       = when the value became public: "0D" market data, "<n>D" days after obs_date,
+#               "<n>M" calendar month-end n months after the observation month.
+#   vintages  = "alfred": real publication dates from ALFRED; `lag` only covers history older
+#               than the first archived vintage.
+#   Series that are averages or returns of public market prices (French portfolios, monthly average
+#   yields) carry no publication lag: they were computable from public prices at obs_date.
+
+derive_from_universe:
+  yahoo: { frequency: D, lag: 0D, revision_tolerance: 1.0e-6 }
+  stooq: { frequency: D, lag: 0D, revision_tolerance: 1.0e-6 }
+
+role_kinds:
+  close: price
+  dividend: dividend
+  split: split
+  total_return: total_return
+  return: return
+  yield: yield
+  index: index
+
+# The primary series of these roles is `required` for every tradable asset: if it goes stale the
+# live run is blocked (exit 3) instead of trading on old prices.
+required_roles: [close]
+
+series:
+  # ---- Yahoo: futures and indices (context, scenarios, analogs; not traded) -------------------
+  "yahoo:GC=F:close":     { kind: price, frequency: D, name: "Gold futures (front)" }
+  "yahoo:SI=F:close":     { kind: price, frequency: D, name: "Silver futures (front)" }
+  "yahoo:CL=F:close":     { kind: price, frequency: D, name: "WTI crude futures (front)" }
+  "yahoo:HG=F:close":     { kind: price, frequency: D, name: "Copper futures (front)" }
+  "yahoo:^GSPC:close":    { kind: index, frequency: D, name: "S&P 500 price index" }
+  "yahoo:^VIX:close":     { kind: index, frequency: D, name: "CBOE VIX" }
+  "yahoo:DX-Y.NYB:close": { kind: index, frequency: D, name: "ICE US dollar index" }
+
+  # ---- FRED daily market series (H.15/ICE values appear the next business day) ----------------
+  "fred:DGS3MO":       { kind: yield, frequency: D, lag: 1D, unit: pct, name: "3M Treasury CMT" }
+  "fred:DGS2":         { kind: yield, frequency: D, lag: 1D, unit: pct, name: "2Y Treasury CMT" }
+  "fred:DGS10":        { kind: yield, frequency: D, lag: 1D, unit: pct, name: "10Y Treasury CMT" }
+  "fred:DFII10":       { kind: yield, frequency: D, lag: 1D, unit: pct, name: "10Y TIPS real yield" }
+  "fred:T10YIE":       { kind: yield, frequency: D, lag: 1D, unit: pct, name: "10Y breakeven inflation" }
+  "fred:BAMLH0A0HYM2": { kind: yield, frequency: D, lag: 1D, unit: pct, name: "ICE BofA US HY OAS" }
+  "fred:BAMLC0A0CM":   { kind: yield, frequency: D, lag: 1D, unit: pct, name: "ICE BofA US IG OAS" }
+  "fred:VIXCLS":       { kind: index, frequency: D, lag: 1D, name: "VIX close (FRED)" }
+  "fred:DTWEXBGS":     { kind: index, frequency: D, lag: 7D, name: "Broad trade-weighted dollar (H.10, weekly release)" }
+
+  # ---- FRED monthly averages of market rates (computable at month-end) ------------------------
+  "fred:TB3MS":    { kind: yield, frequency: M, lag: 0D, unit: pct, name: "3M T-bill, monthly average" }
+  "fred:FEDFUNDS": { kind: yield, frequency: M, lag: 0D, unit: pct, name: "Fed funds, monthly average" }
+  "fred:AAA":      { kind: yield, frequency: M, lag: 0D, unit: pct, name: "Moody's Aaa, monthly average" }
+  "fred:BAA":      { kind: yield, frequency: M, lag: 0D, unit: pct, name: "Moody's Baa, monthly average" }
+  "fred:GS10":     { kind: yield, frequency: M, lag: 0D, unit: pct, name: "10Y Treasury CMT, monthly average" }
+
+  # ---- FRED macro statistics with ALFRED vintages ----------------------------------------------
+  # lag = fallback for observations older than the first archived vintage (and without API key).
+  "fred:CPIAUCSL": { kind: macro, frequency: M, lag: 1M, vintages: alfred, unit: index, name: "CPI-U SA" }
+  "fred:CPILFESL": { kind: macro, frequency: M, lag: 1M, vintages: alfred, unit: index, name: "Core CPI SA" }
+  "fred:PCEPILFE": { kind: macro, frequency: M, lag: 2M, vintages: alfred, unit: index, name: "Core PCE price index" }
+  "fred:INDPRO":   { kind: macro, frequency: M, lag: 1M, vintages: alfred, unit: index, name: "Industrial production" }
+  "fred:PAYEMS":   { kind: macro, frequency: M, lag: 1M, vintages: alfred, unit: thousands, name: "Nonfarm payrolls" }
+  "fred:UNRATE":   { kind: macro, frequency: M, lag: 1M, vintages: alfred, unit: pct, name: "Unemployment rate" }
+  "fred:UMCSENT":  { kind: macro, frequency: M, lag: 1M, vintages: alfred, unit: index, name: "Michigan sentiment" }
+  "fred:MICH":     { kind: macro, frequency: M, lag: 1M, vintages: alfred, unit: pct, name: "Michigan 1Y inflation expectations" }
+  "fred:M2SL":     { kind: macro, frequency: M, lag: 1M, vintages: alfred, unit: bn USD, name: "M2 money stock" }
+  "fred:HOUST":    { kind: macro, frequency: M, lag: 1M, vintages: alfred, unit: thousands, name: "Housing starts" }
+  "fred:ICSA":     { kind: macro, frequency: W, lag: 6D, vintages: alfred, unit: claims, name: "Initial claims (week ending Saturday, released Thursday)" }
+  "fred:NFCI":     { kind: macro, frequency: W, lag: 6D, vintages: alfred, unit: index, name: "Chicago Fed financial conditions (Friday, released Wednesday)" }
+
+  # ---- BLS: second source for the key labour and price series (fallback member of the macro chains) ----
+  "bls:CUSR0000SA0":    { kind: macro, frequency: M, lag: 1M, unit: index, name: "CPI-U all items SA (BLS)" }
+  "bls:CUSR0000SA0L1E": { kind: macro, frequency: M, lag: 1M, unit: index, name: "CPI-U less food and energy SA (BLS)" }
+  "bls:LNS14000000":    { kind: macro, frequency: M, lag: 1M, unit: pct, name: "Unemployment rate (BLS)" }
+  "bls:CES0000000001":  { kind: macro, frequency: M, lag: 1M, unit: thousands, name: "Nonfarm payrolls (BLS)" }
+
+  # ---- Shiller ie_data.xls (live CAPE / excess CAPE yield; the static mirror stops reporting earnings in 2023) ----
+  "shiller:P":    { kind: index, frequency: M, lag: 0D, name: "S&P composite, monthly average (Shiller)" }
+  "shiller:D":    { kind: macro, frequency: M, lag: 6M, name: "S&P dividends, interpolated (Shiller)" }
+  "shiller:E":    { kind: macro, frequency: M, lag: 6M, name: "S&P earnings, interpolated (Shiller)" }
+  "shiller:CPI":  { kind: macro, frequency: M, lag: 1M, name: "CPI-U NSA (Shiller)" }
+  "shiller:GS10": { kind: yield, frequency: M, lag: 0D, unit: pct, name: "10y Treasury, monthly average (Shiller)" }
+  "shiller:CAPE": { kind: macro, frequency: M, lag: 6M, name: "Cyclically adjusted P/E (Shiller)" }
+
+  # ---- Kenneth French live files (monitoring and drift; the golden panel uses the frozen static copy) --
+  "french:ff3:MKT_RF":  { kind: return, frequency: M, params: { file: F-F_Research_Data_Factors_CSV.zip, column: Mkt-RF } }
+  "french:ff3:SMB":     { kind: return, frequency: M, params: { file: F-F_Research_Data_Factors_CSV.zip, column: SMB } }
+  "french:ff3:HML":     { kind: return, frequency: M, params: { file: F-F_Research_Data_Factors_CSV.zip, column: HML } }
+  "french:ff3:RF":      { kind: return, frequency: M, params: { file: F-F_Research_Data_Factors_CSV.zip, column: RF } }
+  "french:ff5:RMW":     { kind: return, frequency: M, params: { file: F-F_Research_Data_5_Factors_2x3_CSV.zip, column: RMW } }
+  "french:ff5:CMA":     { kind: return, frequency: M, params: { file: F-F_Research_Data_5_Factors_2x3_CSV.zip, column: CMA } }
+  "french:mom:MOM":     { kind: return, frequency: M, params: { file: F-F_Momentum_Factor_CSV.zip, column: Mom } }
+  "french:ind10:NODUR": { kind: return, frequency: M, params: { file: 10_Industry_Portfolios_CSV.zip, column: NoDur, section: Average Value Weighted Returns -- Monthly } }
+  "french:ind10:DURBL": { kind: return, frequency: M, params: { file: 10_Industry_Portfolios_CSV.zip, column: Durbl, section: Average Value Weighted Returns -- Monthly } }
+  "french:ind10:MANUF": { kind: return, frequency: M, params: { file: 10_Industry_Portfolios_CSV.zip, column: Manuf, section: Average Value Weighted Returns -- Monthly } }
+  "french:ind10:ENRGY": { kind: return, frequency: M, params: { file: 10_Industry_Portfolios_CSV.zip, column: Enrgy, section: Average Value Weighted Returns -- Monthly } }
+  "french:ind10:HITEC": { kind: return, frequency: M, params: { file: 10_Industry_Portfolios_CSV.zip, column: HiTec, section: Average Value Weighted Returns -- Monthly } }
+  "french:ind10:TELCM": { kind: return, frequency: M, params: { file: 10_Industry_Portfolios_CSV.zip, column: Telcm, section: Average Value Weighted Returns -- Monthly } }
+  "french:ind10:SHOPS": { kind: return, frequency: M, params: { file: 10_Industry_Portfolios_CSV.zip, column: Shops, section: Average Value Weighted Returns -- Monthly } }
+  "french:ind10:HLTH":  { kind: return, frequency: M, params: { file: 10_Industry_Portfolios_CSV.zip, column: Hlth, section: Average Value Weighted Returns -- Monthly } }
+  "french:ind10:UTILS": { kind: return, frequency: M, params: { file: 10_Industry_Portfolios_CSV.zip, column: Utils, section: Average Value Weighted Returns -- Monthly } }
+  "french:ind10:OTHER": { kind: return, frequency: M, params: { file: 10_Industry_Portfolios_CSV.zip, column: Other, section: Average Value Weighted Returns -- Monthly } }
+
+  # ---- CFTC Commitments of Traders, legacy futures-only (positions as of Tuesday, released Friday) --
+  "cftc:088691:noncomm_net":   { kind: positioning, frequency: W, lag: 7D, name: Gold COMEX non-commercial net, params: { market: "088691", field: noncomm_net } }
+  "cftc:088691:open_interest": { kind: positioning, frequency: W, lag: 7D, name: Gold COMEX open interest, params: { market: "088691", field: open_interest } }
+  "cftc:084691:noncomm_net":   { kind: positioning, frequency: W, lag: 7D, name: Silver COMEX non-commercial net, params: { market: "084691", field: noncomm_net } }
+  "cftc:084691:open_interest": { kind: positioning, frequency: W, lag: 7D, name: Silver COMEX open interest, params: { market: "084691", field: open_interest } }
+  "cftc:085692:noncomm_net":   { kind: positioning, frequency: W, lag: 7D, name: Copper COMEX non-commercial net, params: { market: "085692", field: noncomm_net } }
+  "cftc:067651:noncomm_net":   { kind: positioning, frequency: W, lag: 7D, name: WTI NYMEX non-commercial net, params: { market: "067651", field: noncomm_net } }
+  "cftc:13874A:noncomm_net":   { kind: positioning, frequency: W, lag: 7D, name: E-mini S&P 500 non-commercial net, params: { market: "13874A", field: noncomm_net } }
+
+# Macro chains: features read e.g. view.series("macro:CPI"). FRED/ALFRED is primary; BLS only fills months
+# FRED does not have yet (an outage, a delayed FRED update). Values are spliced as they are (same units).
+# The frozen FRED-MD copy is the last member: it supplies the history in the research panel (static store)
+# and never overrides a live value (a fallback only fills dates the members before it do not cover).
+chains:
+  "macro:CPI":      ["fred:CPIAUCSL", "bls:CUSR0000SA0", "static:fredmd:CPIAUCSL"]
+  "macro:CORE_CPI": ["fred:CPILFESL", "bls:CUSR0000SA0L1E"]   # FRED-MD has no ex-food-and-energy CPI
+  "macro:UNRATE":   ["fred:UNRATE", "bls:LNS14000000", "static:fredmd:UNRATE"]
+  "macro:PAYEMS":   ["fred:PAYEMS", "bls:CES0000000001", "static:fredmd:PAYEMS"]
+  "macro:INDPRO":   ["fred:INDPRO", "static:fredmd:INDPRO"]
+  "macro:GS10":     ["fred:GS10", "static:fredmd:GS10"]
+  "macro:BAA":      ["fred:BAA", "static:fredmd:BAA"]
+  "macro:AAA":      ["fred:AAA", "static:fredmd:AAA"]
+  "macro:FEDFUNDS": ["fred:FEDFUNDS", "static:fredmd:FEDFUNDS"]
+  "macro:TB3MS":    ["fred:TB3MS", "static:fredmd:TB3MS"]
+  "macro:VIX":      ["yahoo:^VIX:close", "fred:VIXCLS", "static:cboe:VIX"]
+  "macro:SP_EARNINGS": ["shiller:E", "static:shiller:Earnings"]
+  "macro:SP_PRICE":    ["shiller:P", "static:shiller:SP500"]
+  "macro:SP_CPI":      ["shiller:CPI", "static:shiller:Consumer_Price_Index"]
+  "macro:SP_RATE":     ["shiller:GS10", "static:shiller:Long_Interest_Rate"]

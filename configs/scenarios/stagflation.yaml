@@ -1,0 +1,14 @@
+id: stagflation
+description: Growth trend down, inflation trend up (quadrant low_high).
+horizon_months: 12
+analog:
+  rule: regime
+  regime: { quadrant: low_high }
+factor_shock:
+  d_cpi_yoy: 2.0
+  d_real_yield: -1.0
+  equity: -0.10
+bootstrap:
+  block_months: 6
+  draws: 5000
+  regime_filter: { quadrant: [low_high] }

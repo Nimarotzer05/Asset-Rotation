@@ -1,0 +1,14 @@
+id: silver_squeeze
+description: Silver outruns gold by 40 % within 12 months while gold is flat (1980, 2011, 2021, 2025/26 pattern).
+horizon_months: 12
+analog:
+  rule: ratio_change
+  threshold: -0.40
+  measure: window
+factor_shock:
+  gold: 0.0
+  silver: 0.50
+  d_log_usd: -0.03
+bootstrap:
+  block_months: 6
+  draws: 5000

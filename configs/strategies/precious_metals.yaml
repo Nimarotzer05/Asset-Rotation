@@ -1,0 +1,46 @@
+id: precious_metals
+version: 1
+role: satellite
+cadence: monthly
+universe: [GLD, SLV, CASH]
+long_history_universe: [XAU, XAG, TBILL]
+warmup_months: 60
+params:
+  trade: { gold: GLD, silver: SLV }          # instruments that carry the position
+  signal: { gold: XAU, silver: XAG }         # gold/silver ratio from spot (LBMA history, futures live)
+  # Component 1: gold/silver ratio mean reversion (dollar-neutral, 6M tranches); ADR 013
+  mean_reversion:
+    z_window_months: 60
+    z_min_periods: 30
+    position_scale: 2.0            # position = clip(-z / scale, -1, 1); +1 = long gold / short silver
+    tranche_months: 6
+  # Component 2: crash insurance; long gold / short silver, sized up when insurance is cheap
+  # (ratio low and risk appetite high: output/gold_silver/DERISK.md §3)
+  hedge:
+    enabled: true
+    base: 0.25                     # always-on share of the satellite
+    risk_appetite_full_at_pct: 0.80
+    ratio_z_cheap_below: -1.0
+  risk_appetite: { equity: SPY, start: 1970-12-31, min_history_months: 60 }
+  combine: sum_clipped             # final position = clip(mr + hedge, -1, 1)
+long_history_params:
+  trade: { gold: XAU, silver: XAG }
+  risk_appetite: { equity: US_EQ }
+confidence:
+  kind: abs_z
+  floor: 0.5
+  params: { full_at: 2.0 }
+stops:
+  - { kind: ratio_drawdown, scope: [GLD, SLV], threshold: -0.15, action: close }
+# output/gold_silver/REPORT.md §4: MR Ratio-z 60M, 6M tranches, dollar-neutral, 1975-12 – 2026-02, 10 bp per leg.
+# The spread is self-financing: sharpe_ex_cash = Sharpe of the spread; mean_excess_ann = arithmetic mean x 12.
+# Hedge: equity drawdowns > 15 % since 1971, gold beat silver in every one (DERISK.md §1).
+golden: { sharpe_ex_cash: 0.22, mean_excess_ann: 0.030, crash_episodes_positive: 8, crash_episodes_total: 8 }
+golden_tolerance: { sharpe_ex_cash: 0.03, mean_excess_ann: 0.01 }
+golden_run:
+  data_from: 1970-12-31
+  start: 1970-12-31
+  end: 2026-02-28
+  sample: [1975-12-31, 2026-02-28]
+  costs: { default_bps: 10, cash_bps: 0 }
+  params: { hedge: { enabled: false } }     # the MR figure is the mean-reversion component alone

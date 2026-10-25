@@ -1,0 +1,18 @@
+# FRED-MD vintages (McCracken & Ng 2016): each file is the database as published at one point in time.
+# vintage_date = the first day on which the file demonstrably existed (conservative). The static provider
+# turns these files into the real-time series static:fredmd_rt:<CODE> (one row per value change).
+# The complete archive (monthly since 1999-08) is fetched with scripts/fetch_fredmd_vintages.py where the
+# St. Louis Fed site is reachable; it appends entries here.
+vintages:
+  - file: 2019-09.csv
+    label: "2019-09"
+    vintage_date: 2019-10-07
+    source: "github.com/bashtage/python-introduction (course data); last observation 2019-08 incl. personal income released 2019-09-27 → FRED-MD 2019-09"
+  - file: 2021-04.csv
+    label: "2021-04"
+    vintage_date: 2021-05-07
+    source: "github.com/elmarmertens/CCMMoutlierVAR-code data/2021-04.csv (official vintage name; PCE for March released 2021-04-30)"
+  - file: 2026-10.csv
+    label: "2026-10"
+    vintage_date: 2026-10-10
+    source: "github.com/Sicco123/US-Macro-Forecast-Hub target-data (snapshot 2026-10-10); identical to data/raw/fred_md_2026-10.csv"

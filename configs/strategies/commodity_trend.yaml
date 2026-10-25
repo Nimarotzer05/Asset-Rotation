@@ -1,0 +1,26 @@
+id: commodity_trend
+version: 1
+role: core
+cadence: monthly
+universe: [GLD, SLV, PPLT, USO, UNG, CPER, DBA, DBC, CASH]
+# research: World Bank monthly averages for all nine (consistent cross-section), not LBMA month-ends
+long_history_universe: [WB_GOLD_AVG, WB_SILVER_AVG, WB_PLATINUM, WB_OIL, WB_NATGAS, WB_COPPER, WB_ALUMINUM, WB_NICKEL, WB_AGRI, TBILL]
+warmup_months: 13
+params:
+  trend_window_months: 10
+  weighting: inverse_vol
+  vol_window_months: 12
+  cross_section_tilt: 0.0      # research: any tilt lowered Sharpe (0.74 -> 0.50); ADR 014
+confidence:
+  kind: fraction_in_trend
+  floor: 0.5
+# output/commodities/REPORT.md §4, variant C (1972-12 – 2025-12, 20 bp on one-way turnover)
+golden: { sharpe_ex_cash: 0.74, ann_return: 0.101, max_drawdown: -0.167 }
+golden_tolerance: { sharpe_ex_cash: 0.02, ann_return: 0.01, max_drawdown: 0.02 }
+golden_run:
+  data_from: 1972-12-31
+  start: 1972-12-31
+  end: 2025-12-31
+  sample: [1972-12-31, 2025-12-31]
+  count_warmup: true
+  costs: { default_bps: 10, cash_bps: 10 }     # 20 bp x one-way turnover

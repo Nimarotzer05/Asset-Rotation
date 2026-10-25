@@ -1,0 +1,28 @@
+# rotationlab system configuration
+store_path: data/store
+raw_path: data/raw
+journal_path: journal
+reports_path: reports
+calendar: XNYS
+timezone: America/New_York
+log_level: INFO
+
+providers:
+  yahoo:   { enabled: true, refetch_buffer_days: 10, min_interval_s: 0.5 }
+  stooq:   { enabled: true, refetch_buffer_days: 10, min_interval_s: 1.0 }
+  fred:    { enabled: true, refetch_buffer_days: 400, min_interval_s: 0.6 }   # ALFRED vintages are always fetched in full
+  french:  { enabled: true, refetch_buffer_days: 0 }                           # whole files, monthly updates
+  cftc:    { enabled: true, refetch_buffer_days: 21 }
+  bls:     { enabled: true, refetch_buffer_days: 400, min_interval_s: 1.0 }   # fallback for CPI, payrolls, unemployment
+  shiller: { enabled: true, refetch_buffer_days: 0, timeout_s: 60, urls: ["http://www.econ.yale.edu/~shiller/data/ie_data.xls"] }
+  static:  { enabled: true, refetch_buffer_days: 0 }
+
+# Publication lags live in configs/series.yaml (per series). Quality thresholds (docs/ARCHITECTURE.md §3.3):
+quality:
+  stale_trading_days: 2      # daily series may be at most 2 sessions behind the last completed session
+  stale_periods: 3           # weekly/monthly: 3 periods beyond the publication lag
+  outlier_sigma: 8.0         # daily log return beyond 8 sigma of the trailing 250 days -> warn
+  outlier_window: 250
+  revision_warn: 0.005       # an already stored price changes by more than 0.5 % -> warn (both vintages kept)
+  cross_source_warn: 0.01    # Yahoo vs Stooq daily return differs by more than 1 % -> warn
+  gap_warn_days: 3           # more than 3 missing NYSE sessions inside a daily series -> warn

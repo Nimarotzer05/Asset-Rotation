@@ -1,0 +1,31 @@
+id: us_sector_rotation
+version: 1
+role: core
+cadence: monthly
+universe: [XLB, XLC, XLE, XLF, XLI, XLK, XLP, XLRE, XLU, XLV, XLY, CASH]
+long_history_universe: [FF_NODUR, FF_DURBL, FF_MANUF, FF_ENRGY, FF_HITEC, FF_TELCM, FF_SHOPS, FF_HLTH, FF_UTILS, FF_OTHER, FF_RF]
+warmup_months: 13
+params:
+  feature_weights: { mom_12_1: 0.5, mom_6_1: 0.3, trend_10m: 0.2 }   # rank composite (ranks, not z-scores)
+  top_n: 3
+  min_assets: 8                    # fewer ranked sectors -> whole sleeve in cash
+  weighting: equal
+  market_trend_gate: true          # whole sleeve to cash when the market is below its 10M average
+  market: SPY
+  trend_window_months: 10
+  # Factor rotation (FF5 + Mom) is measured in relationships/ but not traded in v1:
+  # long-short factors, factor ETFs only since 2013 (see ADR 017).
+long_history_params:
+  market: FF_MKT
+confidence:
+  kind: score_dispersion           # composite score of the picks vs the rest, in cross-sectional SDs
+  floor: 0.5
+  params: { scale: 1.0 }
+# Kenneth French 10 industries 1928-2026, 10 bp per side; research charged the cash leg too
+golden: { sharpe_ex_cash: 0.591, ann_return: 0.111, max_drawdown: -0.458 }
+golden_tolerance: { sharpe_ex_cash: 0.02, ann_return: 0.01, max_drawdown: 0.03 }
+golden_run:
+  start: 1926-07-31
+  end: 2026-07-31
+  sample: [1928-01-31, 2026-07-31]
+  costs: { default_bps: 10, cash_bps: 10 }

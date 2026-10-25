@@ -1,0 +1,24 @@
+vol_target: 0.10
+max_gross: 1.5
+max_asset_weight: 0.35
+max_class_weight: 0.60
+overlay_limit: 0.30           # reserved; no overlay module in v1 (precious_metals is a satellite)
+confidence_floor: 0.5
+cov_halflife_days: 60
+vol_floor: 0.05
+
+# A decision, not a fit. Change via PR with an ADR line.
+risk_budgets:
+  us_equity_exposure: 0.35
+  us_sector_rotation: 0.25
+  multi_asset_rotation: 0.25
+  commodity_trend: 0.10
+  precious_metals: 0.05
+
+rules:
+  - { name: position_limits }
+  - { name: module_stops }
+  - { name: portfolio_drawdown, params: { trigger: -0.12, release: -0.06, factor: 0.5 } }
+  - { name: vol_spike,          params: { window_days: 20, multiple: 2.0 } }
+  - { name: data_kill_switch,   params: { max_staleness_multiple: 3 } }
+  - { name: trend_break_flag,   params: { window_months: 10 } }

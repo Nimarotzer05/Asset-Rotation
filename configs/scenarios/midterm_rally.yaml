@@ -1,0 +1,10 @@
+id: midterm_rally
+description: Post-midterm risk-on year (S&P 500 up in 19 of 19 cases since 1950, avg +20 %).
+horizon_months: 12
+analog:
+  rule: dates
+  dates: [["1994-10-31","1995-10-31"],["1998-10-31","1999-10-31"],["2002-10-31","2003-10-31"],["2006-10-31","2007-10-31"],["2010-10-31","2011-10-31"],["2014-10-31","2015-10-31"],["2018-10-31","2019-10-31"],["2022-10-31","2023-10-31"]]
+factor_shock:
+  equity: 0.20
+  d_log_vix: -0.3
+  d_credit_spread: -0.3

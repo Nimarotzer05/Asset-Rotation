@@ -1,0 +1,10 @@
+strategy_versions:
+  us_equity_exposure: 1
+  us_sector_rotation: 1
+  multi_asset_rotation: 1
+  commodity_trend: 1
+  precious_metals: 1
+portfolio_version: "2026-10-24"
+notify_on: [targets, risk_action, quality, regime_change, signal_health_red, drift]
+min_weight_change_to_notify: 0.02
+execution_price: next_close

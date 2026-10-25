@@ -1,0 +1,68 @@
+# Assets. `proxy_of` maps a tradable instrument to the long-history series used for golden tests
+# and historical analogs. Series ids follow "<provider>:<code>[:<field>]" (catalog: configs/series.yaml).
+# A role may list a chain [primary, fallback]: the view splices the fallback in only where the primary
+# has no data (ratio splice for prices, value splice for yields; reported in view.provenance()).
+cash: CASH
+assets:
+  # ---- long-history panel (not tradable, 1973–2025, from data/raw) ----
+  US_EQ:        { name: US equities TR,          asset_class: equity,     instrument: index, tradable: false, cost_bps: 0, series: { total_return: "static:usmkt:TR" } }
+  UST10:        { name: 10y Treasury TR (synth), asset_class: bond,       instrument: index, tradable: false, cost_bps: 0, series: { total_return: "static:UST10" } }
+  GOLD:         { name: Gold LBMA PM fix,        asset_class: precious,   instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:GOLD" } }
+  SILVER:       { name: Silver LBMA fix,         asset_class: precious,   instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:lbma:SILVER" } }
+  WB_ENERGY:    { name: WB energy index,         asset_class: energy,     instrument: index, tradable: false, cost_bps: 0, series: { close: "static:WB_ENERGY" } }
+  WB_BASEMETALS: { name: WB base metals index,    asset_class: base_metal, instrument: index, tradable: false, cost_bps: 0, series: { close: "static:WB_BASEMETALS" } }
+  WB_PLATINUM:  { name: Platinum WB avg,         asset_class: precious,   instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_PLATINUM" } }
+  WB_OIL:       { name: Crude oil WB avg,        asset_class: energy,     instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_OIL" } }
+  WB_NATGAS:    { name: US natural gas WB avg,   asset_class: energy,     instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_NATGAS" } }
+  WB_COPPER:    { name: Copper WB avg,           asset_class: base_metal, instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_COPPER" } }
+  WB_ALUMINUM:  { name: Aluminium WB avg,        asset_class: base_metal, instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_ALUMINUM" } }
+  WB_NICKEL:    { name: Nickel WB avg,           asset_class: base_metal, instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_NICKEL" } }
+  WB_AGRI:      { name: WB agriculture index,    asset_class: agri,       instrument: index, tradable: false, cost_bps: 0, series: { close: "static:WB_AGRI" } }
+  FF_MKT:       { name: US total market (French), asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_MKT" } }
+  FF_NODUR:     { name: Consumer non-durables (French), asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_NODUR" } }
+  FF_DURBL:     { name: Consumer durables (French),     asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_DURBL" } }
+  FF_MANUF:     { name: Manufacturing (French),         asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_MANUF" } }
+  FF_ENRGY:     { name: Energy (French),                asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_ENRGY" } }
+  FF_HITEC:     { name: Business equipment/tech (French), asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_HITEC" } }
+  FF_TELCM:     { name: Telecom (French),               asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_TELCM" } }
+  FF_SHOPS:     { name: Retail and services (French),   asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_SHOPS" } }
+  FF_HLTH:      { name: Healthcare (French),            asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_HLTH" } }
+  FF_UTILS:     { name: Utilities (French),             asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_UTILS" } }
+  FF_OTHER:     { name: Other incl. finance (French),   asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_OTHER" } }
+  TBILL:        { name: 3M T-Bill index,         asset_class: cash,       instrument: index, tradable: false, cost_bps: 0, series: { total_return: "static:TBILL" } }
+  FF_RF:        { name: 1M T-Bill (French RF),   asset_class: cash,       instrument: index, tradable: false, cost_bps: 0, series: { return: "static:french:ff3:RF" } }
+  WB_GOLD_AVG:  { name: Gold WB monthly avg,     asset_class: precious,   instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_GOLD_AVG" } }
+  WB_SILVER_AVG: { name: Silver WB monthly avg,  asset_class: precious,   instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_SILVER_AVG" } }
+  # gold and silver spot for signals (gold/silver ratio): front futures live, LBMA fix as history (daily, ratio splice)
+  XAU:          { name: "Gold spot (futures, LBMA before)", asset_class: precious, instrument: spot, tradable: false, cost_bps: 0, series: { close: ["yahoo:GC=F:close", "static:lbma:GOLD"] } }
+  XAG:          { name: "Silver spot (futures, LBMA before)", asset_class: precious, instrument: spot, tradable: false, cost_bps: 0, series: { close: ["yahoo:SI=F:close", "static:lbma:SILVER"] } }
+
+  # ---- tradable ETF universe (live), mapped to long-history proxies ----
+  SPY: { name: S&P 500 ETF,            asset_class: equity,      instrument: etf, cost_bps: 5,  proxy_of: FF_MKT,         series: { close: ["yahoo:SPY:close", "stooq:SPY:close"], dividend: "yahoo:SPY:dividend", split: "yahoo:SPY:split" } }
+  EFA: { name: MSCI EAFE ETF,          asset_class: equity,      instrument: etf, cost_bps: 8,  proxy_of: US_EQ,         series: { close: ["yahoo:EFA:close", "stooq:EFA:close"], dividend: "yahoo:EFA:dividend", split: "yahoo:EFA:split" } }
+  EEM: { name: MSCI EM ETF,            asset_class: equity,      instrument: etf, cost_bps: 10, proxy_of: US_EQ,         series: { close: ["yahoo:EEM:close", "stooq:EEM:close"], dividend: "yahoo:EEM:dividend", split: "yahoo:EEM:split" } }
+  TLT: { name: 20y+ Treasury ETF,      asset_class: bond,        instrument: etf, cost_bps: 5,  proxy_of: UST10,         series: { close: ["yahoo:TLT:close", "stooq:TLT:close"], dividend: "yahoo:TLT:dividend", split: "yahoo:TLT:split" } }
+  IEF: { name: 7-10y Treasury ETF,     asset_class: bond,        instrument: etf, cost_bps: 5,  proxy_of: UST10,         series: { close: ["yahoo:IEF:close", "stooq:IEF:close"], dividend: "yahoo:IEF:dividend", split: "yahoo:IEF:split" } }
+  TIP: { name: TIPS ETF,               asset_class: bond,        instrument: etf, cost_bps: 6,  proxy_of: UST10,         series: { close: ["yahoo:TIP:close", "stooq:TIP:close"], dividend: "yahoo:TIP:dividend", split: "yahoo:TIP:split" } }
+  GLD: { name: Gold ETF,               asset_class: precious,    instrument: etf, cost_bps: 8,  borrow_bps: 50,  proxy_of: GOLD,   series: { close: ["yahoo:GLD:close", "stooq:GLD:close"], split: "yahoo:GLD:split" } }
+  SLV: { name: Silver ETF,             asset_class: precious,    instrument: etf, cost_bps: 10, borrow_bps: 150, proxy_of: SILVER, series: { close: ["yahoo:SLV:close", "stooq:SLV:close"], split: "yahoo:SLV:split" } }
+  PPLT: { name: Platinum ETF,           asset_class: precious,    instrument: etf, cost_bps: 15, proxy_of: WB_PLATINUM, series: { close: ["yahoo:PPLT:close", "stooq:PPLT:close"], split: "yahoo:PPLT:split" } }
+  DBC: { name: Commodity basket ETF,   asset_class: commodity_basket, instrument: etf, cost_bps: 10, proxy_of: WB_ENERGY, series: { close: ["yahoo:DBC:close", "stooq:DBC:close"], split: "yahoo:DBC:split" } }
+  USO: { name: Crude oil ETF,          asset_class: energy,      instrument: etf, cost_bps: 10, proxy_of: WB_OIL,        series: { close: ["yahoo:USO:close", "stooq:USO:close"], split: "yahoo:USO:split" } }
+  UNG: { name: Natural gas ETF, asset_class: energy, instrument: etf, cost_bps: 15, proxy_of: WB_NATGAS, series: { close: ["yahoo:UNG:close", "stooq:UNG:close"], split: "yahoo:UNG:split" } }
+  CPER: { name: Copper ETF,             asset_class: base_metal,  instrument: etf, cost_bps: 15, proxy_of: WB_COPPER,     series: { close: ["yahoo:CPER:close", "stooq:CPER:close"], split: "yahoo:CPER:split" } }
+  DBA: { name: Agriculture ETF,        asset_class: agri,        instrument: etf, cost_bps: 12, proxy_of: WB_AGRI,       series: { close: ["yahoo:DBA:close", "stooq:DBA:close"], split: "yahoo:DBA:split" } }
+  VNQ: { name: US REIT ETF,            asset_class: real_estate, instrument: etf, cost_bps: 6,  series: { close: ["yahoo:VNQ:close", "stooq:VNQ:close"], dividend: "yahoo:VNQ:dividend", split: "yahoo:VNQ:split" } }
+  XLB: { name: Materials sector SPDR, asset_class: equity, instrument: etf, cost_bps: 5, proxy_of: FF_MANUF, series: { close: ["yahoo:XLB:close", "stooq:XLB:close"], dividend: "yahoo:XLB:dividend", split: "yahoo:XLB:split" } }
+  XLC: { name: Communication services sector SPDR, asset_class: equity, instrument: etf, cost_bps: 5, proxy_of: FF_TELCM, series: { close: ["yahoo:XLC:close", "stooq:XLC:close"], dividend: "yahoo:XLC:dividend", split: "yahoo:XLC:split" } }
+  XLE: { name: Energy sector SPDR, asset_class: equity, instrument: etf, cost_bps: 5, proxy_of: FF_ENRGY, series: { close: ["yahoo:XLE:close", "stooq:XLE:close"], dividend: "yahoo:XLE:dividend", split: "yahoo:XLE:split" } }
+  XLF: { name: Financials sector SPDR, asset_class: equity, instrument: etf, cost_bps: 5, proxy_of: FF_OTHER, series: { close: ["yahoo:XLF:close", "stooq:XLF:close"], dividend: "yahoo:XLF:dividend", split: "yahoo:XLF:split" } }
+  XLI: { name: Industrials sector SPDR, asset_class: equity, instrument: etf, cost_bps: 5, proxy_of: FF_MANUF, series: { close: ["yahoo:XLI:close", "stooq:XLI:close"], dividend: "yahoo:XLI:dividend", split: "yahoo:XLI:split" } }
+  XLK: { name: Technology sector SPDR, asset_class: equity, instrument: etf, cost_bps: 5, proxy_of: FF_HITEC, series: { close: ["yahoo:XLK:close", "stooq:XLK:close"], dividend: "yahoo:XLK:dividend", split: "yahoo:XLK:split" } }
+  XLP: { name: Consumer staples sector SPDR, asset_class: equity, instrument: etf, cost_bps: 5, proxy_of: FF_NODUR, series: { close: ["yahoo:XLP:close", "stooq:XLP:close"], dividend: "yahoo:XLP:dividend", split: "yahoo:XLP:split" } }
+  XLRE: { name: Real estate sector SPDR, asset_class: equity, instrument: etf, cost_bps: 5, proxy_of: FF_OTHER, series: { close: ["yahoo:XLRE:close", "stooq:XLRE:close"], dividend: "yahoo:XLRE:dividend", split: "yahoo:XLRE:split" } }
+  XLU: { name: Utilities sector SPDR, asset_class: equity, instrument: etf, cost_bps: 5, proxy_of: FF_UTILS, series: { close: ["yahoo:XLU:close", "stooq:XLU:close"], dividend: "yahoo:XLU:dividend", split: "yahoo:XLU:split" } }
+  XLV: { name: Health care sector SPDR, asset_class: equity, instrument: etf, cost_bps: 5, proxy_of: FF_HLTH, series: { close: ["yahoo:XLV:close", "stooq:XLV:close"], dividend: "yahoo:XLV:dividend", split: "yahoo:XLV:split" } }
+  XLY: { name: Consumer discretionary sector SPDR, asset_class: equity, instrument: etf, cost_bps: 5, proxy_of: FF_SHOPS, series: { close: ["yahoo:XLY:close", "stooq:XLY:close"], dividend: "yahoo:XLY:dividend", split: "yahoo:XLY:split" } }
+  BIL: { name: 1-3M T-Bill ETF,        asset_class: cash,        instrument: etf, cost_bps: 2,  proxy_of: TBILL,         series: { close: ["yahoo:BIL:close", "stooq:BIL:close"], dividend: "yahoo:BIL:dividend", split: "yahoo:BIL:split" } }
+  CASH: { name: Cash, asset_class: cash, instrument: index, cost_bps: 0, tradable: true, series: { yield: ["fred:TB3MS", "static:fredmd:TB3MS"] } }   # TR index derived from the yield (research convention: month t earns y(t-1)/1200)

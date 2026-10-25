@@ -1,0 +1,40 @@
+id: multi_asset_rotation
+version: 1
+role: core
+cadence: monthly
+universe: [SPY, EFA, EEM, TLT, IEF, TIP, GLD, SLV, DBC, VNQ, CASH]
+long_history_universe: [US_EQ, UST10, GOLD, SILVER, WB_ENERGY, WB_BASEMETALS, TBILL]
+warmup_months: 14
+params:
+  # z-score composite over the assets (research config.py FEATURE_WEIGHTS; normalised by their sum).
+  # Until 2026-10-25 this file listed the sector recipe (12-1 50 %, 6-1 30 %, trend 20 %), which never
+  # produced the golden figures (ADR 035).
+  feature_weights: { mom_3_1: 0.2, mom_6_1: 0.3, mom_12_1: 0.3, trend_10m: 0.2, inv_vol_12m: 0.1 }
+  zscore_clip: 3.0
+  top_n: 3
+  weighting: inverse_vol
+  vol_window_months: 12
+  trend_filter: true               # picks below their 10M average go to cash
+  trend_window_months: 10
+confidence:
+  kind: score_dispersion
+  floor: 0.5
+  params: { scale: 1.0 }
+# Reference figures from output/long/REPORT.md §7 (1972-12 – 2025-12, long-history universe, 15 bp on one-way turnover)
+golden: { sharpe_ex_cash: 0.57, ann_return: 0.119, max_drawdown: -0.238 }
+golden_tolerance: { sharpe_ex_cash: 0.02, ann_return: 0.01, max_drawdown: 0.02 }
+golden_run:
+  data_from: 1972-12-31            # research panel started here: features warm up from scratch
+  start: 1972-12-31
+  end: 2025-12-31
+  sample: [1972-12-31, 2025-12-31]
+  count_warmup: true               # research kept the all-cash warm-up months
+  costs: { default_bps: 7.5, cash_bps: 7.5 }   # 15 bp x one-way turnover = 7.5 bp per side incl. cash leg
+walkforward:
+  grid: { top_n: [2, 3, 4], trend_filter: [true, false] }
+  refit_every_months: 12
+  min_train_months: 120
+  golden: { sharpe_ex_cash: 0.772, ann_return: 0.098, max_drawdown: -0.108 }
+  golden_tolerance: { sharpe_ex_cash: 0.02, ann_return: 0.01, max_drawdown: 0.02 }
+  golden_sample: [1982-12-31, 2025-12-31]
+  golden_chosen: { top_n: 4, trend_filter: true }    # research: chosen in all 44 years
