@@ -143,7 +143,7 @@ def test_record_all_providers_offline_then_replay(tmp_path, bundle) -> None:
         catalog,
         tmp_path,
         date(2026, 10, 24),
-        env={"FRED_API_KEY": "k"},
+        env={"FRED_API_KEY": "k", "STOOQ_API_KEY": "k"},
         transport=lambda name, pc: FixtureClient(routes),
     )
     assert {r["series_id"] for r in rows} == {sid for items in SAMPLE.values() for sid, _ in items}

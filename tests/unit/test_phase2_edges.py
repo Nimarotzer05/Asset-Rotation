@@ -132,3 +132,13 @@ def test_walk_forward_survives_a_period_without_prices() -> None:
 def test_walk_forward_golden_needs_its_sections(bundle, static_store, cal) -> None:
     with pytest.raises(ValueError, match="needs golden_run and walkforward"):
         walkforward_golden(bundle, static_store.observations(), "commodity_trend", cal)
+
+
+def test_stooq_needs_a_key_and_names_the_html_page(bundle) -> None:
+    from rotationlab.data.providers import make_providers
+    from rotationlab.data.providers.stooq import parse_csv
+
+    with pytest.raises(DataError, match="API key"):
+        parse_csv(b"<!DOCTYPE html><html><head><meta charset='utf-8'>")
+    assert "stooq" not in make_providers(bundle, date(2026, 10, 23), env={})
+    assert "stooq" in make_providers(bundle, date(2026, 10, 23), env={"STOOQ_API_KEY": "k"})
