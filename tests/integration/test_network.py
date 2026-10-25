@@ -40,7 +40,9 @@ def test_yahoo_live() -> None:
     assert {d.date() for d in f["obs_date"]} <= sessions | {date.today()}
 
 
-@pytest.mark.skipif(not os.environ.get("STOOQ_API_KEY"), reason="needs STOOQ_API_KEY (Stooq CSV since 2026-03)")
+@pytest.mark.skipif(
+    not os.environ.get("STOOQ_API_KEY"), reason="needs STOOQ_API_KEY (Stooq CSV since 2026-03)"
+)
 def test_stooq_live() -> None:
     f = StooqProvider(HTTP, os.environ["STOOQ_API_KEY"]).fetch_frame(
         spec("stooq:SPY:close", SeriesKind.PRICE, Frequency.DAILY), date.today() - timedelta(days=30)
