@@ -33,7 +33,7 @@
    "series_id": "stooq:SPY:close",
    "since": "2026-09-10",
    "rows": null,
-   "error": "DataError: stooq: HTML page instead of CSV \u2013 API key missing or invalid (STOOQ_API_KEY)"
+   "error": "RuntimeError: provider disabled"
   },
   {
    "provider": "fred",
