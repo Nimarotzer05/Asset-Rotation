@@ -368,3 +368,83 @@ ingested_at,series_id,check,status,detail
 2026-10-25T11:18:05Z,yahoo:XLY:close,gaps,ok,0 missing session(s) since 2024-10-23
 2026-10-25T11:18:05Z,yahoo:GC=F:close,cross_source,warn,returns differ by 3.41% on 2026-02-02 vs static:lbma:GOLD (last 20 common days)
 2026-10-25T11:18:05Z,yahoo:SI=F:close,cross_source,warn,returns differ by 18.63% on 2026-02-02 vs static:lbma:SILVER (last 20 common days)
+2026-10-25T11:50:22Z,bls:CES0000000001,fetch,warn,DataError: giving up after 4 attempts: https://api.bls.gov/publicAPI/v2/timeseries/data/ (HTTP Error 503: Service Unavailable)
+2026-10-25T11:50:22Z,bls:CUSR0000SA0,fetch,warn,DataError: giving up after 4 attempts: https://api.bls.gov/publicAPI/v2/timeseries/data/ (HTTP Error 503: Service Unavailable)
+2026-10-25T11:50:22Z,bls:CUSR0000SA0L1E,fetch,warn,DataError: giving up after 4 attempts: https://api.bls.gov/publicAPI/v2/timeseries/data/ (HTTP Error 503: Service Unavailable)
+2026-10-25T11:50:22Z,bls:LNS14000000,fetch,warn,DataError: giving up after 4 attempts: https://api.bls.gov/publicAPI/v2/timeseries/data/ (HTTP Error 503: Service Unavailable)
+2026-10-25T11:50:22Z,fred:DTWEXBGS,staleness,warn,"last obs 2026-10-16, 5 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:SPY:dividend,staleness,warn,"last obs 2026-09-18, 25 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:SPY:split,staleness,warn,no observations at all
+2026-10-25T11:50:22Z,yahoo:EFA:dividend,staleness,warn,"last obs 2026-06-15, 91 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:EFA:split,staleness,warn,"last obs 2005-06-09, 5377 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:EEM:dividend,staleness,warn,"last obs 2026-06-15, 91 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:EEM:split,staleness,warn,"last obs 2008-07-24, 4591 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:TLT:dividend,staleness,warn,"last obs 2026-10-01, 16 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:TLT:split,staleness,warn,no observations at all
+2026-10-25T11:50:22Z,yahoo:IEF:dividend,staleness,warn,"last obs 2026-10-01, 16 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:IEF:split,staleness,warn,no observations at all
+2026-10-25T11:50:22Z,yahoo:TIP:dividend,staleness,warn,"last obs 2026-08-03, 58 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:TIP:split,staleness,warn,no observations at all
+2026-10-25T11:50:22Z,yahoo:GLD:split,staleness,warn,no observations at all
+2026-10-25T11:50:22Z,yahoo:SLV:split,staleness,warn,"last obs 2008-07-24, 4591 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:PPLT:split,staleness,warn,"last obs 2026-05-18, 110 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:DBC:split,staleness,warn,no observations at all
+2026-10-25T11:50:22Z,yahoo:USO:split,staleness,warn,"last obs 2020-04-29, 1630 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:UNG:split,staleness,warn,"last obs 2024-01-24, 690 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:CPER:split,staleness,warn,no observations at all
+2026-10-25T11:50:22Z,yahoo:DBA:split,staleness,warn,no observations at all
+2026-10-25T11:50:22Z,yahoo:VNQ:dividend,staleness,warn,"last obs 2026-09-23, 22 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:VNQ:split,staleness,warn,no observations at all
+2026-10-25T11:50:22Z,yahoo:XLB:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLB:split,staleness,warn,"last obs 2025-12-05, 221 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLC:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLC:split,staleness,warn,no observations at all
+2026-10-25T11:50:22Z,yahoo:XLE:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLE:split,staleness,warn,"last obs 2025-12-05, 221 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLF:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLF:split,staleness,warn,"last obs 2016-09-19, 2538 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLI:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLI:split,staleness,warn,no observations at all
+2026-10-25T11:50:22Z,yahoo:XLK:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLK:split,staleness,warn,"last obs 2025-12-05, 221 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLP:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLP:split,staleness,warn,no observations at all
+2026-10-25T11:50:22Z,yahoo:XLRE:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLRE:split,staleness,warn,no observations at all
+2026-10-25T11:50:22Z,yahoo:XLU:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLU:split,staleness,warn,"last obs 2025-12-05, 221 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLV:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLV:split,staleness,warn,no observations at all
+2026-10-25T11:50:22Z,yahoo:XLY:dividend,staleness,warn,"last obs 2026-09-21, 24 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:XLY:split,staleness,warn,"last obs 2025-12-05, 221 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:BIL:dividend,staleness,warn,"last obs 2026-10-01, 16 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:BIL:split,staleness,warn,"last obs 2017-11-30, 2235 sessions behind 2026-10-23"
+2026-10-25T11:50:22Z,yahoo:BIL:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:CPER:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:DBA:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:DBC:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:EEM:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:EFA:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:GLD:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:IEF:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:PPLT:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:SLV:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:SPY:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:TIP:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:TLT:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:UNG:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:USO:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:VNQ:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:XLB:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:XLC:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:XLE:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:XLF:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:XLI:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:XLK:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:XLP:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:XLRE:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:XLU:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:XLV:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:XLY:close,gaps,ok,0 missing session(s) since 2024-10-23
+2026-10-25T11:50:22Z,yahoo:GC=F:close,cross_source,warn,returns differ by 3.41% on 2026-02-02 vs static:lbma:GOLD (last 20 common days)
+2026-10-25T11:50:22Z,yahoo:SI=F:close,cross_source,warn,returns differ by 18.63% on 2026-02-02 vs static:lbma:SILVER (last 20 common days)
