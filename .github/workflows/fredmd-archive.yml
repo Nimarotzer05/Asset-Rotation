@@ -1,0 +1,27 @@
+name: fredmd-archive
+# Downloads the FRED-MD vintage archive (monthly since 1999-08) into data/raw/fredmd_vintages and pushes it
+# to the branch `fredmd-archive` for review. Afterwards: merge, `rotationlab ingest --provider static`,
+# `python scripts/revision_study.py` (real-time vs. revised macro signals over 27 years).
+on:
+  workflow_dispatch:
+    inputs:
+      start: { description: "first vintage (YYYY-MM)", default: "1999-08" }
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv python install 3.12
+      - run: uv sync
+      - run: uv run rotationlab fredmd-archive --start "${{ github.event.inputs.start }}"
+      - name: push to branch fredmd-archive
+        run: |
+          git config user.name "rotationlab-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git checkout -B fredmd-archive
+          git add data/raw/fredmd_vintages
+          git commit -m "FRED-MD vintage archive $(date -u +%F)" || echo "nothing new"
+          git push -f origin fredmd-archive
