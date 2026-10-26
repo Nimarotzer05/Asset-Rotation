@@ -1,8 +1,8 @@
 series_id,provider,provider_code,kind,frequency,lag,vintages,required,unit,name,first_obs,last_obs,rows,vintage_dates
-bls:CES0000000001,bls,CES0000000001,macro,M,1M,none,False,thousands,Nonfarm payrolls (BLS),,,0,0
-bls:CUSR0000SA0,bls,CUSR0000SA0,macro,M,1M,none,False,index,CPI-U all items SA (BLS),,,0,0
-bls:CUSR0000SA0L1E,bls,CUSR0000SA0L1E,macro,M,1M,none,False,index,CPI-U less food and energy SA (BLS),,,0,0
-bls:LNS14000000,bls,LNS14000000,macro,M,1M,none,False,pct,Unemployment rate (BLS),,,0,0
+bls:CES0000000001,bls,CES0000000001,macro,M,1M,none,False,thousands,Nonfarm payrolls (BLS),2017-01-31,2026-09-30,117,117
+bls:CUSR0000SA0,bls,CUSR0000SA0,macro,M,1M,none,False,index,CPI-U all items SA (BLS),2017-01-31,2026-09-30,116,116
+bls:CUSR0000SA0L1E,bls,CUSR0000SA0L1E,macro,M,1M,none,False,index,CPI-U less food and energy SA (BLS),2017-01-31,2026-09-30,116,116
+bls:LNS14000000,bls,LNS14000000,macro,M,1M,none,False,pct,Unemployment rate (BLS),2017-01-31,2026-09-30,116,116
 cftc:067651:noncomm_net,cftc,067651:noncomm_net,positioning,W,7D,none,False,,WTI NYMEX non-commercial net,1986-01-15,2026-10-20,1938,1938
 cftc:084691:noncomm_net,cftc,084691:noncomm_net,positioning,W,7D,none,False,,Silver COMEX non-commercial net,1986-01-15,2026-10-20,1939,1939
 cftc:084691:open_interest,cftc,084691:open_interest,positioning,W,7D,none,False,,Silver COMEX open interest,1986-01-15,2026-10-20,1939,1939
@@ -417,13 +417,13 @@ yahoo:EFA:split,yahoo,EFA:split,split,D,0D,none,False,,MSCI EAFE ETF split,2005-
 yahoo:GC=F:close,yahoo,GC=F:close,price,D,0D,none,False,,Gold futures (front),2000-08-30,2026-10-23,6563,6563
 yahoo:GLD:close,yahoo,GLD:close,price,D,0D,none,True,,Gold ETF close,2004-11-18,2026-10-23,5517,5517
 yahoo:GLD:split,yahoo,GLD:split,split,D,0D,none,False,,Gold ETF split,,,0,0
-yahoo:HG=F:close,yahoo,HG=F:close,price,D,0D,none,False,,Copper futures (front),2000-08-30,2026-10-23,6567,6567
+yahoo:HG=F:close,yahoo,HG=F:close,price,D,0D,none,False,,Copper futures (front),2000-08-30,2026-10-23,6568,6568
 yahoo:IEF:close,yahoo,IEF:close,price,D,0D,none,True,,7-10y Treasury ETF close,2002-07-30,2026-10-23,6099,6099
 yahoo:IEF:dividend,yahoo,IEF:dividend,dividend,D,0D,none,False,,7-10y Treasury ETF dividend,2002-09-03,2026-10-01,291,291
 yahoo:IEF:split,yahoo,IEF:split,split,D,0D,none,False,,7-10y Treasury ETF split,,,0,0
 yahoo:PPLT:close,yahoo,PPLT:close,price,D,0D,none,True,,Platinum ETF close,2010-01-08,2026-10-23,4224,4224
 yahoo:PPLT:split,yahoo,PPLT:split,split,D,0D,none,False,,Platinum ETF split,2026-05-18,2026-05-18,1,1
-yahoo:SI=F:close,yahoo,SI=F:close,price,D,0D,none,False,,Silver futures (front),2000-08-30,2026-10-23,6564,6564
+yahoo:SI=F:close,yahoo,SI=F:close,price,D,0D,none,False,,Silver futures (front),2000-08-30,2026-10-23,6565,6565
 yahoo:SLV:close,yahoo,SLV:close,price,D,0D,none,True,,Silver ETF close,2006-04-28,2026-10-23,5155,5155
 yahoo:SLV:split,yahoo,SLV:split,split,D,0D,none,False,,Silver ETF split,2008-07-24,2008-07-24,1,1
 yahoo:SPY:close,yahoo,SPY:close,price,D,0D,none,True,,S&P 500 ETF close,1993-01-29,2026-10-23,8492,8492
