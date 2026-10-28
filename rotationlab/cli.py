@@ -1,8 +1,8 @@
 """Command-line entry point: rotationlab <command> [options].
 
 Phase 1 added the data commands (ingest, store, asof, calendar), phase 2 the engine commands (backtest,
-walkforward, golden), the forecast step P6 `forecast run|verify` (ADR 043). Commands of later phases raise NotImplementedError naming the phase that delivers
-them. Exit codes: 0 ok, 2 config error,
+walkforward, golden), the forecast step P6 `forecast run|verify` (ADR 043). The commands of the never-built
+phases 3/4 were removed (ADR 062). Exit codes: 0 ok, 2 config error,
 3 data/quality error (blocking quality result, store integrity), 4 risk halt, 1 anything else.
 """
 

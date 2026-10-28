@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS assets (
 
 CREATE TABLE IF NOT EXISTS runs (
     run_id         VARCHAR PRIMARY KEY,
-    mode           VARCHAR NOT NULL,               -- backtest | walkforward | live | scenario
+    mode           VARCHAR NOT NULL,               -- backtest | walkforward | live
     started_at     TIMESTAMP NOT NULL,
     finished_at    TIMESTAMP,
     git_sha        VARCHAR NOT NULL,

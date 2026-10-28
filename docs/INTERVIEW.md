@@ -24,10 +24,11 @@ README and in ADR 060. The defensible statement is narrow: a trend filter on a l
 *Files:* `output/allocator_v2/WALKFORWARD.md`, ADR 060, `docs/figures/tests.png`.
 
 **2. "Walk me through the deflated Sharpe. What is N, and what does 0.895 mean?"**
-N = 71, every variant ever computed on this history, including ones whose results I saw and discarded. The tested
+N counts every variant ever computed on this history, including ones whose results I saw and discarded: 70 when
+round 4 ran, 71 today (after the ETF check). The tested
 statistic is the Sharpe of the allocator's return net of its beta to the baseline, so extra risk doesn't count as
-skill. Given how much the 71 trials vary, 0.895 is the probability that the observed Sharpe beats the best of 71
-unskilled tries. It's a probability, not a p-value, and it's below the 0.95 I set as the bar – so round 4 does not
+skill. Given how much the trials vary, 0.895 is the probability that the observed Sharpe beats the best of 70 unskilled
+tries (0.90 with 71). It's a probability, not a p-value, and it's below the 0.95 I set as the bar – so round 4 does not
 survive the multiple-testing correction. *File:* `docs/METHODS.md` §8, `docs/TRIALS.yaml`.
 
 **3. "Which parts did you write yourself?"**
@@ -47,7 +48,8 @@ everything before it.
 **5. "Why a moving-block bootstrap, and why block length 12?"**
 Monthly returns are autocorrelated and two strategies on the same months are correlated. Resampling single months
 would understate the error; resampling the same 12-month blocks for both strategies keeps both properties. 12 months
-covers the autocorrelation of 12-month signals; with block 24 the round-4 interval is [+0.14, +0.43], unchanged.
+covers the autocorrelation of 12-month signals; with block 24 the round-4 interval is [+0.13, +0.43], practically
+unchanged.
 
 **6. "Your research data are indices, not tradable instruments."**
 Checked, pre-registered: the round-4 book rebuilt with ETFs (sector SPDRs, EFA, SHY/IEF, GLD/SLV) correlates 0.96
@@ -62,13 +64,16 @@ reason for the later process. The strict tests that followed did not confirm it.
 `archive/legacy-research` for transparency.
 
 **8. "How do you know there is no look-ahead?"**
-Three layers: the store only shows data known at the decision date (vintages and publication lags); a harness
+Three layers, and one stated convention: the store only shows data known at the decision date (vintages and
+publication lags) – except that research returns computable from public prices on their date (the French industry
+and country portfolios) are treated as known at the close, although French publishes them weeks later; a harness
 replaces everything after D with noise and asserts that the decision at D does not change, for every feature and
 strategy; and execution is at the next session after the decision. The independent pandas rebuild, with its own
-simple timing, gets the same Sharpe within 0.02.
+simple timing, gets the same Sharpe within 0.02. The convention matters least where it is checked: the ETF version,
+on real closes, tracks the index version at ρ = 0.96.
 
 **9. "Can the live forecast prove anything?"**
-Not soon. The monthly IC has a standard deviation of 0.64; even a true IC of 0.10 needs about 10 years for t = 1.65
+Not soon. The monthly IC has a standard deviation of 0.64; even a true IC of 0.098 needs about 10 years for t = 1.65
 and about 22 years for 80 % power. The live journal shows an honest, tamper-evident process – forecasts written
 before outcomes, hash-chained, anchored outside the repo – not evidence of skill.
 
@@ -76,6 +81,25 @@ before outcomes, hash-chained, anchored outside the repo – not evidence of ski
 Start with the held-out period and the trial register on day one, not after the first exciting result. Test on
 tradable instruments from the start. Spend the budget on one clean hypothesis with enough power rather than on
 breadth – the MDE of 0.22–0.31 Sharpe means small real effects were invisible to every test here.
+
+**11. "Why does the model that failed the holdout run live?"**
+Because it was frozen before the holdout ran (ADR 049: "after the run, model and rule are not changed"). Swapping in a
+model chosen after seeing the holdout would be selecting on the holdout – the one thing the holdout exists to
+prevent. The live record is the only genuinely out-of-sample test left for that frozen model; it is published with
+the holdout failure stated next to it, including that its probabilities did worse than the base rate there.
+
+**12. "Where does your long history come from?"**
+Partly from public GitHub mirrors of official sources (FRED-MD vintages, LBMA fixings, Shiller, World Bank, the
+French library), listed with links in `data/DATA_SOURCES.md`, because the research machine could not reach the
+originals; round 4's data were downloaded from FRED and the French library directly by a GitHub workflow, stored
+byte-for-byte with SHA-256 checksums, and checked by six gates before use (`output/allocator_v2/DATA.md`). The live
+store reads the primary sources daily. A mirror can carry errors; the gates (e.g. daily vs. monthly French files
+agree to 0.9998) and the ETF cross-check are how I would detect them.
+
+**13. "Leverage financed at T-bills + 30 bp in 1977–89 – realistic?"**
+Optimistic for that period; it is an assumption, stated as such. The sensitivity is small: each extra 100 bp of
+financing costs about 0.017 Sharpe (`docs/REVIEW_ALLOKATOR.md` F4), and the passive baseline is leveraged as well,
+so the comparison is not driven by it.
 
 ## Likely follow-ups to prepare
 - Fundamental law of active management: IC × √breadth – why 4 classes give little breadth (round 4 widened it to ~45).

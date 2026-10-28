@@ -3,7 +3,8 @@
 Why this file exists: the result of research round 4 (ADR 060) is "risk parity across four sleeves plus a 12-month
 trend filter beats passive risk parity". If that result were an artefact of the framework (a timing bug, a cost
 quirk), an independent, much simpler implementation would not reproduce it. This one uses only monthly total-return
-levels from the store (the data layer) and implements every rule in ~100 readable lines:
+levels from the store (the data layer: how those levels are built from raw files is the package's, and is checked
+separately by the data gates) and implements every portfolio rule itself in a few dozen readable lines:
 
   1. sleeves and budgets (ADR 057 b): US industries 1/8, countries 1/8, Treasuries 2/5/10y 1/4, gold+silver 1/4
   2. inside a sleeve: inverse-volatility weights over the instruments with ≥ 24 months of history
@@ -14,8 +15,8 @@ levels from the store (the data layer) and implements every rule in ~100 readabl
   7. trade at month-end, earn the next month; 10 bp per unit traded; negative cash costs T-bill + 30 bp
 
 Deliberate simplifications versus the engine (so exact equality is not expected): monthly instead of daily vols,
-execution at the decision close instead of the next session, one cost rate for all instruments, caps applied to
-the filtered book. The comparison at the end reports how close the two get.
+basket volatility from realised basket returns, execution at the decision close instead of the next session, one
+cost rate for all instruments. Like the engine, the caps act on the unfiltered book and the filter only removes. The comparison at the end reports how close the two get.
 
 Result (2026-10-28, 563 months 1979–2025): Sharpe 0.789 from scratch vs 0.802 in the engine, correlation of monthly
 excess returns 0.98; with the filter switched off the same code gives ≈ the passive risk parity of the engine.

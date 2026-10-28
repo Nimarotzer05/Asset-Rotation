@@ -12,7 +12,7 @@ independent review of each result, and a live forecast that cannot be edited aft
 A point-in-time store holds ~540 series (prices, yields, macro data with publication vintages) from FRED, Yahoo,
 Stooq, BLS, CFTC, the Kenneth French library and Shiller, so every decision sees only what was known on its date.
 One engine runs backtests, walk-forwards and the live forecast; trades execute at the next session, with
-per-instrument costs and financing of leverage. 368 tests, golden tests that pin each published number, and a
+per-instrument costs and financing of leverage. About 400 tests, golden tests that pin each published number, and a
 look-ahead harness (the future is replaced by noise; no decision may change) guard the code.
 
 ## Four rounds
@@ -38,13 +38,15 @@ Newey-West test as stand-alone rank portfolios.
 Sharpe (Δ −0.001 [−0.07, +0.06], correlation 0.96): the edge is the 12-month trend filter, a known effect
 (Moskowitz, Ooi & Pedersen 2012), not the signals. It comes from 1977–2007; since 2008 the difference is +0.08
 [−0.18, +0.28] and the allocator trails equal weight and 60/40 (0.59 vs. 0.72). Passive risk parity was the weakest
-of four baselines. The deflated Sharpe probability against all 71 trials is 0.895, below the 0.95 bar. No live use.
+of four baselines. The deflated Sharpe probability is 0.895 against the 70 trials counted at the time (0.90 with
+the 71 of today's register), below the 0.95 bar. No live use.
 
 ## Checks on the result
 - **Tradable instruments (pre-registered).** The round-4 book rebuilt with ETFs, 2008–2026: filter vs. no filter
-  +0.06 [−0.21, +0.20], not significant; the filter halves volatility and drawdown. The ETF and index versions
+  +0.06 [−0.21, +0.20], not significant; the filter lowers volatility by about a quarter and the drawdown by almost
+  half. The ETF and index versions
   correlate 0.96 over common months – the research data describe what was investable.
-- **Independent rebuild.** 120 lines of pandas, no engine: Sharpe 0.79 vs. 0.80 from the engine, correlation 0.98;
+- **Independent rebuild.** A short pandas script, no engine: Sharpe 0.79 vs. 0.80 from the engine, correlation 0.98;
   with the filter switched off it falls to passive risk parity. The rebuild's own first bug (a pandas alignment error
   that silently disabled the filter) is documented in the file.
 - **Second review.** A fresh reviewer recomputed every reported number from the stored series (agreement < 1e-14) and
@@ -52,7 +54,7 @@ of four baselines. The deflated Sharpe probability against all 71 trials is 0.89
 
 ## Live
 Since October 2026 the round-1 ranking is written after every month-end into an append-only, hash-chained journal
-whose head is anchored outside the repository. With a monthly IC standard deviation of 0.64, even a true IC of 0.10
+whose head is anchored outside the repository. With a monthly IC standard deviation of 0.64, even a true IC of 0.098
 needs about ten years to reach t = 1.65; the live record demonstrates process, not skill.
 
 ## Lessons

@@ -6,6 +6,10 @@ author can explain every number in the README without opening the code.
 ## 1. Point-in-time data
 **What.** Every observation is stored with the date it became known (`vintage_date`), not only the date it refers
 to. Unemployment for September is published in early October; a decision on 30 September must not see it.
+**Convention.** Returns that are computable from public prices on their date – the Kenneth French industry and
+country portfolios, monthly average yields – carry no lag even though the files appear weeks later: an investor
+holding the same stocks would know them at the close. It is a stated assumption (configs/series.yaml); the ETF check
+uses real closing prices and tracks the index result (ρ 0.96).
 **How.** A *view* at date D returns only rows with `obs_date ≤ D` and `vintage_date ≤ D`; publication lags per
 series (`0D` for market prices, `1M` for monthly macro data) set the vintage when a source has no history of revisions.
 **Where.** `rotationlab/data/store.py`, `data/view.py`, `data/lags.py`. **Test.** `tests/lookahead/`: the future
@@ -21,8 +25,9 @@ combined with fixed weights (3-1M 0.2, 6-1M 0.3, 12-1M 0.3, trend 0.2, inverse v
 **What.** Each month, the Spearman correlation between the predicted ranks and the realised next-month returns of
 the classes. +1 = perfect order, 0 = no information. With 4 classes one month says little; the *mean over many
 months* is the statistic. Round 1: +0.098 over 548 months (1973–2018), −0.03 over 83 held-out months.
-**Why it is hard to prove live.** The monthly IC has a standard deviation of 0.64. To show a true IC of 0.10 with
-t = 1.65 needs n = (1.65 × 0.64 / 0.10)² ≈ 116 months; with 80 % power (1.65 + 0.84 instead of 1.65) ≈ 265 months.
+**Why it is hard to prove live.** The monthly IC has a standard deviation of 0.64. To show a true IC with
+t = 1.645 needs n = (1.645 × 0.642 / 0.098)² ≈ 116 months (≈ 10 years) at the in-sample IC of 0.098; with 80 % power
+(1.645 + 0.842 instead of 1.645) ≈ 265 months (≈ 22 years).
 **Where.** `rotationlab/forecast/evaluation.py`.
 
 ## 4. Volatility, risk parity, volatility target (rounds 3–4)
@@ -40,7 +45,7 @@ capped at 1.5× gross (equities and metals at most 1.0).
 in T-bills instead (nothing is re-scaled). **Why it helps.** It steps out of assets in sustained decline – bonds in
 1979–81, 2013 and 2022 – and so cuts drawdowns. **Why it is not new.** Time-series momentum is documented
 (Moskowitz, Ooi & Pedersen 2012); here it is confirmed 1977–2007 and not significant since 2008.
-**Rebuild.** `examples/trend_filter_from_scratch.py` implements the whole book in ~120 lines of pandas.
+**Rebuild.** `examples/trend_filter_from_scratch.py` implements the whole book in a short pandas script.
 
 ## 6. Paired block bootstrap – is a Sharpe difference real?
 **Problem.** Two strategies on the same months are correlated, and monthly returns are autocorrelated, so a
@@ -61,8 +66,9 @@ were tested in round 4, so the p-values are adjusted with Holm's method (multipl
 **Idea.** If you try N variants, the best one looks good by luck. The deflated Sharpe (Bailey & López de Prado 2014)
 asks: what is the probability that the observed Sharpe exceeds the maximum expected from N unskilled tries, given
 how much the tries vary? It is a probability (≥ 0.95 = survives), not a p-value. **Here.** N = every variant ever
-run on this history (`docs/TRIALS.yaml`, 71); the statistic is the Sharpe of the return net of the baseline
-(beta-adjusted residual), so a strategy cannot win by simply taking more risk. Round 4: 0.895.
+run on this history (`docs/TRIALS.yaml`; 70 when round 4 ran, 71 after the ETF check); the statistic is the Sharpe of the return net of the baseline
+(beta-adjusted residual), so a strategy cannot win by simply taking more risk. Round 4: 0.895 at N = 70, 0.90 with
+today's register.
 
 ## 9. Pre-registration and the trial register
 Before a round touches its data, its rules, criterion, baselines and variants are written into the decision log and

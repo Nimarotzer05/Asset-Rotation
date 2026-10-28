@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "rotationlab"
 version = "0.1.0"
-description = "Cross-asset rotation system: point-in-time data, pure features, pluggable strategies, one engine for backtest and live, scenarios, relationships, paper-trading journal."
+description = "Monthly asset-class forecast and pre-registered research rounds: point-in-time data, pure features, pluggable strategies, one engine for backtest and live, hash-chained forecast journal."
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }

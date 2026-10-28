@@ -1,7 +1,7 @@
 # Datenquellen und Konstruktion
 
-Alle Rohdaten liegen in `data/raw/` (Stand Oktober 2026). `scripts/build_dataset.py` baut daraus
-`assets_monthly.csv` und `macro_monthly.csv`; `coverage.csv` listet Start/Ende jeder Reihe.
+Alle Rohdaten liegen in `data/raw/` (Stand Oktober 2026). Das Paket liest sie über `rotationlab/data/providers/static.py`
+(Port von `scripts/build_dataset.py`, das mit dem ersten Forschungscode auf Branch `archive/legacy-research` liegt).
 Alle Reihen sind auf **Monatsende** gestempelt.
 
 ## Rohquellen

@@ -5,20 +5,20 @@ und Abnahmeprotokolle. Der erste Forschungscode (`src/`, `config.py`, `run.py`, 
 28.10.2026 auf Branch `archive/legacy-research` (ADR 062).
 
 An jedem Monatsende sagt `rotationlab`, welche von vier Anlageklassen – US-Aktien, US-Treasuries (10 J.), Gold,
-Silber – im nächsten Monat relativ attraktiv sind: eine **Rangfolge** mit einer kalibrierten **Wahrscheinlichkeit** je
-Klasse, in der oberen Hälfte zu landen, und dem historischen Mittel je Rang; Basismetalle nur mit ihrem Trend (auf/ab;
+Silber – im nächsten Monat relativ attraktiv sind: eine **Rangfolge** mit einer **Wahrscheinlichkeit** je
+Klasse, in der oberen Hälfte zu landen (in-sample kalibriert, im Pseudo-Holdout schlechter als die Grundrate), und dem historischen Mittel je Rang; Basismetalle nur mit ihrem Trend (auf/ab;
 der Energie-Trend wurde mangels Nachweis gestrichen, ADR 047). Einen Monat später wird jede Prognose gegen das Ergebnis
 und gegen einfache Baselines abgerechnet – in einem append-only Journal mit Hash-Kette, dessen Kopf ausserhalb des
 Repos verankert wird. Paper-Betrieb, kein Kapital (ADR 043–048).
 
-**Was die Evaluation zeigt (1973–2018, Pseudo-Holdout 2019–2025 unberührt, Kriterien vorab fixiert):** Rang-IC +0.098
+**Was die Evaluation in-sample zeigt (1973–2018, Kriterien vorab fixiert; der Pseudo-Holdout 2019–2025 wurde danach einmalig gerechnet und ist gescheitert, siehe unten):** Rang-IC +0.098
 [+0.051, +0.141], Rang 1 schlägt Rang 4 in 56.8 % der Monate, positiv in allen vier Jahrzehnten, Permutations-p < 0.0005
 – ein kleiner, systematischer Vorteil, nicht „meistens richtig“ (`output/forecast/EVALUATION.md`). **In-sample
 bezüglich der Modellwahl:** Features und Gewichte stammen aus der Forschungsphase auf demselben Zeitraum; vorab fixiert
 sind Kriterien und Auswertung. Das reine 12-1-Momentum ohne angepasste Gewichte erreicht IC +0.108 (Robustheit). Echte
-Out-of-Sample-Evidenz entsteht erst im Pseudo-Holdout (einmalig, am Schluss) und in der Live-Bilanz ab November 2026.
+Out-of-Sample-Evidenz lieferte der Pseudo-Holdout (gescheitert, unten); offen ist allein die Live-Bilanz ab November 2026.
 Die Rangfolge überlebt handelbare Preise (ETFs, Monatsend-Renditen: IC +0.099; `output/forecast/INVESTABILITY.md`). Die
-Wahrscheinlichkeiten sind kalibriert, ihr Brier-Skill gegen die Grundrate je Klasse ist mit 488 Monaten nicht von Null
+Wahrscheinlichkeiten sind in-sample kalibriert, ihr Brier-Skill gegen die Grundrate je Klasse ist mit 488 Monaten nicht von Null
 zu trennen; der Basismetall-Trend ist beschreibend, kein belegter Vorteil. Abnahmeprotokolle: `docs/FORECAST_ABNAHME.md`.
 
 **Pseudo-Holdout 2019–2025 (einmalig gerechnet, Lesart vorab, ADR 049): Replikation gescheitert.** Rang-IC
@@ -62,7 +62,7 @@ Download gehärtet (ADR 058):** Trockenlauf der ganzen Kette auf zwei synthetisc
 Designs – zwei Fehler behoben (FX-Carry mit Monatslag wäre nie verfügbar gewesen; Kappen wirkten nach dem Trendfilter),
 Vol-Ziel auf dem Long-Buch mit dem Währungs-Overlay ausserhalb (sonst mass der Vergleich mit B1 eine mechanische
 Anleihe-Übergewichtung), Fenster an beiden Enden nach Regel, Währungen erst ab 1991 (Kapitalverkehrskontrollen), Cash
-mit Investitionsrendite, Datenprüfung mit Schwellen vor dem Download, Registrierung aus einer Vorlage. **Gerechnet am 28.10. (ADR 059/060):** FRED liefert die D-Mark-Reihe nicht mehr, der Euro tritt ohne Verkettung 1999 ein (Notfallregel, vor dem Datenblick entschieden); Datenprüfung G1–G6 bestanden; Fenster nach Regel 1977-01 bis 2025-11 (587 Monate). Ergebnis (`output/allocator_v2/WALKFORWARD.md`): Allokator Sharpe 0.79 gegen passive Risikoparität 0.51, Δ +0.285 [+0.14, +0.43] → **Primärkriterium erfüllt**; Länder-Momentum und Währungs-Carry/Momentum als Rang-Portfolios je belegt (Holm 10 %). Nüchterne Deutung, die im Bericht steht: Die Variante „Risikoparität + Trendfilter ohne Querschnitt“ erreicht denselben Sharpe (0.792) – der Mehrwert ist der Zeitreihen-Trendfilter, nicht die Auswahl innerhalb der Sleeves; seit 2008 Δ +0.08 [−0.18, +0.28], Deflated-Sharpe-Wahrscheinlichkeit 0.895 (unter 0.95). B1 ist allerdings die schwächste der vier Baselines (Sharpe 0.506 gegen Buy-and-Hold 0.524, 60/40 0.563, Equal Weight 0.614); gegen B2–B4 enthält das Intervall die Null oder streift sie, und seit 2008 liegt der Allokator (0.594) unter Equal Weight (0.719) und 60/40 (0.720) – Punktschätzer, nachgerechnet in der Projekt-Rückschau vom 28.10. Deshalb kein Live-Betrieb von v2 (ADR 060); die Live-Prognose von Runde 1 bleibt der einzige Live-Track. **ETF-Check (ADR 061/062, vorregistriert):** dieselbe Ablation mit handelbaren ETFs 2008–2026: Filter gegen Risikoparität ohne Filter +0.064 [−0.215, +0.199] → nicht belegt; Vol und Drawdown halbiert; Korrelation mit der Index-Studie 0.96 (`output/etf_check/ETF_CHECK.md`).
+mit Investitionsrendite, Datenprüfung mit Schwellen vor dem Download, Registrierung aus einer Vorlage. **Gerechnet am 28.10. (ADR 059/060):** FRED liefert die D-Mark-Reihe nicht mehr, der Euro tritt ohne Verkettung 1999 ein (Notfallregel, vor dem Datenblick entschieden); Datenprüfung G1–G6 bestanden; Fenster nach Regel 1977-01 bis 2025-11 (587 Monate). Ergebnis (`output/allocator_v2/WALKFORWARD.md`): Allokator Sharpe 0.79 gegen passive Risikoparität 0.51, Δ +0.285 [+0.14, +0.43] → **Primärkriterium erfüllt**; Länder-Momentum und Währungs-Carry/Momentum als Rang-Portfolios je belegt (Holm 10 %). Nüchterne Deutung, die im Bericht steht: Die Variante „Risikoparität + Trendfilter ohne Querschnitt“ erreicht denselben Sharpe (0.792) – der Mehrwert ist der Zeitreihen-Trendfilter, nicht die Auswahl innerhalb der Sleeves; seit 2008 Δ +0.08 [−0.18, +0.28], Deflated-Sharpe-Wahrscheinlichkeit 0.895 (unter 0.95). B1 ist allerdings die schwächste der vier Baselines (Sharpe 0.506 gegen Buy-and-Hold 0.524, 60/40 0.563, Equal Weight 0.614); gegen B2–B4 enthält das Intervall die Null oder streift sie, und seit 2008 liegt der Allokator (0.594) unter Equal Weight (0.719) und 60/40 (0.720) – Punktschätzer, nachgerechnet in der Projekt-Rückschau vom 28.10. Deshalb kein Live-Betrieb von v2 (ADR 060); die Live-Prognose von Runde 1 bleibt der einzige Live-Track. **ETF-Check (ADR 061/062, vorregistriert):** dieselbe Ablation mit handelbaren ETFs 2008–2026: Filter gegen Risikoparität ohne Filter +0.064 [−0.215, +0.199] → nicht belegt; Vol um gut ein Viertel, Drawdown um fast die Hälfte tiefer; Korrelation mit der Index-Studie 0.96 (`output/etf_check/ETF_CHECK.md`).
 
 ```bash
 python -m rotationlab.cli forecast run                    # Prognose am letzten Monatsende, fällige abrechnen, Report (täglich in Actions)

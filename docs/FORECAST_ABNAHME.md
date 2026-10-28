@@ -790,3 +790,14 @@ die Antwort auf die Totschlagfrage, nicht ihr Gegenstand.
 **Verifiziert:** 368 Haupttests (1 übersprungen lokal: aufgezeichnete Provider-Antworten liegen nur auf GitHub),
 ruff, mypy, validate; Golden-Tests über die eingefrorenen Legacy-Referenzen; ETF-Check auf `data@1c110a4` aus dem
 sauberen `main@5ccf391`; Nachbau wie oben.
+
+**Abschluss-Audit (frischer Prüfer, gleiche Fragen wie die Rückschau):** keine Blocker; 25 Zahlen nachgerechnet, 19
+exakt, 6 Abweichungen in Formulierung oder Rundung, alle korrigiert: Deflated-Sharpe-Wahrscheinlichkeit 0.895 gilt
+für N = 70 beim Lauf (mit dem heutigen Register N = 71: 0.902, selbst nachgerechnet); Power-Rechnung einheitlich mit
+IC 0.098 (116 / 265 Monate); „halbiert die Vol“ → Vol um gut ein Viertel, Drawdown um fast die Hälfte tiefer;
+Block-24-Intervall [+0.13, +0.43]; Testzahl 397 (369 + 28 Golden); die Grafik liest jetzt jeden Wert aus `output/`
+(drei Dezimalen wie die Berichte). Ausserdem: die Konvention „French-Renditen ohne Publikationslag“ steht jetzt im
+README, in den Methoden und in Interviewfrage 8; drei neue Interviewfragen (warum das gescheiterte Modell live läuft,
+Herkunft der langen Historie, Hebelfinanzierung 1977–89); `docs/STATUS_DE.md` auf den Stand nach dem Holdout
+gebracht; tote Verweise auf Szenarien und das archivierte `build_dataset.py` entfernt; `.hypothesis/` ignoriert. Der
+unabhängige Nachbau wurde vom Prüfer ausgeführt und lieferte exakt 0.789 / 0.802 / ρ 0.980 / ohne Filter 0.535.
