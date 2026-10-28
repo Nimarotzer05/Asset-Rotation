@@ -1,0 +1,77 @@
+id: sleeve_allocator
+version: 1
+role: paper                        # research round 3 (ADR 054): outside the risk budgets, no capital
+cadence: monthly
+# live: eleven SPDR sectors, two Treasury ETFs, gold and silver ETFs, cash
+universe: [XLP, XLY, XLI, XLB, XLE, XLK, XLC, XLV, XLU, XLF, XLRE, SHY, IEF, GLD, SLV, BIL]
+# research: the ten French industries (CRSP, monthly, from 1926), par-bond indices on month-end yields,
+# LBMA daily fixings, the 3-month bill index
+long_history_universe: [FF_NODUR, FF_DURBL, FF_MANUF, FF_ENRGY, FF_HITEC, FF_TELCM, FF_SHOPS, FF_HLTH, FF_UTILS, FF_OTHER, UST2_ME, UST10_ME, GOLD_D, SILVER, TBILL]
+warmup_months: 30                  # 24 monthly returns for the EWMA volatility + the 12-1 momentum window
+params:
+  cash: BIL
+  # every number below is fixed by ADR 054 before the first run; nothing is chosen on the data
+  sleeves:
+    EQ: { instruments: [XLP, XLY, XLI, XLB, XLE, XLK, XLC, XLV, XLU, XLF, XLRE], families: { mom_12_1: 1.0 }, budget: 0.3333333333333333 }
+    FI: { instruments: [SHY, IEF], families: { mom_12_1: 1.0, carry_yield: 1.0 }, budget: 0.3333333333333334 }
+    PM: { instruments: [GLD, SLV], families: { mom_12_1: 1.0 }, budget: 0.3333333333333333 }
+  feature_params:
+    carry_yield:
+      spec:
+        SHY:      { kind: yield, series: "fred:DGS2" }
+        IEF:      { kind: yield, series: "fred:DGS10" }
+        UST2_ME:  { kind: yield, series: "static:fred:DGS2_ME" }
+        UST10_ME: { kind: yield, series: "static:fred:DGS10_ME" }
+  zscore_clip: 3.0
+  xs_select: true                  # the ⌈n/2⌉ best scores of a sleeve (ADR 054 b)
+  ts_filter: true                  # 12-month excess return over cash > 0 (ADR 054 b)
+  half_life: 12                    # EWMA volatility of monthly returns, months (ADR 054 c)
+  min_obs: 24
+  vol_floor: 0.02
+  vol_target: 0.10                 # book volatility target, annualised (ADR 054 c)
+  max_exposure: 1.5                # gross exposure cap; above 1 financed at the cash index (ADR 054 c)
+  max_sleeve: 1.0                  # no sleeve above the whole book
+  band: 0.02                       # rebalancing band, 2 percentage points per instrument (ADR 054 c)
+long_history_params:
+  cash: TBILL
+  sleeves:
+    EQ: { instruments: [FF_NODUR, FF_DURBL, FF_MANUF, FF_ENRGY, FF_HITEC, FF_TELCM, FF_SHOPS, FF_HLTH, FF_UTILS, FF_OTHER] }
+    FI: { instruments: [UST2_ME, UST10_ME] }
+    PM: { instruments: [GOLD_D, SILVER] }
+confidence:
+  kind: score_dispersion
+  floor: 0.5
+  params: { scale: 1.0 }
+# Reference run (ADR 054 e): panel from 1976-06 (DGS2), decisions 1978-12-31 … 2025-12-31 (the last decision the
+# static panel can evaluate: LBMA fixings end 2026-02-25), sample = return months 1979-01 … 2026-01; per-instrument
+# costs are the pre-registered assumptions of ADR 054 (d). Golden pinned after the first run (regression pin only).
+# pinned after the tie correction of the second review (ADR 056; the first run's 0.705 rested on float noise in the
+# two-instrument sleeves) – a regression pin, not a success criterion (ADR 054 e not met, ADR 055/056)
+golden: { sharpe_ex_cash: 0.683, ann_return: 0.107, max_drawdown: -0.147 }   # corrected run 2026-10-27, output/allocator/WALKFORWARD.md
+golden_tolerance: { sharpe_ex_cash: 0.02, ann_return: 0.01, max_drawdown: 0.02 }
+golden_run:
+  data_from: 1976-06-30
+  start: 1976-06-30
+  end: 2026-01-31
+  sample: [1979-01-31, 2026-01-31]
+  count_warmup: false
+  execution: next_tradable
+  costs:
+    default_bps: null              # per-instrument rates (ADR 054 d), cash leg free
+    cash_bps: 0.0
+    per_asset:
+      FF_NODUR: 5.0
+      FF_DURBL: 5.0
+      FF_MANUF: 5.0
+      FF_ENRGY: 5.0
+      FF_HITEC: 5.0
+      FF_TELCM: 5.0
+      FF_SHOPS: 5.0
+      FF_HLTH: 5.0
+      FF_UTILS: 5.0
+      FF_OTHER: 5.0
+      UST2_ME: 2.0
+      UST10_ME: 2.0
+      GOLD_D: 5.0
+      SILVER: 10.0
+      TBILL: 0.0

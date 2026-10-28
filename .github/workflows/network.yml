@@ -1,5 +1,5 @@
 name: network
-# Weekly: (1) live format checks (tests/integration/test_network.py, incl. the FRED real-time oracle for the
+# Weekly: (0) truncation sweep (tests/golden/test_truncation_sweep.py); (1) live format checks (tests/integration/test_network.py, incl. the FRED real-time oracle for the
 # ALFRED logic); (2) record real provider answers (rotationlab record-fixtures) and push them to the branch
 # `recorded-fixtures` – merged into main, tests/integration/test_recorded.py replays them on every CI run.
 on:
@@ -14,6 +14,7 @@ jobs:
     env:
       FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
       BLS_API_KEY: ${{ secrets.BLS_API_KEY }}
+      STOOQ_API_KEY: ${{ secrets.STOOQ_API_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v3
@@ -22,6 +23,10 @@ jobs:
       - run: uv run pytest -m network -o addopts="" -v
         continue-on-error: true
         id: live
+      - name: truncation sweep (engine invariant to cutting the store at 17 dates per module, ~10 min)
+        run: uv run pytest -m sweep -o addopts="" -q
+        continue-on-error: true
+        id: sweep
       - run: uv run rotationlab record-fixtures --out tests/fixtures/recorded
       - run: uv run pytest tests/integration/test_recorded.py -o addopts="" -v
       - uses: actions/upload-artifact@v4
@@ -34,6 +39,6 @@ jobs:
           git add tests/fixtures/recorded
           git commit -m "recorded provider answers $(date -u +%F)" || echo "nothing new"
           git push -f origin recorded-fixtures
-      - name: fail if live checks failed
-        if: steps.live.outcome == 'failure'
+      - name: fail if live checks or the sweep failed
+        if: steps.live.outcome == 'failure' || steps.sweep.outcome == 'failure'
         run: exit 1

@@ -1,0 +1,60 @@
+# Research round 2 (ADR 052): three standard signal families, equal-weighted, over five classes with real
+# month-end prices. Fixed before the first run; a change needs a new ADR, a new model version and a note in
+# docs/FORECAST_ABNAHME.md. Journal and reports live under journal/forecast_v2 and reports/forecast_v2.
+model:
+  id: mcv                          # momentum + carry + value
+  version: 1
+  # one cross-sectional z-score per family, equal weights – nothing chosen on the data (ADR 052 b)
+  feature_weights: { mom_12_1: 1.0, carry_yield: 1.0, value_rev_60m: 1.0 }
+  zscore_clip: 3.0
+  feature_params:
+    carry_yield:
+      spec:                        # income yield per class; the money-market rate cancels in the cross-section
+        US_EQ:    { kind: equity_dy, tr: "static:usmkt:TR", px: "static:usmkt:CLOSE" }
+        UST10_ME: { kind: yield, series: "static:fred:DGS10_ME" }
+        UST2_ME:  { kind: yield, series: "static:fred:DGS2_ME" }
+        GOLD:     { kind: zero }
+        SILVER:   { kind: zero }
+        SPY:      { kind: dividend_dy, close: "yahoo:SPY:close", dividend: "yahoo:SPY:dividend" }
+        IEF:      { kind: yield, series: "fred:DGS10" }
+        SHY:      { kind: yield, series: "fred:DGS2" }
+        GLD:      { kind: zero }
+        SLV:      { kind: zero }
+variants:                          # ablations, reported only (ADR 052 e); never switched on by the system
+  momentum:       { feature_weights: { mom_12_1: 1.0 } }
+  carry:          { feature_weights: { carry_yield: 1.0 } }
+  value:          { feature_weights: { value_rev_60m: 1.0 } }
+  momentum_carry: { feature_weights: { mom_12_1: 1.0, carry_yield: 1.0 } }
+  momentum_value: { feature_weights: { mom_12_1: 1.0, value_rev_60m: 1.0 } }
+  carry_value:    { feature_weights: { carry_yield: 1.0, value_rev_60m: 1.0 } }
+universe:
+  long_history:
+    ranked: [US_EQ, UST10_ME, UST2_ME, GOLD, SILVER]   # only classes with month-end prices (ADR 052 a)
+    trend_only: []
+    cash: TBILL
+  live:
+    ranked: [SPY, IEF, SHY, GLD, SLV]
+    trend_only: []
+    cash: BIL
+trend_window_months: 10
+horizons: [1, 3, 6]
+probability:
+  target: top_half                 # realised rank ≤ 2 of 5 (base rate 40 %)
+  model: logistic_tophalf
+  prior_months: 60
+  no_signal_margin: 0.05
+calibration:
+  min_months: 60
+  confidence: 0.90
+  block_months: 12
+  draws: 2000
+  seed: 20261025
+holdout:
+  start: 2019-01-31
+  end: 2025-12-31
+evaluation:
+  data_from: 1976-06-30            # panel start of the paper rule's golden run (configs/strategies/forecast_portfolio_v2.yaml)
+  start: 1981-07-31                # first decision with all three families (value needs 60 months from 1976-06)
+  decades: [["1981–1989", 1981, 1989], ["1990s", 1990, 1999], ["2000s", 2000, 2009], ["2010–2018", 2010, 2018]]
+paper_rule: forecast_portfolio_v2
+backfill_after_days: 7

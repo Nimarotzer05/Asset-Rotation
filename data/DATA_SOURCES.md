@@ -107,3 +107,53 @@ Sonstiges: `M2`, `M2_YOY`, `BUSLOANS`, `GOLD_SILVER_RATIO`
 - `WB_GOLD_AVG`, `WB_SILVER_AVG` – World-Bank-Monatsmittel; mit den übrigen WB-Reihen der konsistente Querschnitt der Rohstoffstudie.
 - `XAU`, `XAG` – Gold- und Silber-Spot für die Ratio-Signale: Kette `[yahoo:GC=F|SI=F, static:lbma:GOLD|SILVER]` (täglich, Verhältnis-Spleiss; Futures-Rolls verschieben die Ratio um Zehntelprozente, für einen 60-Monats-z-Score unerheblich).
 - Makroketten mit statischem FRED-MD als letztem Glied (`macro:INDPRO`, `macro:GS10`, `macro:BAA`, `macro:AAA`, `macro:FEDFUNDS`, `macro:TB3MS`, `macro:VIX`, `macro:SP_RATE`; `macro:CPI`, `macro:UNRATE`, `macro:PAYEMS` erweitert): live liest das Feature FRED/BLS, im Forschungspanel die eingefrorene Kopie. Kern-CPI hat keinen FRED-MD-Ersatz (FRED-MD führt nur „CPI ohne Nahrungsmittel“).
+
+## P5: Monatsend-Schnitt des Live-Stores (`p5_live_monthend.csv.gz`)
+
+Erzeugt von `scripts/p5_extract_live_monthend.py` aus dem Live-Store (GitHub-Branch `data`, Stand 2026-10-26; Yahoo,
+FRED). Je Reihe ein Wert pro Monatsende: letzter Tagesschluss des Monats (jüngste Vintage je Beobachtung); für SPY,
+IEF, TLT zusätzlich ein Total-Return-Index aus Schlusskursen plus Bardividenden (`rotationlab.data.view._close_tr`);
+`DGS10_ME`, `DGS2_ME`, `DGS3MO_ME` = Constant-Maturity-Renditen (10 J., 2 J., 3 M.) am Monatsende. Eingabe für `scripts/forecast_investability.py`
+(Investierbarkeit, Abnahme `docs/FORECAST_ABNAHME.md` P5) und seit ADR 047 Quelle der statischen Reihe
+`static:fred:DGS10_ME` (Monatsrendite, Lag 0D wie alle Marktpreise des statischen Providers) und der Par-Bond-
+Konstruktion `static:UST10_ME` (Asset `UST10_ME`, dieselbe Formel wie `static:UST10`); seit ADR 052 ebenso
+`static:fred:DGS2_ME` → `static:UST2_ME` (Asset `UST2_ME`, Par-Bond 2 J., ab 1976-07; Live-Bein `SHY`) und
+`static:fred:DGS3MO_ME` als Datenreihe; die übrigen Spalten bleiben Skript-Eingabe. Der laufende Monat des Extrakts (Zeile nach dem Stand) wird vom Provider verworfen; das Skript labelt
+ihn seither nicht mehr.
+
+## Runde 4: Forschungsdaten über den Workflow `research-data` (ADR 057)
+
+Die Arbeitsumgebung der Forschung erreicht weder FRED noch die French-Bibliothek. Die Rohdateien für Runde 4 holt
+deshalb einmalig der von Hand gestartete Workflow `.github/workflows/research-data.yml` mit
+`scripts/fetch_research_data.py`: jede Antwort Byte für Byte (gzip), dazu `MANIFEST.json` mit Quell-URL (API-Schlüssel
+geschwärzt), SHA-256 und Grösse der Rohbytes, Abrufzeit (UTC), Format und Status; alles auf dem Orphan-Branch
+`research-data`. Der Workflow berührt weder Store noch Journal noch den Tageslauf.
+
+| Quelle | Reihen | Pflicht |
+|---|---|---|
+| FRED H.10, täglich | DEXJPUS, DEXUSUK, DEXSZUS, DEXCAUS, DEXUSAL, DEXUSNZ, DEXSDUS, DEXNOUS, DEXGEUS (bis 2001), DEXUSEU (ab 1999) | ja |
+| FRED, täglich | DGS2, DGS5, DGS10 (Constant-Maturity-Renditen) | ja |
+| FRED/OECD, monatlich | IR3TIB01{JP,GB,CH,CA,AU,NZ,SE,NO,DE,EZ}M156N (3-M-Interbank), IRSTCI01{…}M156N (Tagesgeld, Ersatz) | nein |
+| Kenneth French | `10_Industry_Portfolios_daily_CSV.zip`, `F-F_International_Countries.zip` | ja |
+
+`scripts/freeze_research_data.py --src <Checkout des Branches> --commit <SHA>` prüft jede Datei gegen das Manifest
+(eine geänderte Zahl stoppt), verlangt alle Pflichtquellen und schreibt kompakte, deterministische Dateien nach
+`data/raw/` (`r4_fred_daily.csv.gz`, `r4_oecd_rates_monthly.csv.gz`, `ff_10_industry_daily.csv.gz`,
+`ff_intl_countries_monthly.csv.gz`) samt `r4_PROVENANCE.json` (Commit, Manifest, je Ausgabe Zeilen, erstes/letztes
+Datum, SHA-256). Die Rohdateien bleiben auf dem Branch als Beleg. Lags: Spot und Renditen 0D (Marktpreise), OECD-Zinsen
+1M (Monatswerte erscheinen im Folgemonat). Das Format der Länderdatei beschreibt die French-Seite nicht; der Parser wird
+nach dem ersten Blick auf die echte Datei geschrieben (`--describe`), die Regel bei fehlender Marktspalte steht in ADR 057 (h).
+
+**Präzisiert vor dem Download (ADR 058):** eingefroren wird der früheste vollständige Commit von `research-data`.
+Länder: alle Länder der Datei in ihrer Reihenfolge, je Land `Mkt` der umfassenderen Gruppe (alle Firmen mit B/M-Daten),
+keine US-Spalte; USD wird geprüft (`scripts/r4_data_check.py`, G5). Währungs-Einlagenindizes beginnen erst 1991-01
+(Kapitalverkehrskontrollen: Schweden baute seine Devisenkontrollen 1986–1990 ab, Norwegen bis Ende der 1980er-Jahre);
+ein Monatszins gilt bis drei Monate nach seinem Referenzmonat. Cash und Finanzierung in Runde 4: `TBILL_IY`, die
+Investitionsrendite von TB3MS (Diskontbasis → Investitionsrendite eines 91-Tage-Papiers).
+
+Verfügbarkeit der Zinsreihen laut FRED (Seiten abgerufen am 27.10.2026, nur Datumsbereiche – keine Werte): 3-M-Interbank
+JP 2002-04 bis 2026-08 (Tagesgeld ab 1985-07), GB 1957-01 bis 2026-01, CH 1999-07 bis 2026-09 (Tagesgeld 1972-01 bis
+2024-03), CA 1956-01 bis 2026-09, AU 1968-01 bis 2026-08, NZ 1973-12 bis 2026-09, SE 1982-01 bis 2026-09 (Tagesgeld 1955-01
+bis 2020-10), NO 1979-01 bis 2026-08 (Tagesgeld ab 1982-01), DE 1960-01 bis 2026-09 (Tagesgeld ebenso), Euroraum 1994-01
+bis 2026-01. Ab 1991 haben damit alle neun Währungen einen Zins; GB und Euroraum enden im Januar 2026 (ihre Indizes
+enden drei Monate später, nach dem Fensterende).

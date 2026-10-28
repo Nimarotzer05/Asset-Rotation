@@ -30,6 +30,7 @@ import pandas as pd
 from rotationlab.core.errors import DataError, LookaheadError
 from rotationlab.core.protocols import TradingCalendar
 from rotationlab.core.types import AssetId, Frequency, SeriesId, SeriesSpec
+from rotationlab.data.calendar import SPECIAL_CLOSINGS
 from rotationlab.data.pit import PitIndex
 
 AS_OF_SQL = """
@@ -47,15 +48,16 @@ ORDER BY series_id, obs_date
 TR_ROLES = ("total_return", "return", "close", "yield")
 
 
-def as_of_pandas(observations: pd.DataFrame, d: date) -> pd.DataFrame:
+def as_of_pandas(observations: pd.DataFrame, d: date, knowledge: date | None = None) -> pd.DataFrame:
     """Reference implementation of the as-of rule (the oracle the fast index is tested against).
 
     Returns columns [series_id, obs_date, value]: for each (series, obs_date) the latest vintage
-    published on or before `d`, restricted to obs_date <= d.
+    published on or before `knowledge` (default `d`), restricted to obs_date <= d.
     """
     df = observations
     d_ts = pd.Timestamp(d)
-    df = df[(pd.to_datetime(df["obs_date"]) <= d_ts) & (pd.to_datetime(df["vintage_date"]) <= d_ts)]
+    k_ts = d_ts if knowledge is None else max(d_ts, pd.Timestamp(knowledge))
+    df = df[(pd.to_datetime(df["obs_date"]) <= d_ts) & (pd.to_datetime(df["vintage_date"]) <= k_ts)]
     if df.empty:
         return df.loc[:, ["series_id", "obs_date", "value"]].copy()
     df = df.sort_values(["series_id", "obs_date", "vintage_date"])
@@ -158,7 +160,7 @@ class StoreViewFactory:
         self._tr_prefix: dict[str, tuple[_Prefix, str, int] | None] = {}
         self.cal = calendar
         self._snapshot = snapshot or _frame_digest(observations)
-        self._cache: dict[tuple[str, pd.Timestamp], pd.Series] = {}
+        self._cache: dict[tuple[str, pd.Timestamp, pd.Timestamp | None], pd.Series] = {}
 
     # -- constructors -------------------------------------------------------
     @classmethod
@@ -178,8 +180,11 @@ class StoreViewFactory:
         return cls(obs, catalog, asset_roles(universe), calendar, snapshot=store.snapshot_id(), chains=chains)
 
     # -- ViewFactory protocol -----------------------------------------------
-    def at(self, d: date) -> StoreView:
-        return StoreView(self, pd.Timestamp(d).normalize())
+    def at(self, d: date, knowledge: date | None = None) -> StoreView:
+        """The view at D. `knowledge` (default D) is the date whose vintages are admitted – after D only in
+        the late-data case of the live run (`forecast/live.py`): observations stay cut at D."""
+        k = None if knowledge is None else pd.Timestamp(knowledge).normalize()
+        return StoreView(self, pd.Timestamp(d).normalize(), k)
 
     def precompute(self, dates: Sequence[date]) -> None:
         """Nothing to precompute: as-of reads are O(log n) on the interval index."""
@@ -188,11 +193,11 @@ class StoreViewFactory:
         return self._snapshot
 
     # -- internals ------------------------------------------------------------
-    def raw_as_of(self, series_id: str, d: pd.Timestamp) -> pd.Series:
-        key = (series_id, d)
+    def raw_as_of(self, series_id: str, d: pd.Timestamp, knowledge: pd.Timestamp | None = None) -> pd.Series:
+        key = (series_id, d, knowledge)
         hit = self._cache.get(key)
         if hit is None:
-            hit = self._index.as_of(series_id, d)
+            hit = self._index.as_of(series_id, d, knowledge)
             if len(self._cache) > 20000:
                 self._cache.clear()
             self._cache[key] = hit
@@ -205,8 +210,8 @@ class StoreViewFactory:
             self._prefix[series_id] = _Prefix(self._index.full(series_id))
         return self._prefix[series_id]
 
-    def prefix_len(self, series_id: str, d: pd.Timestamp) -> int:
-        return self._index.prefix_len(series_id, d)
+    def prefix_len(self, series_id: str, d: pd.Timestamp, knowledge: pd.Timestamp | None = None) -> int:
+        return self._index.prefix_len(series_id, d, knowledge)
 
     def tr_prefix(self, asset: str) -> tuple[_Prefix, str, int] | None:
         """Full total-return index of an asset whose TR depends causally on one simple series (+ dividends):
@@ -265,10 +270,12 @@ class StoreViewFactory:
 class StoreView:
     """Immutable point-in-time view. All methods are pure functions of (store snapshot, date)."""
 
-    def __init__(self, factory: StoreViewFactory, d: pd.Timestamp) -> None:
+    def __init__(self, factory: StoreViewFactory, d: pd.Timestamp, knowledge: pd.Timestamp | None = None) -> None:
         self._f = factory
         self._d = d
+        self._k = knowledge if knowledge is not None and knowledge > d else None  # None = vintages through d
         self.date: date = d.date()
+        self.knowledge_date: date = (self._k or d).date()
         self._prov: dict[tuple[str, str], list[Segment]] = {}
         self._tr_memo: dict[tuple[tuple[str, ...], str | None], pd.DataFrame] = {}
         self.memo: dict[Any, Any] = {}  # feature results of this view (core/registry.py); pure, so safe
@@ -279,7 +286,7 @@ class StoreView:
         sid = str(series_id)
         pre = None if sid in self._f.chains else self._f.prefix(sid)
         if pre is not None:
-            k = self._f.prefix_len(sid, self._d)
+            k = self._f.prefix_len(sid, self._d, self._k)
             s = pre.periods(k, freq, self._d) if freq in ("ME", "QE") else pre.native(k)
             assert_no_lookahead(s, self.date)
             return s
@@ -288,7 +295,7 @@ class StoreView:
             self._prov[(sid, "")] = segs
             raw = raw.rename(sid)
         else:
-            raw = self._f.raw_as_of(sid, self._d)
+            raw = self._f.raw_as_of(sid, self._d, self._k)
         s = resample_last(raw, freq, self._d)
         assert_no_lookahead(s, self.date)
         return s.copy()
@@ -308,12 +315,16 @@ class StoreView:
         s = (
             self.series(series_id)
             if str(series_id) in self._f.chains
-            else self._f.raw_as_of(str(series_id), self._d)
+            else self._f.raw_as_of(str(series_id), self._d, self._k)
         )
         return None if s.empty else s.index[-1].date()
 
     def calendar(self) -> TradingCalendar:
         return self._f.cal
+
+    def spec(self, series_id: SeriesId | str) -> SeriesSpec:
+        """Catalog entry of a stored series (frequency, lag, kind)."""
+        return self._f.spec(str(series_id))
 
     # -- asset roles ---------------------------------------------------------------
     def roles(self, asset: AssetId | str) -> Mapping[str, Sequence[str]]:
@@ -360,7 +371,7 @@ class StoreView:
             fast = self._f.tr_prefix(str(a)) if freq in (None, "D", "ME", "QE") else None
             if fast is not None and not (freq in (None, "D") and "yield" in self.roles(a)):
                 pre, primary, offset = fast
-                k = self._f.prefix_len(primary, self._d)
+                k = self._f.prefix_len(primary, self._d, self._k)
                 k = k + offset if k else 0
                 cols[str(a)] = pre.periods(k, freq, self._d) if freq in ("ME", "QE") else pre.native(k)
                 continue
@@ -379,10 +390,10 @@ class StoreView:
     def _splice(self, chain: Sequence[str]) -> tuple[pd.Series, list[Segment]]:
         primary = chain[0]
         level = self._f.spec(primary).kind.is_level
-        out = self._f.raw_as_of(primary, self._d)
+        out = self._f.raw_as_of(primary, self._d, self._k)
         segs = [Segment(primary, out.index[0].date(), out.index[-1].date(), 1.0)] if len(out) else []
         for sid in chain[1:]:
-            s = self._f.raw_as_of(sid, self._d)
+            s = self._f.raw_as_of(sid, self._d, self._k)
             if s.empty:
                 continue
             if out.empty:
@@ -507,6 +518,15 @@ def _yield_index(
             return idx
         codes_all = month_sessions.astype("datetime64[M]").astype(np.int64)
         uniq, counts = np.unique(codes_all, return_counts=True)
+        # a session the calendar will close only after D (9/11, a hurricane) was a session as far as D knew:
+        # count it, so the share of the month accrued by D does not depend on later events (second review)
+        later = [x for x in SPECIAL_CLOSINGS if pd.Timestamp(x) > last and x.weekday() < 5]
+        if later:
+            counts = counts.copy()
+            for x in later:
+                pos = np.searchsorted(uniq, np.datetime64(x, "M").astype(np.int64))
+                if pos < len(uniq) and uniq[pos] == np.datetime64(x, "M").astype(np.int64):
+                    counts[pos] += 1
         codes = day_arr.astype("datetime64[M]").astype(np.int64)
         n = counts[np.searchsorted(uniq, codes)].astype(float)
         rate = (y / 1200.0).groupby(pd.DatetimeIndex(y.index).to_period("M")).last()

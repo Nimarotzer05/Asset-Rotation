@@ -45,6 +45,27 @@ Differenzen; die erste Position kostet in der Engine Gebühren, in den Studien n
 und Silber täglich) +0.016, Gold/Silber (beide Metalle täglich) −0.010. Monatsreihen werden am Folgetag zu
 ihrem Monatsend-Wert bewertet.
 
+## Ehrliches Timing (ADR 042)
+
+Die Goldens oben reproduzieren die Studien und damit auch deren Umsetzungskonvention. Für Assets, die zu
+World-Bank-**Monatsmitteln** bewertet sind, ist diese Konvention optimistisch: das Signal entsteht aus dem
+Mittel des Monats und wird zum selben Mittel „umgesetzt“, einem Preis, dessen Fenster vor der Entscheidung
+liegt. `next_tradable` setzt Schlusskurs-Assets am Folgetag und Mittelwert-Assets am nächsten
+Entscheidungsdatum um (`output/execution/TIMING.md`, `scripts/execution_timing_study.py`):
+
+| Modul | Mittelwert-Assets | Studie (`same_close`) | **ehrlich (`next_tradable`)** | alles einen Monat später |
+|---|---|---|---|---|
+| Rohstoff-Trend | 9/9 | 0.742 | **0.423** | 0.423 |
+| Multi-Asset | 2/6 | 0.571 | **0.557** | 0.534 |
+| Multi-Asset Walk-forward (OOS) | 2/6 | 0.772 | **0.691** | 0.715 |
+| Aktien-Exposure, Sektoren | 0 | 0.573, 0.590 | **unverändert** | 0.495, 0.521 |
+| Gold/Silber-MR | 0 | 0.219 | **0.210** (= `next_close`) | 0.235 |
+
+Der Rohstoff-Trend verliert gut 40 % seines Sharpe; das deckt sich mit der Forschung, die die Trendprämie von
+Gold und Silber auf Monatsenden um 40–45 % kleiner misst als auf Monatsmitteln (`output/commodities/REPORT.md`
+§3b). Für Risikobudgets und Erwartungen in Phase 3 zählen die ehrlichen Werte; beide sind in
+`tests/golden/test_module_goldens.py` gepinnt.
+
 ## Befunde beim Bau
 
 1. **Konfiguration wich von der Forschung ab** (ADR 035). Die Multi-Asset-YAML trug das Rezept der Sektor-
@@ -81,6 +102,12 @@ ihrem Monatsend-Wert bewertet.
 - `cot_spec_net_z`, `tips_real_10y`, `breakeven_10y` haben im Forschungspanel keine Daten (live-only).
 
 ## Prüfliste für das Look-ahead-Audit (Fable)
+
+Ergebnis: `AUDIT_phase2_lookahead.md` (2026-10-25, Erst- und Zweitprüfung) – kein Leck, das Goldens oder
+Monatsentscheidungen verändert; zwei latente Lecks im Code behoben (Dividenden-Vintage im schnellen TR-Pfad,
+NaN→„fallend“ in `_direction`; ADR 041); Monatsmittel als Signal und Ausführungspreis als materielle
+Konvention – inzwischen umgesetzt (`next_tradable`, ADR 042, Abschnitt „Ehrliches Timing“). Belege in
+`tests/lookahead/test_audit_phase2.py`; Truncation-Sweep über 85 Schnitte in `tests/golden/test_truncation_sweep.py`.
 
 1. **as-of-Panel** (`features/_panel.py`): Monatsraster bis zum Monat von D, laufender Monat mit Label D. Zeigt
    eine Teilmonatszeile in der täglichen Schleife (Phase 3) je eine Information, die am Monatsende noch nicht

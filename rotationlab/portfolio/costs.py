@@ -36,6 +36,7 @@ class CostModel:
             bps, default = {}, float(spec.default_bps)
         bps.update(spec.per_asset)
         borrow = {a: c.borrow_bps for a, c in universe.assets.items() if c.borrow_bps}
+        borrow.update({str(a): float(v) for a, v in spec.borrow_bps.items()})
         return cls(bps, default, spec.cash_bps, borrow)
 
     def bps(self, asset: str) -> float:

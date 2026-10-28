@@ -1,0 +1,4 @@
+Sleeve,Instrumente,Kennzahl,Wert,low,high,Monate
+EQ,10,Rang-IC (Spearman),0.0482501011272592,0.023842455748591302,0.07732911042387065,565
+FI,2,Trefferquote (höherer Score schlägt den anderen; Zufall 0.5),0.5130260521042084,0.48296593186372744,0.5490981963927856,499
+PM,2,Trefferquote (höherer Score schlägt den anderen; Zufall 0.5),0.5203539823008849,0.4902654867256637,0.552212389380531,565

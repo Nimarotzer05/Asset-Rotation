@@ -41,8 +41,20 @@ def test_configs_load_and_cross_check() -> None:
         "commodity_trend",
         "precious_metals",
     }
-    assert set(b.strategies) == expected
+    budgeted = {sid for sid, s in b.strategies.items() if s.role in ("core", "satellite")}
+    assert budgeted == expected
     assert set(b.portfolio.risk_budgets) == expected
+    # paper modules (ADR 048) sit outside the risk budgets: the forecast's rule and its baselines
+    assert {sid for sid, s in b.strategies.items() if s.role == "paper"} == {
+        "forecast_portfolio",
+        "forecast_portfolio_v2",  # ADR 052
+        "fixed_weights",
+        "sleeve_allocator",  # ADR 054
+    }
+    # every forecast config names a paper rule that exists and is registered (ADR 048/052)
+    assert set(b.forecasts) == {"forecast", "forecast_v2"}
+    for fc in b.forecasts.values():
+        assert fc.paper_rule in b.strategies and fc.paper_rule in registry.strategies()
     assert (
         abs(
             b.portfolio.risk_budgets["us_equity_exposure"]

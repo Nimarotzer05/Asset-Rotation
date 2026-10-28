@@ -20,8 +20,12 @@ from rotationlab.core.errors import ConfigError
 from rotationlab.core.types import AssetId, Cadence, Months, Role, StrategyId, StrategySpec
 from rotationlab.strategies import (
     commodity_trend,
+    fixed_weights,
+    forecast_portfolio,
     multi_asset_rotation,
     precious_metals,
+    sleeve_allocator,
+    sleeve_allocator_v2,
     us_equity_exposure,
     us_sector_rotation,
 )
@@ -36,8 +40,12 @@ __all__ = [
     "build_strategy",
     "build_walkforward",
     "commodity_trend",
+    "fixed_weights",
+    "forecast_portfolio",
     "multi_asset_rotation",
     "precious_metals",
+    "sleeve_allocator",
+    "sleeve_allocator_v2",
     "strategy_spec",
     "us_equity_exposure",
     "us_sector_rotation",

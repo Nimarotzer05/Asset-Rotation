@@ -2,11 +2,17 @@
 
 Ein System, das laufend Marktdaten verarbeitet, Szenarien bewertet, Handelssignale erzeugt und Zusammenhänge quantifiziert – mit einem einzigen Code-Pfad für Backtest und Live-Betrieb.
 
-Stand 2026-10-25 (Phase 1 und Phase 2 gebaut). Entscheidungen mit Begründung: `docs/ADR.md`. Betrieb: `docs/RUNBOOK.md`. Datenherkunft: `data/DATA_SOURCES.md`. Abnahme Phase 1: `docs/PHASE1_ABNAHME.md`.
+Stand 2026-10-25 (Phase 1 und Phase 2 gebaut; Neuausrichtung auf die Monatsprognose, ADR 043). Entscheidungen mit Begründung: `docs/ADR.md`. Betrieb: `docs/RUNBOOK.md`. Datenherkunft: `data/DATA_SOURCES.md`. Abnahme Phase 1: `docs/PHASE1_ABNAHME.md`.
 
 ---
 
 ## 1. Zielbild und Leitprinzipien
+
+> **Neuausrichtung (ADR 043, 2026-10-25, angenommen):** Das Ziel ist jetzt eine **Monatsprognose der
+> Anlageklassen**: an jedem Monatsende eine Rangfolge von sechs Klassen mit Unsicherheit, die einen Monat
+> später ehrlich gegen das Ergebnis und gegen Baselines geprüft wird. Die Portfolio-Steuerung unten
+> (Risikobudgets, Tagesloop, Szenarien) ist zurückgestellt; die US-Aktien-Module und der Edelmetall-Satellit
+> sind eingefroren. Der Text dieses Abschnitts beschreibt den bisherigen Plan; der neue Bauplan steht in §12.
 
 `rotationlab` ist ein Python-Paket, das täglich Markt- und Makrodaten einliest, daraus monatlich Zielgewichte für ein Cross-Asset-Portfolio ableitet, das aktuelle Portfolio gegen definierte Szenarien bewertet, die Zusammenhänge zwischen Assets und Treibern laufend neu misst und jedes Signal in einem Paper-Trading-Journal festhält. Es handelt nicht selbst; es sagt, was zu tun wäre, und beweist später, ob es recht hatte.
 
@@ -311,7 +317,7 @@ for D in clock.decision_dates():
 | `recorder` | Run-Record, Metriken, Golden | + Parameter je Fenster | Run-Record, Journal, Report, Alarm |
 | `views` | `precompute(alle D)` | dito | `at(heute)` |
 
-Preise sind Total-Return-Niveaus zum Stichtag (letzter Wert ≤ Tag): eine Monatsreihe wird am Folgetag zu ihrem Monatsend-Wert bewertet, deshalb ist `next_close` für reine Monatsdaten identisch mit `same_close`. `same_close` (Umsetzung zum Entscheidungsschluss) ist die Konvention der Studien und der Goldens, `next_close` die Produktion (ADR 011, 038). `RunResult` liefert Periodenrenditen, Cash-Renditen, Warm-up-Kennzeichen, Turnover, Zielgewichte und alle Vorschläge; `RunRecorder` schreibt `record.json` (Git-SHA, Config-Hash, Datenstand, Kennzahlen), `decisions.csv`, `weights.csv`, `proposals.jsonl`. CLI: `rotationlab backtest|walkforward --strategy … [--universe live|long_history] [--execution …] [--costs universe|research]` und `rotationlab golden [--walkforward]`.
+Preise sind Total-Return-Niveaus zum Stichtag (letzter Wert ≤ Tag): eine Monatsreihe wird am Folgetag zu ihrem Monatsend-Wert bewertet, deshalb ist `next_close` für reine Monatsdaten identisch mit `same_close`. `same_close` (Umsetzung zum Entscheidungsschluss) ist die Konvention der Studien und der Goldens, `next_close` die Produktion (ADR 011, 038). Für Assets mit `price_basis: monthly_average` (World-Bank-Mittel) wäre auch `next_close` ein Kauf zum Mittel, aus dem das Signal stammt; `next_tradable` setzt sie deshalb am nächsten Entscheidungsdatum um, Schlusskurs-Assets am Folgetag, `next_month_close` alles einen Monat später (ADR 042, `output/execution/TIMING.md`: Rohstoff-Trend 0.74 → 0.42). Für Budgets und Erwartungen zählt `next_tradable`. `RunResult` liefert Periodenrenditen, Cash-Renditen, Warm-up-Kennzeichen, Turnover, Zielgewichte und alle Vorschläge; `RunRecorder` schreibt `record.json` (Git-SHA, Config-Hash, Datenstand, Kennzahlen), `decisions.csv`, `weights.csv`, `proposals.jsonl`. CLI: `rotationlab backtest|walkforward --strategy … [--universe live|long_history] [--execution …] [--costs universe|research]` und `rotationlab golden [--walkforward]`.
 
 Zeitpunkte: Entscheidung mit D-Schluss, Umsetzung zu D+1-Schluss, Makro nach Veröffentlichungsdatum. Live ist der D+1-Schluss am Morgen nach D unbekannt: der Lauf an D schreibt offene Zielgewichte ins Journal, der Lauf am Folgetag führt das Rebalancing zum D+1-Schluss aus und trägt den Referenzkurs nach (gleiche Reihenfolge wie im Backtest, über zwei Läufe verteilt). Determinismus: gleicher Datenstand + Konfiguration + Code ⇒ bitidentisch; Zufall nur im Bootstrap mit Seed im Run-Record.
 
@@ -401,14 +407,65 @@ docs/            ARCHITECTURE.md · ADR.md · RUNBOOK.md
 
 ## 12. Bauplan
 
-| Phase | Inhalt | Abnahme | Aufwand | Modell |
-|---|---|---|---|---|
-| **0 Gerüst** | Paket, Typen, Protokolle, Schema, Konfiguration, Harness, CI, dieses Dokument | `rotationlab validate` ok; 8 Vertragstests grün | **erledigt** | Fable |
-| **1 Daten** | Store, Provider, Ingest mit Vintages, Qualität, `MarketView`, Kalender | `ingest --full` ✓ (426 498 Zeilen inkl. Echtzeit-FRED-MD, 10 s); CPI am 2008-06-30 = damalige Erstveröffentlichung ✓ (ALFRED-Fixture; gegen FRED-Echtzeitorakel mit `-m network`); Harness gegen drei Features + Leck-Kontrolle ✓; jeder Check mit ±-Fall ✓; Golden 0.573 aus dem Store ✓; Optimierung: Echtzeit-FRED-MD, BLS/Shiller, Caches, Hypothesis, ruff/mypy ✓ | **erledigt** (182 Tests, 97 %) | Opus; Vintage-Logik mit Fable prüfen |
-| **2 Features, Module, Engine** | Features portieren, fünf Module, `WalkForward`, Engine, Book, Kosten, Golden | Goldens reproduziert ✓ (Sharpe ≤ 0.002 von der Forschung, Zielgewichte ≤ 1e-9 vom Forschungscode, Walk-forward 0.772 mit 44/44 gleichen Wahlen, Hedge 8/8); alle 33 Features und alle Module bestehen den Harness ✓; Panel ≡ punktweise ✓ | **erledigt** (Abnahme `docs/PHASE2_ABNAHME.md`) | Opus; Look-ahead-Audit mit Fable offen |
-| **3 Portfolio, Risiko, Szenarien, Zusammenhänge** | Combiner, Regeln, Tagesschleife, drei Methoden, Bibliothek, Metriken, Ampeln | Szenario-Tabelle; Kill-Switch-Tests; Property-Tests; Faktorschock innerhalb Analog-Band 2008/2020 | 1–2 Wo | Fable |
-| **4 Betrieb** | Live, Journal, Report, Telegram, Dashboard, `daily.yml`, Runbook | erster Report von Actions committet; Journal-Eintrag; Datenquelle aus ⇒ Alarm + Kill-Switch | 1 Wo | Opus |
-| **5 Pflege** | tägliche Läufe, Drift ab Monat 12, Quartals-Neuaufbau, ADR-Log | 12 Monate Journal ohne Lücke | laufend | Opus; Modelländerungen Fable |
+### Bisher (Phasen 0–2 erledigt, 3–5 durch ADR 043 ersetzt)
+
+| Phase | Inhalt | Abnahme | Stand |
+|---|---|---|---|
+| **0 Gerüst** | Paket, Typen, Protokolle, Schema, Konfiguration, Harness, CI, dieses Dokument | `rotationlab validate` ok; 8 Vertragstests grün | **erledigt** |
+| **1 Daten** | Store, Provider, Ingest mit Vintages, Qualität, `MarketView`, Kalender | `ingest --full` ✓; CPI 2008-06-30 = Erstveröffentlichung ✓; Harness ✓; Golden 0.573 aus dem Store ✓; Fable-Review der Vintage-Logik ✓ | **erledigt** (`PHASE1_ABNAHME.md`) |
+| **2 Features, Module, Engine** | Features, fünf Module, `WalkForward`, Engine, Book, Kosten, Goldens, Ausführungsmodi | Goldens reproduziert ✓; Harness für alle Features und Module ✓; Look-ahead-Audit in zwei Durchgängen ✓ (ADR 041); ehrliches Timing gemessen ✓ (ADR 042); Truncation-Sweep 85 Schnitte ✓ | **erledigt** (`PHASE2_ABNAHME.md`, `AUDIT_phase2_lookahead.md`) |
+| ~~3 Portfolio, Risiko, Szenarien, Zusammenhänge~~ | Combiner, Risikobudgets, Tagesschleife, Szenario-Engine | – | **zurückgestellt** (ADR 043) |
+| ~~4 Betrieb~~ / ~~5 Pflege~~ | Live, Journal, Report für das Portfolio | – | **ersetzt** durch P6 unten |
+
+Eingefroren: `us_equity_exposure`, `us_sector_rotation`, `precious_metals` bleiben im Repo; ihre Goldens, der
+Harness und der Sweep laufen weiter, damit sie nicht unbemerkt brechen. Keine neuen Features, keine
+Parameteränderungen.
+
+### Neu: Monatsprognose der Anlageklassen (ADR 043)
+
+Universum: US_EQ, UST10, GOLD, SILVER, WB_ENERGY, WB_BASEMETALS; TBILL als Cash. Erweiterung nur
+kontrolliert, nie um einen Backtest zu verbessern. Jeder Schritt endet mit grünen Tests und einem kurzen
+Abnahmeprotokoll; Zahlen nur aus tatsächlichen Läufen.
+
+| Schritt | Inhalt | Abnahme |
+|---|---|---|
+| **P1 Entscheidung** | ADR 043, dieser Bauplan | **freigegeben 2026-10-25** mit den Entscheiden unten |
+| **P2 Prognoseobjekt** ✓ | `Forecast` je Monatsende: Entscheidungsdatum, Datenstand (Snapshot/Vintage), Modellversion, Parameter; je Klasse Score, Rang, erwartete relative Überschussrendite mit Band, absoluter Trend; Status „kein klares Signal“. Rangfolge und Portfolio getrennt, Gewichte nur abgeleitet. Horizonte 1 M (Haupt), 3 und 6 M (Neben). | Typ mit Vertragstests (Serialisierung, Unveränderlichkeit, Pflichtfelder); Look-ahead-Harness für das Prognosemodell |
+| **P3 Basismodell** ✓ | Composite des `multi_asset_rotation`-Moduls als Prognosemodell, Querschnitt US_EQ, UST10, GOLD, SILVER; Energie und Basismetalle nur Trend (Forschung: Querschnitts-IC 12M-Momentum unter Rohstoffen 0.013, t 0.7); keine neuen Features vor der Evaluation; kein Selbst-Anpassen, Varianten getrennt | Scores = Code des Moduls auf demselben Querschnitt (exakt) und = Forschungsformel `src/signals.py` (≤ 1e-9); Panel ≡ punktweise; Look-ahead-Harness ✓ |
+| **P4 Evaluation 1973–2018** ✓ | Kriterien vorab in ADR 044: Rang-IC mit Block-Bootstrap-KI und Permutations-p; Trefferquote Top vs. Bottom; Wahrscheinlichkeiten (Brier, Skill, Reliability); Baselines (zufälliger Rang, Vormonatsrang; für abgeleitete Gewichte Equal Weight, 60/40, Buy-and-Hold); Varianten 12-1, Regime-Tilts, 3/6 M; je Jahrzehnt und je Klasse; Status-Informativität | `output/forecast/EVALUATION.md` aus einem reproduzierbaren Skript; Holdout-Sperre als Test; Urteil nach ADR 044 (f) |
+| **P5 Investierbarkeit** ✓ | UST10 aus Monatsend-Renditen (DGS10) statt GS10-Mittel, Energie/Basismetalle über Futures und ETFs statt World-Bank-Mittel, Gold/Silber/US_EQ gegen Futures/ETFs | `output/forecast/INVESTABILITY.md`: Rangfolge überlebt handelbare Preise (IC +0.099 vs +0.098); Rohstoff-Trend ohne belegten Vorteil (Energie) bzw. schwach (Basismetalle) |
+| **P6 Live-Lauf und Journal** ✓ | `rotationlab forecast run` täglich in `daily.yml`: Prognose am letzten Monatsende append-only ins Journal (Zeitstempel, Datenstand, Hash-Kette); Abrechnung fälliger Prognosen (relative Rendite, realisierter Rang, obere Hälfte, Rang-IC, Brier gegen 0.5, Vormonatsrang-Baseline, Trend-Treffer); Markdown-Report je Monat; Datenvollständigkeits-Guard | **gebaut 2026-10-26** (`FORECAST_ABNAHME.md` P6): Probelauf auf dem Live-Store (Aug/Sep 2026) und auf dem Forschungspanel, Idempotenz, Guard, Erkennung von Änderungen im Journal getestet; Zweitprüfung P2–P6 eingearbeitet (ADR 046: Kettenanker, Abrechnung je Klasse, verspätete Daten); erster Actions-Lauf steht aus |
+| **P7 Aufräumen** | `Gitgnore` → `.gitignore`; Duplikate `README (1).md` und `ADR.md` im Hauptverzeichnis gegenüber `docs/ADR.md` klären; README auf das neue Ziel | Repo ohne Duplikate; CI grün |
+| **P8 Portfolio-Schicht** ✓ | Regel, Konventionen und Kriterium vorab in ADR 048: Modul `forecast_portfolio` (Rolle `paper`: Top-2 gleichgewichtet, Trendfilter, Vol-Ziel 10 % aus `sleeve_vol_12m`, kein Hebel) und Baselines `fixed_weights` durch dieselbe Engine, `next_tradable`, 15 bp; Treasury-Leg `UST10_ME` (ADR 047); Truncation-Sweep und Look-ahead-Harness | **gebaut 2026-10-27** (`FORECAST_ABNAHME.md` P8, `output/forecast/PORTFOLIO.md`): Sharpe 0.49 / Drawdown −16 % gegen Equal Weight 0.31 / −39 %; gepaarte Sharpe-Differenz +0.18 [−0.01, +0.39] → Kriterium **nicht erfüllt**; Gewichte als Paper-Spur im Live-Journal (`Forecast.weights`, Paper-Rendite in der Abrechnung) |
+| **Schluss: Holdout 2019–2025** ✓ | einmalige Auswertung mit eingefrorenem Modell und eingefrorener Regel (ADR 049, `scripts/forecast_holdout.py`) | **gerechnet 2026-10-27, Replikation gescheitert** (`output/forecast/HOLDOUT.md`): IC −0.03 [−0.18, +0.05], Rang 1 schlägt Rang 4 in 48 %, Wahrscheinlichkeiten unter der Grundrate; Regel Sharpe 0.61 gegen Equal Weight 1.03. Nichts geändert; die Live-Bilanz ab November 2026 ist der einzige verbleibende Test |
+| **Forschungsrunde 2** ✓ | vorab fixiert (ADR 052): Momentum + Carry + Value gleichgewichtet über US_EQ, UST10_ME, UST2_ME, GOLD, SILVER; zweite Prognosekonfiguration `forecast_v2` (`Bundle.forecasts`, `--config`), Features `carry_yield`/`value_rev_60m`, Modul `forecast_portfolio_v2`; dieselben Kriterien, ein Holdout-Blick | **gerechnet 2026-10-27, nicht übernommen** (ADR 053, `output/forecast_v2/`): in-sample IC +0.056 [−0.002, +0.106] (Kriterium knapp verfehlt), Regel Δ Sharpe zu EW +0.27 [−0.08, +0.56] (verfehlt); Holdout IC −0.16 [−0.23, −0.05], Regel 0.42 gegen EW 1.01 → gescheitert. Bleibt reproduzierbar im Repo, läuft nicht live |
+| **Forschungsrunde 3: Sleeve-Allokator** ✓ | vorab fixiert (ADR 054): Breite statt Parameter – 10 French-Industrien, 2 Treasuries, Gold/Silber in drei Sleeves; Querschnitt innerhalb, Zeitreihenfilter, inverse EWMA-Vol, Risikoparität, Vol-Ziel 10 %, Hebel ≤ 1.5, Band; Walk-forward 1979–2026 ohne Holdout-Blick; Modul `sleeve_allocator`, `scripts/allocator_walkforward.py` | **gerechnet und nach Zweitprüfung korrigiert** (ADR 055/056, `output/allocator/WALKFORWARD.md`): Sharpe 0.683 gegen signalfreie Risikoparität 0.685, Δ −0.002 [−0.19, +0.16] → nicht belegt; erste Fassung hatte einen Gleichstand-Fehler, „+2.2 % p.a.“ war Hebel; Industrie-Momentum IC +0.048, nach 1995 schwach; MDE 0.27. Nicht live |
+| **Forschungsrunde 4: Stufe 2** (vorab fixiert) | ADR 057, bevor die Daten im Projekt sind: fünf Sleeves, ≈ 45 Instrumente (US-Industrien täglich, Länderaktien, Treasuries 2/5/10 J. täglich, neun G10-Währungen dollar-neutral, Gold/Silber); Modul `sleeve_allocator_v2`, Features `vol_ewma_d`/`basket_vol_ewma_d`/`book_vol_hybrid`, Daten-Zyklus `research-data` → `freeze_research_data.py`, Auswertung `allocator_v2_walkforward.py` | **gebaut, getestet und vor dem Download gehärtet (ADR 058: Trockenlauf, Zweitprüfung, Datenprüfung, Registrierung aus Vorlage), Daten ausstehend**: Upload, Workflow `research-data`, Einfrieren, Lauf |
+
+**Erfolg** heisst: monatlich eine nachvollziehbare Rangfolge, ehrlich nachgeprüft, mit dem Beleg, ob sie
+einfache Baselines schlägt. Nicht: eine möglichst hohe historische Sharpe.
+
+### Methodenentscheide (Auftraggeber, 2026-10-25)
+
+| # | Frage | Entscheid | Folge |
+|---|---|---|---|
+| 1 | Basismodell | 5-Feature-Composite des Moduls (12-1 0.3, 6-1 0.3, 3-1 0.2, Trend 0.2, inverse Vol 0.1); reines 12-1-Momentum mit Trendfilter als erste Variante | beide sind gebaut; keine neuen Features |
+| 2 | Rohstoffe nicht untereinander ranken | Rangfolge über **US_EQ, UST10, GOLD, SILVER**; **WB_ENERGY, WB_BASEMETALS** nur mit absolutem Trend (auf/ab), ohne Score und Rang | z-Scores über vier statt sechs Klassen: andere Scores als im Golden des Moduls (gleicher Code, kleinerer Querschnitt) |
+| 3a | Hauptausgabe (ADR 044) | Wahrscheinlichkeit je gerankter Klasse, den Durchschnitt der gerankten Klassen zu schlagen; Status „kein klares Signal“ = keine Klasse weicht > 5 Pp von 50 % ab (ersetzt Entscheid 4) | Rang und Erwartung je Rang bleiben Nebenausgaben |
+| 3 | Erwartete Rendite und Band | historischer Mittelwert der relativen Rendite je Rang (relativ = minus Mittel der gerankten Klassen), Band = Block-Bootstrap-Konfidenzintervall dieses Mittelwerts; nur aus Monaten, deren Ergebnis am Prognosetag bekannt war | für Klassen ohne Rang keine relative Erwartung |
+| 4 | „Kein klares Signal“ | die Bänder von Rang 1 und letztem Rang überlappen | zu prüfen in P3: ob der Status über die Zeit variiert |
+| 5 | Zielgrösse für Monatsmittel | Mittel(t+2)/Mittel(t+1) (World Bank) | betrifft die Trend-Auswertung von Energie und Basismetallen |
+| 6 | Holdout | 2019–2025 = **Pseudo-Holdout** (Gestaltung kannte die Periode); **echtes Out-of-sample** = Live-Prognosen ab November 2026 | Bezeichnungen in allen Berichten genau so |
+| 7 (2026-10-27) | Energie-Trend | gestrichen (kein Nachweis in P5); Basismetalle bleiben beschreibend | `forecast.yaml` trend_only ohne WB_ENERGY/DBC (ADR 047) |
+| 8 (2026-10-27) | Zweite Treasury-Reihe | DGS10-Monatsende als statische Reihe (`static:fred:DGS10_ME`, `static:UST10_ME`, Asset `UST10_ME`); Forschungsreihe `UST10` bleibt für die eingefrorene Prognose | P8 rechnet auf der handelbaren Reihe (ADR 047/048) |
+| 9 (2026-10-27) | Runde 2: Universum | fünf Klassen mit echten Monatsendpreisen (US_EQ, UST10_ME, UST2_ME, GOLD, SILVER); Mittelwert-Reihen draussen | `configs/forecast_v2.yaml`; `static:fred:DGS2_ME`, `static:UST2_ME`, Assets `UST2_ME`/`SHY` (ADR 052) |
+| 10 (2026-10-27) | Runde 2: Signale | Momentum + Carry + Value, gleichgewichtet, keine gefitteten Gewichte | Features `carry_yield` (Spec je Klasse), `value_rev_60m` |
+| 11 (2026-10-27) | Runde 2: Holdout und Live | ein Blick auf 2019–2025 nach (e)/(f); nach dem negativen Ergebnis **nicht live** (Entscheid 19:30) | `daily.yml` läuft nur `forecast`; `forecast_v2` bleibt dokumentiert (ADR 053) |
+| 12 (2026-10-27) | Runde 3: Breite | Stufe 1 (14 Instrumente, Daten im Repo) sofort, Stufe 2 (FX, Länderindizes, Laufzeiten) nach Daten-Zyklus | ADR 054 (a); Stufe 2 offen |
+| 13 (2026-10-27) | Runde 3: Hebel | bis 1.5 brutto, kein Sleeve > 1.0, Finanzierung zum Cash-Index | ADR 054 (c) |
+| 14 (2026-10-27) | Runde 3: Live-Universum | SPDR-Sektoren auf French-Industrien abgebildet; live nur bei erfülltem Kriterium – nicht erfüllt | ADR 054 (g), ADR 055 |
+| 15 (2026-10-27) | Runde 4 (Stufe 2) | Breite erhöhen wie ein professioneller Allokator, Schwachstellen beheben (Auftrag 21:07) | ADR 057; Daten über den Workflow `research-data` |
+| 16 (2026-10-28) | Runde 4 vor dem Download härten | Profi-Standard, Ausrollen möglichst gebündelt (Auftrag 23:08) | ADR 058: zwei Fehler und vier Designschwächen vor den Daten behoben; ein Upload jetzt (Vorregistrierung mit Zeitstempel, Live-Start, Daten), einer am Schluss |
 
 **Migration:** `scripts/run_equity.py` → `strategies/us_equity_exposure.py`, `strategies/us_sector_rotation.py`, `features/equity.py` + Goldens · `src/data.py`, `scripts/build_dataset.py` → `data/providers/static.py` + `ingest.py` · `src/features.py`, `commodity_model.py` (Signale) → `features/` · `src/signals.py`, `commodity_model.py` (Gewichte) → `strategies/` · `run_gold_silver.py`, `run_derisk.py` → `strategies/precious_metals.py` + Goldens · `src/analysis.py` → `stats/`, `relationships/` · `src/backtest.py`, `metrics.py` → `engine/`, `portfolio/book.py` · `scripts/run_*.py`, `output/` → `research/` · `config.py` → `configs/*.yaml`. Modulweise; ein Modul ist migriert, wenn sein Golden grün ist.
 

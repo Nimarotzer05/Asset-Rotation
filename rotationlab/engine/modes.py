@@ -6,7 +6,8 @@
 
 A golden run is the module, the research universe, the research sample and the research cost convention
 (`golden_run` in the strategy YAML); `execution` defaults to the research convention (`same_close`) and can
-be set to `next_close` to see what the production timing (ADR 011) costs.
+be set to `next_close` to see what the production timing (ADR 011) costs, or to `next_month_close` /
+`next_tradable` for the timing of assets valued at monthly averages (ADR 042).
 """
 
 from __future__ import annotations
@@ -45,7 +46,7 @@ def research_factory(
     first month: rolling windows and expanding statistics restart there, as in the studies)."""
     obs = observations
     if data_from is not None:
-        first = pd.Timestamp(data_from).normalize() - pd.offsets.MonthBegin(1)
+        first = pd.Timestamp(data_from).to_period("M").start_time  # 1st of that month, also for a 1st
         obs = obs[pd.to_datetime(obs["obs_date"]) >= first]
     return StoreViewFactory(
         obs,
@@ -75,7 +76,14 @@ def backtest(
     cost_model = CostModel.from_config(costs or CostSpec(), bundle.universe)
     clock = MonthEndClock(factory.cal, start or date(1900, 1, 31), end or date.today())
     book = Book(cash, cost_model, capital)
-    return Engine(factory, clock, [strat], SingleStrategy(), book, recorder, execution).run()
+    return Engine(
+        factory, clock, [strat], SingleStrategy(), book, recorder, execution, averaged=averaged_assets(bundle)
+    ).run()
+
+
+def averaged_assets(bundle: Bundle) -> list[str]:
+    """Assets valued at monthly averages (`price_basis: monthly_average`): `next_tradable` trades them a month later."""
+    return sorted(a for a, c in bundle.universe.assets.items() if c.price_basis == "monthly_average")
 
 
 @dataclass
@@ -150,7 +158,14 @@ def walkforward_golden(
     spec = strategy_spec(bundle, sid, gr.universe, gr.params)
     clock = MonthEndClock(factory.cal, gr.start, gr.end)
     res = Engine(
-        factory, clock, [strat], SingleStrategy(), Book(str(spec.params["cash"]), cost_model), None, ex
+        factory,
+        clock,
+        [strat],
+        SingleStrategy(),
+        Book(str(spec.params["cash"]), cost_model),
+        None,
+        ex,
+        averaged=averaged_assets(bundle),
     ).run()
     sample = wf.golden_sample or gr.sample
     m = res.metrics(sample[0], sample[1], True)

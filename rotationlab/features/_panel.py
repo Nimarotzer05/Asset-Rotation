@@ -45,10 +45,22 @@ def _on_grid(df: pd.DataFrame, d: date) -> pd.DataFrame:
 
 
 def tr_panel(view: MarketView, assets: Sequence[str]) -> pd.DataFrame:
-    """Monthly total-return levels (columns = assets) on the complete grid up to the month of view.date."""
+    """Monthly total-return levels (columns = assets) on the complete grid up to the month of view.date.
+
+    Memoised per view and asset tuple (the view's `memo`, like feature results): every feature of a decision
+    reads the same panel, so it is built once per view – the grid reindexing was the largest single cost of
+    an engine step. Callers get a copy."""
+    key = ("tr_panel", tuple(str(a) for a in assets))
+    memo = getattr(view, "memo", None)
+    if memo is not None and key in memo:
+        cached: pd.DataFrame = memo[key]
+        return cached.copy()
     df = view.total_return(list(assets), "ME")
     df = df.reindex(columns=list(assets))
-    return _on_grid(df, view.date)
+    out = _on_grid(df, view.date)
+    if memo is not None:
+        memo[key] = out.copy()
+    return out
 
 
 def series_panel(view: MarketView, series_ids: Sequence[str]) -> pd.DataFrame:

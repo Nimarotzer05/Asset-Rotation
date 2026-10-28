@@ -41,6 +41,7 @@ class Role(StrEnum):
     CORE = "core"  # receives a risk budget
     SATELLITE = "satellite"  # receives a (smaller) risk budget, usually long-short
     OVERLAY = "overlay"  # sized relative to core exposure, additive hedge
+    PAPER = "paper"  # research/paper module outside the risk budgets (forecast portfolio, baselines; ADR 048)
 
 
 class SeriesKind(StrEnum):

@@ -148,6 +148,65 @@ def test_execution_at_the_next_close_stays_within_tolerance(bundle, obs, cal, si
     assert rep.failures() == []
 
 
+# ADR 042, output/execution/TIMING.md: Sharpe ex cash with honest timing for monthly averages. Pinned so a
+# change to the engine or the data that moves them is a visible decision, not a silent drift.
+HONEST = {"commodity_trend": 0.4225, "multi_asset_rotation": 0.5574}
+
+
+@pytest.mark.parametrize("sid", sorted(HONEST))
+def test_honest_timing_for_monthly_averages(bundle, obs, cal, sid) -> None:
+    """`next_tradable`: World Bank monthly averages trade at the next decision date, closing prices at the
+    next session. The study figure (same_close) re-uses the average that made the signal as the price."""
+    rep = golden(bundle, obs, sid, cal, "next_tradable")
+    assert rep.measured["sharpe_ex_cash"] == pytest.approx(HONEST[sid], abs=5e-4)
+    research = golden(bundle, obs, sid, cal, "same_close").measured["sharpe_ex_cash"]
+    assert rep.measured["sharpe_ex_cash"] < research
+
+
+def test_honest_timing_leaves_modules_without_averages_unchanged(bundle, obs, cal) -> None:
+    a = golden(bundle, obs, "us_equity_exposure", cal, "next_tradable").result.decisions
+    b = golden(bundle, obs, "us_equity_exposure", cal, "next_close").result.decisions
+    pd.testing.assert_frame_equal(a, b)
+
+
+def test_forecast_portfolio_golden(bundle, obs, cal) -> None:
+    """P8 (ADR 048): the pre-registered paper rule reproduces its first run (regression pin, not a verdict):
+    Sharpe 0.487, 9.2 % p.a., drawdown −15.9 % over 1974-01 … 2018-12, tradable timing, 15 bp costs."""
+    rep = golden(bundle, obs, "forecast_portfolio", cal)
+    assert rep.execution == "next_tradable"
+    assert rep.failures() == []
+    assert rep.measured["sharpe_ex_cash"] == pytest.approx(0.48677, abs=5e-4)
+    assert rep.measured["months"] == 540
+    assert rep.result.decisions.index.max() <= pd.Timestamp("2018-12-31")  # never into the pseudo-holdout
+
+
+def test_forecast_portfolio_v2_golden(bundle, obs, cal) -> None:
+    """Round 2 (ADR 052/053): the same rule on five classes reproduces its first run (regression pin; the
+    criterion of ADR 048 e was not met): Sharpe 0.605, 7.6 % p.a., drawdown −9.1 % over 1981-08 … 2018-12."""
+    rep = golden(bundle, obs, "forecast_portfolio_v2", cal)
+    assert rep.execution == "next_tradable"
+    assert rep.failures() == []
+    assert rep.measured["sharpe_ex_cash"] == pytest.approx(0.6047, abs=5e-4)
+    assert rep.measured["months"] == 449
+    assert rep.result.decisions.index.max() <= pd.Timestamp("2018-12-31")
+
+
+def test_sleeve_allocator_golden(bundle, obs, cal) -> None:
+    """Round 3 (ADR 054/056): the sleeve allocator reproduces its corrected walk-forward run (regression pin; the
+    criterion of ADR 054 e was not met): Sharpe 0.683, 10.7 % p.a., drawdown −14.7 % over 1979-01 … 2026-01,
+    gross exposure never above 1.5, every sleeve within its budget share. Ties in the two-instrument sleeves go
+    to configuration order (ADR 054 b), not to float residues (the first run's 0.705, ADR 056)."""
+    rep = golden(bundle, obs, "sleeve_allocator", cal)
+    assert rep.execution == "next_tradable"
+    assert rep.failures() == []
+    assert rep.measured["sharpe_ex_cash"] == pytest.approx(0.6830, abs=5e-4)
+    assert rep.measured["months"] == 565
+    gross = [sum(p.weights.values()) for p in rep.result.proposals if not p.warmup]
+    assert max(gross) <= 1.5 + 1e-9 and min(gross) >= 0.0
+    sleeves = [k for k in rep.result.proposals[-1].signals if k.startswith("sleeve_weight:")]
+    assert all(rep.result.proposals[-1].signals[k] <= 1.0 + 1e-9 for k in sleeves)
+
+
 def test_walk_forward_golden(bundle, obs, cal) -> None:
     rep = walkforward_golden(bundle, obs, "multi_asset_rotation", cal)
     assert rep.failures() == []

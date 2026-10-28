@@ -1,0 +1,36 @@
+id: forecast_portfolio
+version: 1
+role: paper                        # outside the risk budgets: the pre-registered paper rule on the forecast (ADR 048)
+cadence: monthly
+universe: [SPY, IEF, GLD, SLV, BIL]
+long_history_universe: [US_EQ, UST10_ME, GOLD, SILVER, TBILL]   # UST10_ME: the tradable Treasury index (ADR 047)
+warmup_months: 13                  # 12 monthly returns for the sleeve volatility
+params:
+  # the forecast model's composite (configs/forecast.yaml; ADR 043) – identical formula, pointwise through the registry
+  feature_weights: { mom_3_1: 0.2, mom_6_1: 0.3, mom_12_1: 0.3, trend_10m: 0.2, inv_vol_12m: 0.1 }
+  zscore_clip: 3.0
+  top_n: 2                         # the two best-ranked classes, equal-weighted (ADR 044 g)
+  trend_filter: true               # a pick below its 10-month average goes to cash
+  trend_window_months: 10
+  vol_target: 0.10                 # annualised; sleeve scaled by min(vol_target / sleeve_vol_12m, max_exposure)
+  vol_window_months: 12
+  vol_floor: 0.05                  # house convention (configs/portfolio.yaml vol_floor)
+  max_exposure: 1.0                # no leverage (pre-registered); 1.5 = named sensitivity, not the rule
+confidence:
+  kind: score_dispersion
+  floor: 0.5
+  params: { scale: 1.0 }
+# Reference run of the pre-registered rule (ADR 048 c): research data from 1972-12, decisions to 2018-12 (the
+# December 2018 return is the last one before the pseudo-holdout; the decision of 2018-12-31 itself is traded on
+# 2019-01-02 and never evaluated), tradable timing and the golden cost convention (15 bp on one-way turnover).
+# The golden figures are pinned from the first run (regression pin, not a success criterion – that is ADR 048 e).
+golden: { sharpe_ex_cash: 0.487, ann_return: 0.092, max_drawdown: -0.159 }   # first run 2026-10-27, output/forecast/PORTFOLIO.md
+golden_tolerance: { sharpe_ex_cash: 0.02, ann_return: 0.01, max_drawdown: 0.02 }
+golden_run:
+  data_from: 1972-12-31
+  start: 1972-12-31
+  end: 2018-12-31
+  sample: [1974-01-31, 2018-12-31]
+  count_warmup: false
+  execution: next_tradable
+  costs: { default_bps: 7.5, cash_bps: 7.5 }

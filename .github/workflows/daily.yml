@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 concurrency: daily
 env:
-  PHASE: 1          # built phases (docs/ARCHITECTURE.md §12); later steps switch on as phases land
+  PHASE: 2          # built phases (docs/ARCHITECTURE.md §12); the portfolio steps below stay off (ADR 043)
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -30,6 +30,17 @@ jobs:
       - run: uv run rotationlab validate
       - run: uv run rotationlab store verify      # checksums of the observation log (exit 3 on tampering/partial writes)
       - run: uv run rotationlab ingest            # blocking quality result -> exit 3 stops the job here
+      - name: forecast of the asset classes (ADR 043, P6) - last month-end, settle matured ones, report
+        shell: bash                               # pipefail: the run's exit code survives the tee (3 = journal chain broken)
+        run: |
+          uv run rotationlab forecast run | tee "$RUNNER_TEMP/forecast.log"   # idempotent: writes only what the journal lacks
+          # the chain head is the anchor against a cut-off journal: keep it outside the repository (ADR 046)
+          HEAD=$(grep '^journal head:' "$RUNNER_TEMP/forecast.log" || true)
+          { echo "$(date -u +%F) $(grep '^forecast run' "$RUNNER_TEMP/forecast.log" || true)"; echo "$HEAD"; } >> "$GITHUB_STEP_SUMMARY"
+          if grep -qE ' [1-9][0-9]* (forecast|outcome)\(s\)' "$RUNNER_TEMP/forecast.log" && [ -n "$TELEGRAM_BOT_TOKEN" ]; then
+            curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d chat_id="${TELEGRAM_CHAT_ID}" \
+              --data-urlencode text="rotationlab $(grep '^forecast run' "$RUNNER_TEMP/forecast.log") | $HEAD" > /dev/null || true
+          fi
       - run: uv run rotationlab live              # exit 4 = risk halt; still produce the report below
         if: ${{ env.PHASE >= 4 }}
         continue-on-error: true
@@ -59,6 +70,25 @@ jobs:
           git add -A -f data/store journal reports
           git commit -m "daily run $(date -u +%F)" || echo "nothing to commit"
           git push origin data
+      - name: anchor the journal head on branch anchors (ADR 046/051)
+        if: always()                              # the anchor must survive the 90-day log retention
+        shell: bash
+        run: |
+          HEAD=$(grep '^journal head:' "$RUNNER_TEMP/forecast.log" 2>/dev/null || true)
+          [ -z "$HEAD" ] && { echo "no journal head in this run"; exit 0; }
+          W="$RUNNER_TEMP/anchors"
+          if git ls-remote --exit-code --heads origin anchors > /dev/null; then
+            git fetch --depth=1 origin anchors && git worktree add --detach "$W" FETCH_HEAD
+          else
+            git worktree add --detach "$W" && git -C "$W" checkout -q --orphan anchors && git -C "$W" rm -rfq --cached . && rm -rf "$W"/* "$W"/.github "$W"/.gitignore
+          fi
+          cd "$W"
+          LAST=$(tail -n 1 journal-anchors.txt 2>/dev/null | sed 's/^[^ ]* //' || true)
+          if [ "$LAST" = "$HEAD" ]; then echo "head unchanged, no anchor"; exit 0; fi
+          echo "$(date -u +%FT%TZ) $HEAD" >> journal-anchors.txt
+          git add journal-anchors.txt
+          git -c user.name=rotationlab-bot -c user.email=bot@users.noreply.github.com commit -qm "anchor $(date -u +%F)"
+          git push origin HEAD:refs/heads/anchors
       - name: fail job if live halted
         if: steps.live.outcome == 'failure'
         run: exit 1

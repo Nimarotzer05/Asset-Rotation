@@ -218,11 +218,14 @@ def test_gold_silver_hedge_adds_the_base_share() -> None:
 
 # ---------------------------------------------------------------------------- building from configuration
 def test_build_strategies_from_configuration(bundle) -> None:
-    for sid in bundle.strategies:
+    for sid, cfg in bundle.strategies.items():
         live = build_strategy(bundle, sid)
         long = build_strategy(bundle, sid, "long_history")
         assert isinstance(live, Strategy) and isinstance(long, Strategy)
-        assert live.spec.params["cash"] == "CASH"
+        # the portfolio modules hold the synthetic CASH index; the paper modules of the forecast (ADR 048)
+        # share the forecast's live cash asset (BIL, configs/forecast.yaml)
+        expected_cash = bundle.forecast.universe["live"].cash if cfg.role == "paper" else "CASH"
+        assert live.spec.params["cash"] == expected_cash, sid
         assert str(long.spec.universe[-1]) == long.spec.params["cash"]
     eq = build_strategy(bundle, "us_equity_exposure", "long_history")
     assert eq.spec.params["market"] == "FF_MKT" and eq.spec.params["cash"] == "FF_RF"

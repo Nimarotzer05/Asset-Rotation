@@ -14,6 +14,7 @@ params:
     enabled: false
     floor: 0.75
     min_history_months: 120
+    pct_start: 1926-07-31        # percentile history starts with the French market index, as in the study (audit 2026-10-25)
   # research (output/equity/REPORT.md A1/A2, docs/AUDIT_equity_study.md): macro gates (credit spread, labour market)
   # carry no 1-month information for equities (credit t = 0.3; rising unemployment even predicts HIGHER returns, t = +3.3)
   # and mechanically dilute the trend exit; deliberately not used.

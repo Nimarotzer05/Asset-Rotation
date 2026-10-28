@@ -7,17 +7,20 @@ assets:
   # ---- long-history panel (not tradable, 1973–2025, from data/raw) ----
   US_EQ:        { name: US equities TR,          asset_class: equity,     instrument: index, tradable: false, cost_bps: 0, series: { total_return: "static:usmkt:TR" } }
   UST10:        { name: 10y Treasury TR (synth), asset_class: bond,       instrument: index, tradable: false, cost_bps: 0, series: { total_return: "static:UST10" } }
+  UST10_ME:     { name: 10y Treasury TR (par bond on month-end DGS10), asset_class: bond, instrument: index, tradable: false, cost_bps: 0, series: { total_return: "static:UST10_ME" } }
+  UST2_ME:      { name: 2y Treasury TR (par bond on month-end DGS2), asset_class: bond, instrument: index, tradable: false, cost_bps: 0, series: { total_return: "static:UST2_ME" } }   # ADR 052, from 1976-06
   GOLD:         { name: Gold LBMA PM fix,        asset_class: precious,   instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:GOLD" } }
   SILVER:       { name: Silver LBMA fix,         asset_class: precious,   instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:lbma:SILVER" } }
-  WB_ENERGY:    { name: WB energy index,         asset_class: energy,     instrument: index, tradable: false, cost_bps: 0, series: { close: "static:WB_ENERGY" } }
-  WB_BASEMETALS: { name: WB base metals index,    asset_class: base_metal, instrument: index, tradable: false, cost_bps: 0, series: { close: "static:WB_BASEMETALS" } }
-  WB_PLATINUM:  { name: Platinum WB avg,         asset_class: precious,   instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_PLATINUM" } }
-  WB_OIL:       { name: Crude oil WB avg,        asset_class: energy,     instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_OIL" } }
-  WB_NATGAS:    { name: US natural gas WB avg,   asset_class: energy,     instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_NATGAS" } }
-  WB_COPPER:    { name: Copper WB avg,           asset_class: base_metal, instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_COPPER" } }
-  WB_ALUMINUM:  { name: Aluminium WB avg,        asset_class: base_metal, instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_ALUMINUM" } }
-  WB_NICKEL:    { name: Nickel WB avg,           asset_class: base_metal, instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_NICKEL" } }
-  WB_AGRI:      { name: WB agriculture index,    asset_class: agri,       instrument: index, tradable: false, cost_bps: 0, series: { close: "static:WB_AGRI" } }
+  GOLD_D:       { name: "Gold LBMA PM fix, daily from 1968-04", asset_class: precious, instrument: spot, tradable: false, cost_bps: 0, series: { close: "static:lbma:GOLD" } }   # daily series for future rounds: trades at the next session; GOLD (monthly, WB fill before 1968) stays the frozen research series
+  WB_ENERGY:    { name: WB energy index,         asset_class: energy,     instrument: index, tradable: false, price_basis: monthly_average, cost_bps: 0, series: { close: "static:WB_ENERGY" } }
+  WB_BASEMETALS: { name: WB base metals index,    asset_class: base_metal, instrument: index, tradable: false, price_basis: monthly_average, cost_bps: 0, series: { close: "static:WB_BASEMETALS" } }
+  WB_PLATINUM:  { name: Platinum WB avg,         asset_class: precious,   instrument: spot,  tradable: false, price_basis: monthly_average, cost_bps: 0, series: { close: "static:WB_PLATINUM" } }
+  WB_OIL:       { name: Crude oil WB avg,        asset_class: energy,     instrument: spot,  tradable: false, price_basis: monthly_average, cost_bps: 0, series: { close: "static:WB_OIL" } }
+  WB_NATGAS:    { name: US natural gas WB avg,   asset_class: energy,     instrument: spot,  tradable: false, price_basis: monthly_average, cost_bps: 0, series: { close: "static:WB_NATGAS" } }
+  WB_COPPER:    { name: Copper WB avg,           asset_class: base_metal, instrument: spot,  tradable: false, price_basis: monthly_average, cost_bps: 0, series: { close: "static:WB_COPPER" } }
+  WB_ALUMINUM:  { name: Aluminium WB avg,        asset_class: base_metal, instrument: spot,  tradable: false, price_basis: monthly_average, cost_bps: 0, series: { close: "static:WB_ALUMINUM" } }
+  WB_NICKEL:    { name: Nickel WB avg,           asset_class: base_metal, instrument: spot,  tradable: false, price_basis: monthly_average, cost_bps: 0, series: { close: "static:WB_NICKEL" } }
+  WB_AGRI:      { name: WB agriculture index,    asset_class: agri,       instrument: index, tradable: false, price_basis: monthly_average, cost_bps: 0, series: { close: "static:WB_AGRI" } }
   FF_MKT:       { name: US total market (French), asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_MKT" } }
   FF_NODUR:     { name: Consumer non-durables (French), asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_NODUR" } }
   FF_DURBL:     { name: Consumer durables (French),     asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_DURBL" } }
@@ -30,9 +33,10 @@ assets:
   FF_UTILS:     { name: Utilities (French),             asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_UTILS" } }
   FF_OTHER:     { name: Other incl. finance (French),   asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_OTHER" } }
   TBILL:        { name: 3M T-Bill index,         asset_class: cash,       instrument: index, tradable: false, cost_bps: 0, series: { total_return: "static:TBILL" } }
+  TBILL_IY:     { name: "3M T-Bill index, investment yield (round 4, ADR 058)", asset_class: cash, instrument: index, tradable: false, cost_bps: 0, series: { total_return: "static:TBILL_IY" } }
   FF_RF:        { name: 1M T-Bill (French RF),   asset_class: cash,       instrument: index, tradable: false, cost_bps: 0, series: { return: "static:french:ff3:RF" } }
-  WB_GOLD_AVG:  { name: Gold WB monthly avg,     asset_class: precious,   instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_GOLD_AVG" } }
-  WB_SILVER_AVG: { name: Silver WB monthly avg,  asset_class: precious,   instrument: spot,  tradable: false, cost_bps: 0, series: { close: "static:WB_SILVER_AVG" } }
+  WB_GOLD_AVG:  { name: Gold WB monthly avg,     asset_class: precious,   instrument: spot,  tradable: false, price_basis: monthly_average, cost_bps: 0, series: { close: "static:WB_GOLD_AVG" } }
+  WB_SILVER_AVG: { name: Silver WB monthly avg,  asset_class: precious,   instrument: spot,  tradable: false, price_basis: monthly_average, cost_bps: 0, series: { close: "static:WB_SILVER_AVG" } }
   # gold and silver spot for signals (gold/silver ratio): front futures live, LBMA fix as history (daily, ratio splice)
   XAU:          { name: "Gold spot (futures, LBMA before)", asset_class: precious, instrument: spot, tradable: false, cost_bps: 0, series: { close: ["yahoo:GC=F:close", "static:lbma:GOLD"] } }
   XAG:          { name: "Silver spot (futures, LBMA before)", asset_class: precious, instrument: spot, tradable: false, cost_bps: 0, series: { close: ["yahoo:SI=F:close", "static:lbma:SILVER"] } }
@@ -42,6 +46,7 @@ assets:
   EFA: { name: MSCI EAFE ETF,          asset_class: equity,      instrument: etf, cost_bps: 8,  proxy_of: US_EQ,         series: { close: ["yahoo:EFA:close", "stooq:EFA:close"], dividend: "yahoo:EFA:dividend", split: "yahoo:EFA:split" } }
   EEM: { name: MSCI EM ETF,            asset_class: equity,      instrument: etf, cost_bps: 10, proxy_of: US_EQ,         series: { close: ["yahoo:EEM:close", "stooq:EEM:close"], dividend: "yahoo:EEM:dividend", split: "yahoo:EEM:split" } }
   TLT: { name: 20y+ Treasury ETF,      asset_class: bond,        instrument: etf, cost_bps: 5,  proxy_of: UST10,         series: { close: ["yahoo:TLT:close", "stooq:TLT:close"], dividend: "yahoo:TLT:dividend", split: "yahoo:TLT:split" } }
+  SHY: { name: 1-3y Treasury ETF,      asset_class: bond,        instrument: etf, cost_bps: 5,  proxy_of: UST2_ME,       series: { close: ["yahoo:SHY:close", "stooq:SHY:close"], dividend: "yahoo:SHY:dividend", split: "yahoo:SHY:split" } }   # ADR 052: live leg of UST2_ME
   IEF: { name: 7-10y Treasury ETF,     asset_class: bond,        instrument: etf, cost_bps: 5,  proxy_of: UST10,         series: { close: ["yahoo:IEF:close", "stooq:IEF:close"], dividend: "yahoo:IEF:dividend", split: "yahoo:IEF:split" } }
   TIP: { name: TIPS ETF,               asset_class: bond,        instrument: etf, cost_bps: 6,  proxy_of: UST10,         series: { close: ["yahoo:TIP:close", "stooq:TIP:close"], dividend: "yahoo:TIP:dividend", split: "yahoo:TIP:split" } }
   GLD: { name: Gold ETF,               asset_class: precious,    instrument: etf, cost_bps: 8,  borrow_bps: 50,  proxy_of: GOLD,   series: { close: ["yahoo:GLD:close", "stooq:GLD:close"], split: "yahoo:GLD:split" } }

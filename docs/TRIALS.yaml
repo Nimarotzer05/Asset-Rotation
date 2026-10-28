@@ -1,0 +1,33 @@
+# Versuchsregister (docs/REVIEW_ALLOKATOR.md; ADR 056): every model or rule variant whose performance was ever
+# computed on the overlapping history, in the order they were run. The deflated Sharpe (Bailey/López de Prado 2014)
+# takes N = the number of entries and V = the variance of the *same statistic* across the entries that have a
+# stored return series: the appraisal ratio – Sharpe of the variant's excess return net of its full-sample beta to
+# the baseline's excess return (rotationlab.forecast.evaluation.appraisal_residual), monthly. A raw difference
+# "variant − baseline" would count a higher level of risk as skill (ADR 056).
+# A new variant is entered here BEFORE it runs. Entries without a stored series still count in N; runs that were
+# computed and seen (a first version later corrected, a reviewer's sensitivities) count too – conservative.
+# Dry runs on synthetic data (ADR 058 j) are not trials: they touch no real history and inform no choice on it.
+unstored:
+  - { round: Forschungsphase, name: "Komposit src/signals.py und Gitter der multi_asset_rotation (≈ 8 Punkte)", count: 8 }
+  - { round: "1 (P4)", name: "Basismodell, 12-1-Variante, Regime-Tilts, 4 Wahrscheinlichkeitsmodelle (Prognose, nicht Portfolio)", count: 7 }
+  - { round: "2 (ADR 052)", name: "6 Ablationen, 4 Wahrscheinlichkeitsmodelle (Prognose, nicht Portfolio)", count: 10 }
+  - { round: "3 (ADR 054)", name: "erste Fassung vor der Gleichstand-Korrektur: Allokator und 8 Varianten (ADR 056 a)", count: 9 }
+  - { round: "3 (ADR 056)", name: "Sensitivitäten der Zweitprüfung und Diagnosen (Gleichstandsregeln, Sleeve-Kappe 1.5, ohne Band, Kosten und Finanzierung beidseitig)", count: 10 }
+stored:
+  - { round: "1 (P8)", name: "Regel Runde 1", file: output/forecast/portfolio_monthly.csv, column: "Regel (Top-2, Trend, Vol-Ziel 10 %)", baseline: "Equal Weight (4 Klassen)" }
+  - { round: "1 (P8)", name: "Regel Runde 1, Hebel bis 1.5", file: output/forecast/portfolio_monthly.csv, column: "Regel, Hebel bis 1.5", baseline: "Equal Weight (4 Klassen)" }
+  - { round: "1 (P8)", name: "Regel Runde 1, Forschungsreihe UST10", file: output/forecast/portfolio_monthly.csv, column: "Regel mit Forschungsreihe UST10", baseline: "Equal Weight (4 Klassen)" }
+  - { round: "2 (ADR 052)", name: "Regel Runde 2", file: output/forecast_v2/portfolio_monthly.csv, column: "Regel (Top-2, Trend, Vol-Ziel 10 %)", baseline: "Equal Weight (5 Klassen)" }
+  - { round: "2 (ADR 052)", name: "Regel Runde 2, Hebel bis 1.5", file: output/forecast_v2/portfolio_monthly.csv, column: "Regel, Hebel bis 1.5", baseline: "Equal Weight (5 Klassen)" }
+  - { round: "3 (ADR 054)", name: "Allokator Runde 3", file: output/allocator/walkforward_monthly.csv, column: "Allokator (ADR 054)", baseline: "B1 Risikoparität ohne Signale" }
+  - { round: "3 (ADR 054)", name: "ohne Zeitreihenfilter", file: output/allocator/walkforward_monthly.csv, column: "ohne Zeitreihenfilter", baseline: "B1 Risikoparität ohne Signale" }
+  - { round: "3 (ADR 054)", name: "nur Zeitreihe + Risikoparität", file: output/allocator/walkforward_monthly.csv, column: "nur Zeitreihe + Risikoparität", baseline: "B1 Risikoparität ohne Signale" }
+  - { round: "3 (ADR 054)", name: "Hebelgrenze 1.0", file: output/allocator/walkforward_monthly.csv, column: "Hebelgrenze 1.0", baseline: "B1 Risikoparität ohne Signale" }
+  - { round: "3 (ADR 054)", name: "Halbwertszeit 6", file: output/allocator/walkforward_monthly.csv, column: "Halbwertszeit 6", baseline: "B1 Risikoparität ohne Signale" }
+  - { round: "3 (ADR 054)", name: "Kosten ×2", file: output/allocator/walkforward_monthly.csv, column: "Kosten ×2", baseline: "B1 Risikoparität ohne Signale" }
+  - { round: "3 (ADR 054)", name: "nur Sleeve EQ", file: output/allocator/walkforward_monthly.csv, column: "nur Sleeve EQ", baseline: "B1 Risikoparität ohne Signale" }
+  - { round: "3 (ADR 054)", name: "nur Sleeve FI", file: output/allocator/walkforward_monthly.csv, column: "nur Sleeve FI", baseline: "B1 Risikoparität ohne Signale" }
+  - { round: "3 (ADR 054)", name: "nur Sleeve PM", file: output/allocator/walkforward_monthly.csv, column: "nur Sleeve PM", baseline: "B1 Risikoparität ohne Signale" }
+# Runde 4 (ADR 057) – entered before its first run; the stored series appear with output/allocator_v2/
+planned:
+  - { round: "4 (ADR 057)", name: "Allokator v2 und 11 vorab benannte Varianten", count: 12 }

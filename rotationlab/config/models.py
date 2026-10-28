@@ -69,12 +69,16 @@ class AssetConfig(_Strict):
         "cash",
         "commodity_basket",
         "real_estate",
+        "currency",  # research round 4: foreign deposits in USD (ADR 057)
     ]
     instrument: Literal["etf", "spot", "future", "index"]
     tradable: bool = True
     cost_bps: float = 10.0
     borrow_bps: float = 0.0
     proxy_of: str | None = None
+    # "monthly_average": the monthly value is an average over the month (World Bank pink sheet), so a trade
+    # at the decision close would use a price whose window lies before the decision (ADR 042)
+    price_basis: Literal["close", "monthly_average"] = "close"
     # role -> series id, or a chain [primary, fallback, ...]: the view uses the primary and splices the
     # next one in only where the primary has no data (history before it starts, or days after it stops).
     series: dict[str, str | list[str]] = Field(default_factory=dict)
@@ -176,6 +180,9 @@ class CostSpec(_Strict):
     default_bps: float | None = None
     cash_bps: float = 0.0
     per_asset: dict[str, float] = Field(default_factory=dict)
+    # carry cost in bp p.a. on negative weights, per asset, on top of universe.yaml `borrow_bps`; the key `CASH`
+    # prices a negative cash leg: the spread over the cash index paid for leverage (ADR 057)
+    borrow_bps: dict[str, float] = Field(default_factory=dict)
 
 
 class GoldenRun(_Strict):
@@ -185,7 +192,9 @@ class GoldenRun(_Strict):
     restart). `sample`: returns dated in this window enter the metrics. `count_warmup`: months in which
     the module had no signal yet (all cash) count, as in studies that kept them, or are skipped, as in
     studies that dropped them. `execution`: `same_close` = research convention (trade at the decision
-    close); `next_close` = production (ADR 011). `params`: overrides for this run (deep-merged)."""
+    close); `next_close` = production (ADR 011); `next_month_close` = trade at the next decision date (ADR 042,
+    the honest timing for assets valued at monthly averages); `next_tradable` = next session for closing prices,
+    next decision date for monthly averages. `params`: overrides for this run (deep-merged)."""
 
     universe: Literal["long_history", "live"] = "long_history"
     data_from: date | None = None
@@ -193,7 +202,7 @@ class GoldenRun(_Strict):
     end: date
     sample: tuple[date, date]
     count_warmup: bool = True
-    execution: Literal["same_close", "next_close"] = "same_close"
+    execution: Literal["same_close", "next_close", "next_month_close", "next_tradable"] = "same_close"
     costs: CostSpec = Field(default_factory=CostSpec)
     params: dict[str, Any] = Field(default_factory=dict)
 
@@ -214,7 +223,7 @@ class WalkForwardConfig(_Strict):
 class StrategyConfig(_Strict):
     id: str
     version: int
-    role: Literal["core", "satellite", "overlay"]
+    role: Literal["core", "satellite", "overlay", "paper"]
     cadence: Literal["monthly", "weekly"] = "monthly"
     universe: list[str]
     long_history_universe: list[str] = Field(default_factory=list)  # for golden tests
@@ -279,6 +288,112 @@ class LiveConfig(_Strict):
 
 
 # ---------------------------------------------------------------------------
+# forecast.yaml (ADR 043)
+# ---------------------------------------------------------------------------
+class ForecastModelConfig(_Strict):
+    id: str
+    version: int
+    feature_weights: dict[str, float]
+    zscore_clip: float = 3.0
+    feature_params: dict[str, dict[str, Any]] = Field(
+        default_factory=dict
+    )  # per feature, e.g. carry_yield.spec
+
+
+class ForecastEvaluationConfig(_Strict):
+    """The in-sample window of the pre-registered evaluation and the decades of criterion 3 (ADR 044 f /
+    ADR 052 d): the first decision date and the (name, first year, last year) of every complete decade."""
+
+    data_from: date = date(1972, 12, 31)  # the research panel starts here (rolling windows restart, ADR 044)
+    start: date = date(1973, 1, 31)
+    decades: list[tuple[str, int, int]] = Field(
+        default_factory=lambda: [
+            ("1980s", 1980, 1989),
+            ("1990s", 1990, 1999),
+            ("2000s", 2000, 2009),
+            ("2010–2018", 2010, 2018),
+        ]
+    )
+
+
+class ForecastVariantConfig(_Strict):
+    feature_weights: dict[str, float]
+
+
+class ForecastUniverseConfig(_Strict):
+    ranked: list[str]
+    trend_only: list[str] = Field(default_factory=list)
+    cash: str
+
+    @model_validator(mode="after")
+    def _disjoint(self) -> ForecastUniverseConfig:
+        if len(self.ranked) < 3:
+            raise ValueError("forecast universe: at least three ranked classes")
+        if set(self.ranked) & set(self.trend_only) or self.cash in set(self.ranked) | set(self.trend_only):
+            raise ValueError("forecast universe: ranked, trend_only and cash must be disjoint")
+        return self
+
+
+class ProbabilityConfig(_Strict):
+    target: Literal["top_half", "beats_mean"] = "top_half"
+    model: Literal["rank_frequency", "logistic_score", "logistic_tophalf", "rank_class"] = "logistic_tophalf"
+    prior_months: int = 60
+    no_signal_margin: float = 0.05
+
+    @field_validator("no_signal_margin")
+    @classmethod
+    def _margin(cls, v: float) -> float:
+        if not 0.0 <= v < 0.5:
+            raise ValueError("probability.no_signal_margin must lie in [0, 0.5)")
+        return v
+
+
+class CalibrationConfig(_Strict):
+    min_months: int = 60
+    confidence: float = 0.90
+    block_months: int = 12
+    draws: int = 2000
+    seed: int = 20261025
+
+    @field_validator("confidence")
+    @classmethod
+    def _conf(cls, v: float) -> float:
+        if not 0.5 <= v < 1.0:
+            raise ValueError("calibration.confidence must lie in [0.5, 1)")
+        return v
+
+
+class HoldoutConfig(_Strict):
+    start: date
+    end: date
+
+
+class ForecastConfig(_Strict):
+    """The monthly forecast of the asset classes (ADR 043)."""
+
+    model: ForecastModelConfig
+    variants: dict[str, ForecastVariantConfig] = Field(default_factory=dict)
+    universe: dict[Literal["long_history", "live"], ForecastUniverseConfig]
+    trend_window_months: int = 10
+    horizons: list[int] = Field(default_factory=lambda: [1, 3, 6])
+    probability: ProbabilityConfig = Field(default_factory=ProbabilityConfig)
+    calibration: CalibrationConfig = Field(default_factory=CalibrationConfig)
+    holdout: HoldoutConfig
+    evaluation: ForecastEvaluationConfig = Field(default_factory=ForecastEvaluationConfig)
+    paper_rule: str | None = "forecast_portfolio"  # strategy id of the paper rule on this forecast (ADR 048)
+    # a forecast written more than this many calendar days after its decision date is a backfill: kept in the
+    # journal (correct, computed from the view at D), but not counted in the live track record (ADR 050)
+    backfill_after_days: int = Field(default=7, ge=1)
+
+    @field_validator("horizons")
+    @classmethod
+    def _horizons(cls, v: list[int]) -> list[int]:
+        if not v or v[0] != 1 or any(h < 1 for h in v) or sorted(set(v)) != v:
+            raise ValueError("horizons: ascending, distinct, starting with the 1-month forecast")
+        return v
+
+
+# ---------------------------------------------------------------------------
 # scenarios/*.yaml
 # ---------------------------------------------------------------------------
 class AnalogSpec(_Strict):
@@ -334,6 +449,12 @@ class Bundle(_Strict):
     strategies: dict[str, StrategyConfig]
     scenarios: dict[str, ScenarioConfig]
     live: LiveConfig | None = None
+    forecasts: dict[str, ForecastConfig] = Field(default_factory=dict)  # configs/forecast*.yaml by file stem
+
+    @property
+    def forecast(self) -> ForecastConfig | None:
+        """The primary forecast (`configs/forecast.yaml`, research round 1)."""
+        return self.forecasts.get("forecast")
 
     def hash(self) -> str:
         parts: list[BaseModel] = [
@@ -346,6 +467,7 @@ class Bundle(_Strict):
         ]
         if self.live:
             parts.append(self.live)
+        parts.extend(self.forecasts[k] for k in sorted(self.forecasts))
         return config_hash(*parts)
 
 
@@ -357,6 +479,7 @@ def load_bundle(root: str | Path = "configs") -> Bundle:
     scenarios = {p.stem: ScenarioConfig(**load_yaml(p)) for p in sorted((root / "scenarios").glob("*.yaml"))}
     live_path = root / "live.yaml"
     series_path = root / "series.yaml"
+    forecasts = {p.stem: ForecastConfig(**load_yaml(p)) for p in sorted(root.glob("forecast*.yaml"))}
     bundle = Bundle(
         system=SystemConfig(**load_yaml(root / "system.yaml")),
         universe=UniverseConfig(**load_yaml(root / "universe.yaml")),
@@ -367,9 +490,33 @@ def load_bundle(root: str | Path = "configs") -> Bundle:
         strategies=strategies,
         scenarios=scenarios,
         live=LiveConfig(**load_yaml(live_path)) if live_path.exists() else None,
+        forecasts=forecasts,
     )
     _cross_check(bundle)
     return bundle
+
+
+def _check_forecast(b: Bundle) -> None:
+    for cname, fc in b.forecasts.items():
+        for name, u in fc.universe.items():
+            unknown = (set(u.ranked) | set(u.trend_only) | {u.cash}) - set(b.universe.assets)
+            if unknown:
+                raise ValueError(f"{cname}: universe {name}: unknown assets {sorted(unknown)}")
+            if b.universe.assets[u.cash].asset_class != "cash":
+                raise ValueError(f"{cname}: universe {name}: {u.cash} is not a cash asset")
+        # the paper rule (ADR 048) scores with the forecast's composite: the two files must not drift apart
+        if fc.paper_rule is None:
+            continue
+        rule = b.strategies.get(fc.paper_rule)
+        if rule is None:
+            raise ValueError(f"{cname}: paper_rule {fc.paper_rule} is not a strategy")
+        fw = {k: float(v) for k, v in rule.params.get("feature_weights", {}).items()}
+        if fw != {k: float(v) for k, v in fc.model.feature_weights.items()}:
+            raise ValueError(f"{fc.paper_rule}.yaml feature_weights differ from {cname}.yaml (ADR 048 b)")
+        if float(rule.params.get("zscore_clip", 3.0)) != float(fc.model.zscore_clip):
+            raise ValueError(f"{fc.paper_rule}.yaml zscore_clip differs from {cname}.yaml (ADR 048 b)")
+        if dict(rule.params.get("feature_params", {})) != dict(fc.model.feature_params):
+            raise ValueError(f"{fc.paper_rule}.yaml feature_params differ from {cname}.yaml (ADR 048 b)")
 
 
 def _cross_check(b: Bundle) -> None:
@@ -384,6 +531,7 @@ def _cross_check(b: Bundle) -> None:
             cash = [a for a in uni if b.universe.assets[a].asset_class == "cash"]
             if len(cash) > 1:
                 raise ValueError(f"strategy {sid}: {name} lists more than one cash asset {cash}")
+    _check_forecast(b)
     budget_ids = set(b.portfolio.risk_budgets)
     core_ids = {sid for sid, s in b.strategies.items() if s.role in ("core", "satellite")}
     if budget_ids != core_ids:

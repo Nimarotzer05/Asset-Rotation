@@ -1,0 +1,36 @@
+# Monthly forecast of the asset classes (ADR 043). A decision, not a fit: change via PR with an ADR line,
+# a new model version and a note in the acceptance protocol (docs/FORECAST_ABNAHME.md).
+model:
+  id: composite
+  version: 1
+  # the multi_asset_rotation composite (config.py FEATURE_WEIGHTS; ADR 035), z-scores over the ranked classes
+  feature_weights: { mom_3_1: 0.2, mom_6_1: 0.3, mom_12_1: 0.3, trend_10m: 0.2, inv_vol_12m: 0.1 }
+  zscore_clip: 3.0
+variants:                          # tested separately, never switched on by the system itself
+  mom_12_1: { feature_weights: { mom_12_1: 1.0 } }
+universe:
+  long_history:
+    ranked: [US_EQ, UST10, GOLD, SILVER]      # decision 2: one ranking across these four
+    trend_only: [WB_BASEMETALS]               # decision 2: absolute trend only, no score, no rank; energy dropped (ADR 047: no edge in P5)
+    cash: TBILL
+  live:                                       # P5: ETF proxies (label agreement with World Bank 84 % / 83 %)
+    ranked: [SPY, IEF, GLD, SLV]
+    trend_only: [CPER]                        # base metals via the copper ETF; the energy trend was dropped (ADR 047)
+    cash: BIL
+trend_window_months: 10            # absolute trend: above / below the 10-month average (trend_10m)
+horizons: [1, 3, 6]                # 1 = the forecast; 3 and 6 = side evaluation (decision in P4)
+probability:                       # main output (ADR 044 a, target changed in ADR 045 b)
+  target: top_half                 # top_half: realised rank in the upper half; beats_mean: relative return > 0
+  model: logistic_tophalf          # logistic curve on the score with a constant per class (ADR 045)
+  prior_months: 60                 # rank_frequency / rank_class: weight of the 0.5 prior (a = b = prior_months / 2)
+  no_signal_margin: 0.05           # status no_clear_signal: no class further than this from 0.5 (descriptive only)
+calibration:                       # decision 3: mean relative return per rank, block-bootstrap band
+  min_months: 60                   # outcomes per rank needed before an expectation is given
+  confidence: 0.90                 # band = central 90 % of the bootstrapped mean
+  block_months: 12                 # block length (covers the overlap of 3- and 6-month outcomes)
+  draws: 2000
+  seed: 20261025
+holdout:                           # decision 6: pseudo-holdout, untouched until the final evaluation
+  start: 2019-01-31
+  end: 2025-12-31
+backfill_after_days: 7             # written > 7 days after D: "nachgeholt", kept in the journal, not in the track record (ADR 050)
