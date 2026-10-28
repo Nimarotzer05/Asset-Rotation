@@ -3,7 +3,9 @@
 * `usd_per_unit`       – FRED H.10 quotes either way round (DEXJPUS = JPY per USD, DEXUSUK = USD per GBP); the
                          index needs the dollar value of one unit of the foreign currency.
 * `euro_spliced`       – USD per EUR from 1999 (DEXUSEU); before the first EUR quote the Deutsche Mark at the
-                         irrevocable conversion rate 1.95583 DEM per EUR (USD per EUR = 1.95583 / DEXGEUS).
+                         irrevocable conversion rate 1.95583 DEM per EUR (USD per EUR = 1.95583 / DEXGEUS). FRED
+                         no longer serves DEXGEUS (download of 2026-10-28: HTTP 400; ADR 059): without a DEM
+                         series the euro enters at its first quote, like any instrument (ADR 057 a).
 * `spliced_rate`       – the 3-month interbank rate where it exists, before its first value the call money rate;
                          a second splice point (e.g. DE → euro area in 1999) is given explicitly.
 * `fx_deposit_index`   – a dollar investor's foreign deposit: TR_t = TR_{t−1}·(S_t/S_{t−1})·(1 + i·Δdays/365/100),
@@ -50,9 +52,11 @@ def usd_per_unit(code: str, quote: pd.Series) -> pd.Series:
     raise ValueError(f"unknown H.10 quote convention for {code}")
 
 
-def euro_spliced(dexgeus: pd.Series, dexuseu: pd.Series) -> pd.Series:
-    """USD per EUR: DEXUSEU from its first quote, before that 1.95583 / DEXGEUS."""
+def euro_spliced(dexgeus: pd.Series | None, dexuseu: pd.Series) -> pd.Series:
+    """USD per EUR: DEXUSEU from its first quote, before that 1.95583 / DEXGEUS (none: the euro alone, ADR 059)."""
     eur = dexuseu.dropna()
+    if dexgeus is None or dexgeus.dropna().empty:
+        return eur.rename("EUR")
     first = eur.index.min() if len(eur) else pd.Timestamp.max
     dem = DEM_PER_EUR / dexgeus.dropna()
     dem = dem[dem.index < first]
@@ -201,7 +205,7 @@ def currency_rate(rates: pd.DataFrame, ccy: str) -> pd.Series:
 
 def spot_usd(fred: pd.DataFrame, ccy: str) -> pd.Series:
     if ccy == "EUR":
-        return euro_spliced(fred["DEXGEUS"], fred["DEXUSEU"])
+        return euro_spliced(fred["DEXGEUS"] if "DEXGEUS" in fred.columns else None, fred["DEXUSEU"])
     code = FX_SPOT[ccy]
     return usd_per_unit(code, fred[code].dropna())
 

@@ -35,6 +35,9 @@ def test_quote_conventions_and_the_euro_splice() -> None:
     assert (
         e.iloc[0] == pytest.approx(DEM_PER_EUR / 1.8) and e.iloc[2] == 1.17
     )  # the euro wins from its first quote
+    # ADR 059: without a DEM series (FRED no longer serves DEXGEUS) the euro starts at its first quote
+    assert euro_spliced(None, eur).tolist() == [1.17, 1.18]
+    assert euro_spliced(pd.Series(dtype=float), eur).index.tolist() == eur.index.tolist()
 
 
 def test_rate_splices_and_publication_lag() -> None:
