@@ -1,7 +1,7 @@
 """Command-line entry point: rotationlab <command> [options].
 
 Phase 1 added the data commands (ingest, store, asof, calendar), phase 2 the engine commands (backtest,
-walkforward, golden). Commands of later phases raise NotImplementedError naming the phase that delivers
+walkforward, golden), the forecast step P6 `forecast run|verify` (ADR 043). Commands of later phases raise NotImplementedError naming the phase that delivers
 them. Exit codes: 0 ok, 2 config error,
 3 data/quality error (blocking quality result, store integrity), 4 risk halt, 1 anything else.
 """
@@ -82,12 +82,45 @@ def build_parser() -> argparse.ArgumentParser:
     live = sub.add_parser("live", help="run the engine for the latest decision date and update the journal")
     live.add_argument("--force", action="store_true", help="treat today as a decision date")
 
+    _add_forecast_commands(sub)
+
     sub.add_parser("scenarios", help="evaluate the scenario library against current targets")
     sub.add_parser("relationships", help="recompute correlations, betas, regimes, ICs, drift")
     rep = sub.add_parser("report", help="render the daily markdown report")
     rep.add_argument("--date", default=None)
     sub.add_parser("dashboard", help="start the Streamlit dashboard")
     return p
+
+
+def _add_forecast_commands(sub: argparse._SubParsersAction) -> None:  # type: ignore[type-arg]
+    fcst = sub.add_parser("forecast", help="monthly forecast of the asset classes (ADR 043): run, verify")
+    fsub = fcst.add_subparsers(dest="forecast_command", required=True)
+    fr = fsub.add_parser(
+        "run", help="forecast at the last month-end, settle matured forecasts, write the report"
+    )
+    fr.add_argument(
+        "--date", default=None, help="run date (default: today); the decision date is the month-end before it"
+    )
+    fr.add_argument("--universe", choices=["live", "long_history"], default="live")
+    fr.add_argument(
+        "--variant", default=None, help="model variant from forecast.yaml (default: the base model)"
+    )
+    fr.add_argument("--journal", default=None, help="journal directory (default: <journal_path>/<config>)")
+    fr.add_argument("--reports", default=None, help="report directory (default: <reports_path>/<config>)")
+    fr.add_argument(
+        "--config",
+        default="forecast",
+        help="forecast config: file stem of configs/forecast*.yaml (default: forecast)",
+    )
+    fr.add_argument("--provider", action="append", help="read only these providers (default: all)")
+    fv = fsub.add_parser("verify", help="check the hash chains of the forecast journal")
+    fv.add_argument("--journal", default=None)
+    fv.add_argument("--config", default="forecast")
+    fv.add_argument(
+        "--anchor",
+        default=None,
+        help="a 'journal head: ...' line printed by an earlier run (Actions log): also detects a cut-off tail",
+    )
 
 
 def _add_engine_commands(sub: argparse._SubParsersAction) -> None:  # type: ignore[type-arg]
@@ -99,7 +132,11 @@ def _add_engine_commands(sub: argparse._SubParsersAction) -> None:  # type: igno
         s.add_argument(
             "--end", default=None, help="last decision date (default: the module's golden run / today)"
         )
-        s.add_argument("--execution", choices=["next_close", "same_close"], default="next_close")
+        s.add_argument(
+            "--execution",
+            choices=["next_close", "same_close", "next_month_close", "next_tradable"],
+            default="next_close",
+        )
         s.add_argument(
             "--costs",
             choices=["universe", "research"],
@@ -112,7 +149,7 @@ def _add_engine_commands(sub: argparse._SubParsersAction) -> None:  # type: igno
     gd.add_argument("--strategy", action="append", help="limit to strategy id(s)")
     gd.add_argument(
         "--execution",
-        choices=["same_close", "next_close"],
+        choices=["same_close", "next_close", "next_month_close", "next_tradable"],
         default=None,
         help="default: the research convention of each golden run",
     )
@@ -387,7 +424,64 @@ def cmd_golden(args: argparse.Namespace) -> int:
     return 1 if failures else 0
 
 
+def cmd_forecast(args: argparse.Namespace) -> int:
+    from rotationlab.data import make_calendar, open_store
+    from rotationlab.data.catalog import build_catalog
+    from rotationlab.data.view import StoreViewFactory
+    from rotationlab.forecast.journal import ForecastJournal, parse_anchor
+    from rotationlab.forecast.live import run
+
+    bundle = load_bundle(args.configs)
+    journal_dir = Path(args.journal) if args.journal else Path(bundle.system.journal_path) / args.config
+    journal = ForecastJournal(journal_dir)
+    if args.forecast_command == "verify":
+        anchors = parse_anchor(args.anchor) if args.anchor else None
+        if args.anchor and not anchors:
+            print(
+                "no anchor found in the given text (expected 'journal head: <file> seq <n> hash <sha256>')",
+                file=sys.stderr,
+            )
+            return 2
+        ok, messages = journal.verify(anchors)
+        for m in messages:
+            print(m)
+        print(journal.anchor_line())
+        return 0 if ok else 3
+    ok, messages = journal.verify()  # a broken chain is never extended: stop before touching the store
+    if not ok:
+        print("JOURNAL INTEGRITY: " + "; ".join(messages), file=sys.stderr)
+        return 3
+    store = open_store(bundle)
+    factory = StoreViewFactory.from_store(
+        store,
+        build_catalog(bundle),
+        bundle.universe,
+        make_calendar(bundle),
+        args.provider,
+        chains=bundle.series.chains,
+    )
+    run_date = date.fromisoformat(args.date) if args.date else date.today()
+    reports = Path(args.reports) if args.reports else Path(bundle.system.reports_path) / args.config
+    rep = run(bundle, factory, journal, run_date, args.universe, reports, args.variant, args.config)
+    print(
+        f"forecast run {rep.run_date}: decision {rep.decision_date}, {rep.forecasts_written} forecast(s) written, "
+        f"{rep.outcomes_written} outcome(s) settled"
+        + (f"; report {rep.report_path}" if rep.report_path else "")
+    )
+    if rep.skipped:
+        print(rep.skipped)
+    if rep.late:
+        print(rep.late)
+    ok, messages = journal.verify()
+    if not ok:
+        print("JOURNAL INTEGRITY: " + "; ".join(messages), file=sys.stderr)
+        return 3
+    print(journal.anchor_line())  # keep this line outside the repository: it is the anchor of the chains
+    return 0
+
+
 COMMANDS = {
+    "forecast": "cmd_forecast",
     "backtest": "cmd_run",
     "walkforward": "cmd_run",
     "golden": "cmd_golden",

@@ -81,9 +81,10 @@ strict = true
 # --------------------------------------------------------------------------
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q --strict-markers -m 'not network'"
+addopts = "-q --strict-markers -m 'not network and not sweep'"
 markers = [
   "golden: reproduces research figures on the frozen long-history panel (store parity)",
+  "sweep: engine truncation sweep over fifty years (~10 min; weekly in the network workflow)",
   "lookahead: generic future-mutation harness over registered features and strategies",
   "integration: end-to-end on fixtures",
   "network: talks to Yahoo, Stooq, FRED, French, CFTC (weekly CI job; ALFRED checks need FRED_API_KEY)",

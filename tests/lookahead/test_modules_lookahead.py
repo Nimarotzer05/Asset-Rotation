@@ -31,12 +31,34 @@ pytestmark = [
 ]
 
 ASSETS = ["US_EQ", "GOLD", "SILVER", "UST10", "FF_MKT", "TBILL"]
+# the carry family needs an income spec per class (ADR 052); the harness exercises every kind
+CARRY_SPEC = {
+    "US_EQ": {"kind": "equity_dy", "tr": "static:usmkt:TR", "px": "static:usmkt:CLOSE"},
+    "UST10": {"kind": "yield", "series": "static:fredmd:GS10"},
+    "TBILL": {"kind": "yield", "series": "static:fredmd:TB3MS"},
+    "GOLD": {"kind": "zero"},
+    "SILVER": {"kind": "zero"},
+}
+FEATURE_PARAMS = {
+    "excess_mom_12m": {"cash": "TBILL"},
+    "ecy_percentile": {"pct_start": "1926-07-31"},
+    "sleeve_vol_12m": {"weights": {"US_EQ": 0.5, "GOLD": 0.5}},
+    "basket_vol_ewma": {"weights": {"US_EQ": 0.5, "GOLD": 0.5}},
+    "basket_vol_ewma_d": {"weights": {"US_EQ": 0.5, "SILVER": 0.5}},
+    "book_vol_hybrid": {
+        "baskets": {"EQ": {"US_EQ": 1.0}, "FI": {"UST10": 1.0}, "PM": {"GOLD": 0.6, "SILVER": 0.4}},
+        "sizes": {"EQ": 0.3, "FI": 1.0, "PM": 0.3},
+        "vols": {"EQ": 0.15, "FI": 0.07, "PM": 0.18},
+    },
+    "carry_yield": {"spec": CARRY_SPEC},
+}
 FEATURE_SERIES = [
     *(
         f"static:fredmd:{c}"
         for c in ("INDPRO", "CPIAUCSL", "GS10", "BAA", "AAA", "TB3MS", "FEDFUNDS", "UNRATE")
     ),
     "static:USD_IDX",
+    "static:usmkt:CLOSE",
     "static:cboe:VIX",
     "static:shiller:SP500",
     "static:shiller:Earnings",
@@ -83,14 +105,13 @@ def harness(reduced, catalog, bundle, cal):
 def test_every_registered_feature_passes_the_harness(harness) -> None:
     metas = list(registry.features().values())
     assert len(metas) >= 30
-    params = {"excess_mom_12m": {"cash": "TBILL"}, "ecy_percentile": {"pct_start": "1926-07-31"}}
-    assert harness.check_features(metas, params) == []
+    assert harness.check_features(metas, FEATURE_PARAMS) == []
 
 
 def test_every_panel_variant_equals_its_pointwise_feature(harness) -> None:
     for meta in registry.features().values():
         assert meta.panel_fn is not None and meta.panel_input is not None, meta.name
-        harness.check_panel_equivalence(meta, {"cash": "TBILL"} if meta.name == "excess_mom_12m" else None)
+        harness.check_panel_equivalence(meta, FEATURE_PARAMS.get(meta.name))
 
 
 def test_every_module_and_the_walk_forward_pass_the_harness(harness, bundle) -> None:

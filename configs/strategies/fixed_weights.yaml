@@ -1,0 +1,26 @@
+id: fixed_weights
+version: 1
+role: paper                        # baselines of the forecast portfolio (ADR 048 b), through the same engine
+cadence: monthly
+universe: [SPY, IEF, GLD, SLV, BIL]
+long_history_universe: [US_EQ, UST10_ME, GOLD, SILVER, TBILL]
+warmup_months: 1
+params:
+  # empty weights = the cash baseline; every other baseline passes `weights` (and `rebalance`) as overrides,
+  # as scripts/forecast_portfolio.py does for equal weight, 60/40 and buy-and-hold (a dict parameter cannot
+  # differ per universe: long_history_params would merge into it, not replace it)
+  weights: {}
+  rebalance: monthly               # monthly = restore the weights at every decision; never = buy and hold
+confidence:
+  kind: score_dispersion
+  floor: 0.5
+golden: {}
+golden_tolerance: {}
+golden_run:
+  data_from: 1972-12-31
+  start: 1972-12-31
+  end: 2018-12-31
+  sample: [1974-01-31, 2018-12-31]
+  count_warmup: false
+  execution: next_tradable
+  costs: { default_bps: 7.5, cash_bps: 7.5 }

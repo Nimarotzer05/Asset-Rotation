@@ -67,6 +67,29 @@ def test_interval_index_equals_reference_query(rows, probes) -> None:
 
 
 @SETTINGS
+@given(
+    revision_rows, st.lists(st.tuples(st.integers(-10, 320), st.integers(0, 120)), min_size=1, max_size=12)
+)
+def test_knowledge_date_equals_reference_query(rows, probes) -> None:
+    """as_of(d, knowledge): observations through d, vintages through knowledge ≥ d (the late-data view of
+    the live run); knowledge < d is the same as knowledge = d, and knowledge = d is the plain as-of."""
+    df = to_frame(rows)
+    idx = PitIndex(df)
+    for p, k in probes:
+        d = BASE + timedelta(days=p)
+        know = d + timedelta(days=k - 30)
+        ref = as_of_pandas(df, d, know)
+        expected = pd.Series(
+            ref["value"].to_numpy(), index=pd.DatetimeIndex(ref["obs_date"].to_numpy()), name="s:x"
+        )
+        got = idx.as_of("s:x", pd.Timestamp(d), pd.Timestamp(know))
+        pd.testing.assert_series_equal(got, expected, check_freq=False, check_index_type=False)
+        assert got.index.max() <= pd.Timestamp(d) if len(got) else True
+        if know <= d:
+            pd.testing.assert_series_equal(got, idx.as_of("s:x", pd.Timestamp(d)), check_freq=False)
+
+
+@SETTINGS
 @given(st.lists(st.tuples(st.integers(0, 120), values), min_size=1, max_size=40, unique_by=lambda t: t[0]))
 def test_ingesting_the_same_answer_twice_changes_nothing(points) -> None:
     store = PointInTimeStore(None)

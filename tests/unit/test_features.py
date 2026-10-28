@@ -137,3 +137,43 @@ def test_gold_silver_ratio_and_risk_appetite_match_the_research(static_factory) 
     ra = feature("risk_appetite").call(v)
     assert ra == pytest.approx(0.54, abs=0.01)
     assert feature("risk_appetite_pct").call(v, min_history=1) == pytest.approx(0.75, abs=0.01)
+
+
+# ---------------------------------------------------------------------------- round-2 families (ADR 052)
+def test_value_reversal_and_carry_yield_formulas() -> None:
+    from rotationlab.core.types import SeriesKind
+
+    n = 70  # value needs 60 months of history, carry 12
+    w = Toy().monthly("UP", geometric(100, 0.01, n)).monthly("DOWN", geometric(100, -0.01, n))
+    w.monthly("EQ", geometric(100, 0.01, n))  # total return +1 % per month
+    w.series("t:EQ:px", pd.Series(geometric(100, 0.005, n), index=w.frames[-1]["obs_date"]), SeriesKind.PRICE)
+    w.series("t:Y:ten", pd.Series(5.0, index=w.frames[-1]["obs_date"]), SeriesKind.YIELD)
+    w.monthly("ETF", [100.0] * n)
+    w.series("t:ETF:close", pd.Series(100.0, index=w.frames[-1]["obs_date"]), SeriesKind.PRICE)
+    divs = pd.Series(0.0, index=w.frames[-1]["obs_date"])
+    divs.iloc[3::3] = 1.0  # a quarterly dividend of 1.00 → 4.00 per trailing year on a close of 100
+    w.series("t:ETF:div", divs, SeriesKind.DIVIDEND)
+    w.monthly("ZERO", [100.0] * n)
+    v = w.factory().at(date(2005, 10, 31))  # 70th month
+
+    val = feature("value_rev_60m").call(v, ["UP", "DOWN"])
+    assert val["UP"] == pytest.approx(-(1.01**60 - 1)) and val["DOWN"] == pytest.approx(-(0.99**60 - 1))
+    assert np.isnan(feature("value_rev_60m").call(w.factory().at(date(2004, 10, 31)), ["UP"])["UP"])
+
+    spec = {
+        "EQ": {"kind": "equity_dy", "tr": "t:EQ:tr", "px": "t:EQ:px"},
+        "Y": {"kind": "yield", "series": "t:Y:ten"},
+        "ETF": {"kind": "dividend_dy", "close": "t:ETF:close", "dividend": "t:ETF:div"},
+        "ZERO": {"kind": "zero"},
+    }
+    c = feature("carry_yield").call(v, ["EQ", "Y", "ETF", "ZERO", "UNSPEC"], spec=spec)
+    assert c["EQ"] == pytest.approx(1.01**12 / 1.005**12 - 1)
+    assert c["Y"] == pytest.approx(0.05)
+    assert c["ETF"] == pytest.approx(0.04)
+    assert c["ZERO"] == 0.0
+    assert "UNSPEC" not in c.index or np.isnan(c["UNSPEC"])  # a class without a spec carries no signal
+    # the panel variant agrees with the point-wise feature
+    panel = feature("carry_yield").call_panel(
+        feature("carry_yield").panel_input(v, ["EQ", "Y", "ETF", "ZERO"], spec=spec), spec=spec
+    )
+    assert panel.iloc[-1]["EQ"] == pytest.approx(c["EQ"]) and panel.iloc[-1]["ETF"] == pytest.approx(0.04)

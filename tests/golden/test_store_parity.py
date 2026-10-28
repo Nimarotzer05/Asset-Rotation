@@ -133,6 +133,33 @@ def test_macro_visibility_follows_the_research_lags(static_factory) -> None:
             assert s.iloc[-1] == pytest.approx(x, rel=1e-8, abs=5e-7), (col, D)
 
 
+def test_month_end_treasury_series_are_visible_at_the_month_end(static_factory, latest) -> None:
+    """ADR 047: the month-end yield and the par-bond index on it are market prices (0D): the view at a
+    month-end D holds the value of D (the P8 build found them invisible with a 1D lag). The index equals
+    the research formula on the month-end yields, and the extract's running month is not in the store."""
+    from rotationlab.data.providers.static import StaticProvider, bond_total_return
+
+    for D in (date(1980, 1, 31), date(2008, 10, 31), date(2018, 12, 31)):
+        v = static_factory.at(D)
+        y = v.series("static:fred:DGS10_ME", "ME")
+        lv = v.total_return(["UST10_ME"], "ME")["UST10_ME"]
+        assert y.index[-1] == pd.Timestamp(D) and lv.index[-1] == pd.Timestamp(D), D
+        assert not np.isnan(lv.iloc[-1])
+        # a trend at D can be computed: the registered feature sees the month-end level
+        from rotationlab.features import feature
+
+        assert not np.isnan(float(feature("trend_10m").call(v, ["UST10_ME"])["UST10_ME"]))
+    y_all = latest.series("static:fred:DGS10_ME", "ME")
+    idx = (1 + bond_total_return(y_all, 10.0)).cumprod() * 100.0
+    lv_all = latest.total_return(["UST10_ME"], "ME")["UST10_ME"]
+    both = idx.dropna().index.intersection(lv_all.dropna().index)
+    assert len(both) > 700
+    assert np.allclose(idx.loc[both].to_numpy(), lv_all.loc[both].to_numpy(), rtol=1e-9, atol=1e-6)
+    assert (
+        y_all.index.max() <= StaticProvider.LIVE_ME_EXTRACTED
+    )  # the running month of the extract is dropped
+
+
 def test_french_inputs_of_the_equity_study(latest) -> None:
     lines = (ROOT / "data/raw/ff_3_factors_monthly.csv").read_text(encoding="latin-1").splitlines()
     rows = [ln.split(",") for ln in lines if ln[:6].strip().isdigit() and len(ln.split(",")[0].strip()) == 6]

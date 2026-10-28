@@ -12,7 +12,18 @@ It produces two kinds of series:
 * the few research constructs that are not a plain column (``static:GOLD`` with the World Bank
   fill before 1968, synthetic Treasury total returns ``static:UST10``, ``static:TBILL``,
   ``static:USD_IDX``, French portfolios ``static:FF_*``) – same formulas as the research code, so
-  the golden panel can be rebuilt from the store bit for bit (tests/golden/test_store_parity.py).
+  the golden panel can be rebuilt from the store bit for bit (tests/golden/test_store_parity.py);
+* research round 4 (ADR 057/058, ``static:r4:*``): daily total-return indices of the currencies (deposits), the
+  Treasuries 2/5/10 (par bonds) and the ten French industries, the currencies' short rates (1-month publication
+  lag) and the monthly country indices – built by ``constructs_r4`` from the frozen ``data/raw/r4_*`` files and
+  catalogued only once ``R4_COUNTRIES`` holds the countries of the frozen French file;
+* the month-end 10-year yield ``static:fred:DGS10_ME`` (FRED DGS10, last session of the month, from
+  the P5 extract of the live store) and the par-bond index on it, ``static:UST10_ME`` – the tradable
+  counterpart of ``static:UST10``, whose monthly-average yields make an index nobody can buy (P5,
+  ADR 047). Both are ``0D`` like every other market price here (vintage rule below): the yield at the
+  close of D is a public market price a live system observes at the close; the live ``fred:DGS10`` keeps
+  ``1D`` because the live ingest reads FRED, which posts it the next morning. With ``1D`` the month-end
+  value would be invisible at a month-end decision and the class would never pass a trend filter.
 
 Vintage rule (ADR 022): a value is dated when a *live* system could have had the same information.
 Returns and averages of public market prices (French portfolios, World Bank monthly averages,
@@ -25,6 +36,7 @@ month, ``6M`` for Shiller's interpolated earnings and dividends (audit 2026-10-2
 
 The catalog is code, not file content, so ``rotationlab validate`` needs no I/O.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -42,39 +54,188 @@ import pandas as pd
 
 from rotationlab.core.errors import DataError
 from rotationlab.core.types import AssetId, Frequency, SeriesId, SeriesKind, SeriesSpec
+from rotationlab.data.providers import constructs_r4 as r4
 from rotationlab.data.providers.base import BaseProvider, empty_frame, frame_from_series
 
 # ---------------------------------------------------------------------------
 # FRED-MD (McCracken & Ng), vintage 2026-10: 126 series, monthly
 # ---------------------------------------------------------------------------
 FREDMD_CODES: tuple[str, ...] = (
-    "RPI", "W875RX1", "DPCERA3M086SBEA", "CMRMTSPLx", "RETAILx", "INDPRO", "IPFPNSS", "IPFINAL", "IPCONGD",
-    "IPDCONGD", "IPNCONGD", "IPBUSEQ", "IPMAT", "IPDMAT", "IPNMAT", "IPMANSICS", "IPB51222S", "IPFUELS", "CUMFNS",
-    "HWI", "HWIURATIO", "CLF16OV", "CE16OV", "UNRATE", "UEMPMEAN", "UEMPLT5", "UEMP5TO14", "UEMP15OV",
-    "UEMP15T26", "UEMP27OV", "CLAIMSx", "PAYEMS", "USGOOD", "CES1021000001", "USCONS", "MANEMP", "DMANEMP",
-    "NDMANEMP", "SRVPRD", "USTPU", "USWTRADE", "USTRADE", "USFIRE", "USGOVT", "CES0600000007", "AWOTMAN",
-    "AWHMAN", "HOUST", "HOUSTNE", "HOUSTMW", "HOUSTS", "HOUSTW", "PERMIT", "PERMITNE", "PERMITMW", "PERMITS",
-    "PERMITW", "ACOGNO", "AMDMNOx", "ANDENOx", "AMDMUOx", "BUSINVx", "ISRATIOx", "M1SL", "M2SL", "M2REAL",
-    "BOGMBASE", "TOTRESNS", "NONBORRES", "BUSLOANS", "REALLN", "NONREVSL", "CONSPI", "S&P 500", "S&P div yield",
-    "S&P PE ratio", "FEDFUNDS", "CP3Mx", "TB3MS", "TB6MS", "GS1", "GS5", "GS10", "AAA", "BAA", "COMPAPFFx",
-    "TB3SMFFM", "TB6SMFFM", "T1YFFM", "T5YFFM", "T10YFFM", "AAAFFM", "BAAFFM", "TWEXAFEGSMTHx", "EXSZUSx",
-    "EXJPUSx", "EXUSUKx", "EXCAUSx", "WPSFD49207", "WPSFD49502", "WPSID61", "WPSID62", "OILPRICEx", "PPICMM",
-    "CPIAUCSL", "CPIAPPSL", "CPITRNSL", "CPIMEDSL", "CUSR0000SAC", "CUSR0000SAD", "CUSR0000SAS", "CPIULFSL",
-    "CUSR0000SA0L2", "CUSR0000SA0L5", "PCEPI", "DDURRG3M086SBEA", "DNDGRG3M086SBEA", "DSERRG3M086SBEA",
-    "CES0600000008", "CES2000000008", "CES3000000008", "UMCSENTx", "DTCOLNVHFNM", "DTCTHFNM", "INVEST", "VIXCLSx",
+    "RPI",
+    "W875RX1",
+    "DPCERA3M086SBEA",
+    "CMRMTSPLx",
+    "RETAILx",
+    "INDPRO",
+    "IPFPNSS",
+    "IPFINAL",
+    "IPCONGD",
+    "IPDCONGD",
+    "IPNCONGD",
+    "IPBUSEQ",
+    "IPMAT",
+    "IPDMAT",
+    "IPNMAT",
+    "IPMANSICS",
+    "IPB51222S",
+    "IPFUELS",
+    "CUMFNS",
+    "HWI",
+    "HWIURATIO",
+    "CLF16OV",
+    "CE16OV",
+    "UNRATE",
+    "UEMPMEAN",
+    "UEMPLT5",
+    "UEMP5TO14",
+    "UEMP15OV",
+    "UEMP15T26",
+    "UEMP27OV",
+    "CLAIMSx",
+    "PAYEMS",
+    "USGOOD",
+    "CES1021000001",
+    "USCONS",
+    "MANEMP",
+    "DMANEMP",
+    "NDMANEMP",
+    "SRVPRD",
+    "USTPU",
+    "USWTRADE",
+    "USTRADE",
+    "USFIRE",
+    "USGOVT",
+    "CES0600000007",
+    "AWOTMAN",
+    "AWHMAN",
+    "HOUST",
+    "HOUSTNE",
+    "HOUSTMW",
+    "HOUSTS",
+    "HOUSTW",
+    "PERMIT",
+    "PERMITNE",
+    "PERMITMW",
+    "PERMITS",
+    "PERMITW",
+    "ACOGNO",
+    "AMDMNOx",
+    "ANDENOx",
+    "AMDMUOx",
+    "BUSINVx",
+    "ISRATIOx",
+    "M1SL",
+    "M2SL",
+    "M2REAL",
+    "BOGMBASE",
+    "TOTRESNS",
+    "NONBORRES",
+    "BUSLOANS",
+    "REALLN",
+    "NONREVSL",
+    "CONSPI",
+    "S&P 500",
+    "S&P div yield",
+    "S&P PE ratio",
+    "FEDFUNDS",
+    "CP3Mx",
+    "TB3MS",
+    "TB6MS",
+    "GS1",
+    "GS5",
+    "GS10",
+    "AAA",
+    "BAA",
+    "COMPAPFFx",
+    "TB3SMFFM",
+    "TB6SMFFM",
+    "T1YFFM",
+    "T5YFFM",
+    "T10YFFM",
+    "AAAFFM",
+    "BAAFFM",
+    "TWEXAFEGSMTHx",
+    "EXSZUSx",
+    "EXJPUSx",
+    "EXUSUKx",
+    "EXCAUSx",
+    "WPSFD49207",
+    "WPSFD49502",
+    "WPSID61",
+    "WPSID62",
+    "OILPRICEx",
+    "PPICMM",
+    "CPIAUCSL",
+    "CPIAPPSL",
+    "CPITRNSL",
+    "CPIMEDSL",
+    "CUSR0000SAC",
+    "CUSR0000SAD",
+    "CUSR0000SAS",
+    "CPIULFSL",
+    "CUSR0000SA0L2",
+    "CUSR0000SA0L5",
+    "PCEPI",
+    "DDURRG3M086SBEA",
+    "DNDGRG3M086SBEA",
+    "DSERRG3M086SBEA",
+    "CES0600000008",
+    "CES2000000008",
+    "CES3000000008",
+    "UMCSENTx",
+    "DTCOLNVHFNM",
+    "DTCTHFNM",
+    "INVEST",
+    "VIXCLSx",
 )
 _FREDMD_ID = {"S&P 500": "SP500", "S&P div yield": "SP_DIVYIELD", "S&P PE ratio": "SP_PE"}
-_FREDMD_YIELD = {"FEDFUNDS", "CP3Mx", "TB3MS", "TB6MS", "GS1", "GS5", "GS10", "AAA", "BAA", "COMPAPFFx",
-                 "TB3SMFFM", "TB6SMFFM", "T1YFFM", "T5YFFM", "T10YFFM", "AAAFFM", "BAAFFM"}
+_FREDMD_YIELD = {
+    "FEDFUNDS",
+    "CP3Mx",
+    "TB3MS",
+    "TB6MS",
+    "GS1",
+    "GS5",
+    "GS10",
+    "AAA",
+    "BAA",
+    "COMPAPFFx",
+    "TB3SMFFM",
+    "TB6SMFFM",
+    "T1YFFM",
+    "T5YFFM",
+    "T10YFFM",
+    "AAAFFM",
+    "BAAFFM",
+}
 _FREDMD_MARKET_INDEX = {"S&P 500", "TWEXAFEGSMTHx", "EXSZUSx", "EXJPUSx", "EXUSUKx", "EXCAUSx", "VIXCLSx"}
 _FREDMD_MARKET_PRICE = {"OILPRICEx"}
 # Releases later than ~4 weeks after the reference month (personal income and outlays, M3 full report,
 # business inventories, consumer credit, real manufacturing and trade sales; the help-wanted index is
 # built from JOLTS, out ~5 weeks after the month – empty at the last month of every archived vintage,
 # Fable review 2026-10-24).
-_FREDMD_SLOW = {"RPI", "W875RX1", "DPCERA3M086SBEA", "CMRMTSPLx", "BUSINVx", "ISRATIOx", "NONREVSL", "CONSPI",
-                "DTCOLNVHFNM", "DTCTHFNM", "ACOGNO", "AMDMNOx", "ANDENOx", "AMDMUOx", "PCEPI",
-                "DDURRG3M086SBEA", "DNDGRG3M086SBEA", "DSERRG3M086SBEA", "HWI", "HWIURATIO"}
+_FREDMD_SLOW = {
+    "RPI",
+    "W875RX1",
+    "DPCERA3M086SBEA",
+    "CMRMTSPLx",
+    "BUSINVx",
+    "ISRATIOx",
+    "NONREVSL",
+    "CONSPI",
+    "DTCOLNVHFNM",
+    "DTCTHFNM",
+    "ACOGNO",
+    "AMDMNOx",
+    "ANDENOx",
+    "AMDMUOx",
+    "PCEPI",
+    "DDURRG3M086SBEA",
+    "DNDGRG3M086SBEA",
+    "DSERRG3M086SBEA",
+    "HWI",
+    "HWIURATIO",
+}
 _FREDMD_EARNINGS_BASED = {"S&P div yield", "S&P PE ratio"}  # Shiller's interpolated dividends/earnings
 
 
@@ -110,11 +271,35 @@ SHILLER_COLUMNS = {  # column -> (lag, kind)
     "PE10": ("6M", SeriesKind.MACRO),
 }
 WB_PRICES = {  # pink sheet column -> id
-    "Crude oil, average": "WB_OIL", "Crude oil, WTI": "WB_WTI", "Copper": "WB_COPPER", "Aluminum": "WB_ALUMINUM",
-    "Nickel": "WB_NICKEL", "Gold": "WB_GOLD_AVG", "Silver": "WB_SILVER_AVG", "Platinum": "WB_PLATINUM",
+    "Crude oil, average": "WB_OIL",
+    "Crude oil, WTI": "WB_WTI",
+    "Copper": "WB_COPPER",
+    "Aluminum": "WB_ALUMINUM",
+    "Nickel": "WB_NICKEL",
+    "Gold": "WB_GOLD_AVG",
+    "Silver": "WB_SILVER_AVG",
+    "Platinum": "WB_PLATINUM",
     "Natural gas, US": "WB_NATGAS",
 }
-WB_INDICES = ("WB_TOTAL", "WB_ENERGY", "WB_NONENERGY", "WB_AGRI", "WB_FERT", "WB_METALS", "WB_BASEMETALS", "WB_PRECIOUS")
+# Research round 4 (ADR 057/058): the countries of the frozen French file, in its column order. Empty until the
+# data is frozen – then no round-4 series exists and the catalog and the raw-file fingerprint are those of round 3.
+# Filled from the file by rule (scripts/r4_register.py prints the tuple), never by choice.
+R4_COUNTRIES: tuple[str, ...] = ()
+R4_FILES: dict[str, str | tuple[str, ...]] = {
+    "r4_daily": ("r4_fred_daily.csv.gz", "r4_oecd_rates_monthly.csv.gz", "ff_10_industry_daily.csv.gz"),
+    "r4_rates": "r4_oecd_rates_monthly.csv.gz",
+    "r4_countries": "ff_intl_countries_monthly.csv.gz",
+}
+WB_INDICES = (
+    "WB_TOTAL",
+    "WB_ENERGY",
+    "WB_NONENERGY",
+    "WB_AGRI",
+    "WB_FERT",
+    "WB_METALS",
+    "WB_BASEMETALS",
+    "WB_PRECIOUS",
+)
 
 
 @dataclass(frozen=True)
@@ -128,14 +313,32 @@ def _shiller_slug(col: str) -> str:
     return col.replace(" ", "_")
 
 
-def _build_catalog() -> dict[SeriesId, _Entry]:
+def _build_catalog(r4_countries: tuple[str, ...] | None = None) -> dict[SeriesId, _Entry]:
+    countries = R4_COUNTRIES if r4_countries is None else r4_countries
     out: dict[SeriesId, _Entry] = {}
 
-    def add(sid: str, group: str, column: str, kind: SeriesKind, freq: Frequency, lag: str = "0D",
-            name: str = "", unit: str = "", asset: str | None = None) -> None:
-        spec = SeriesSpec(series_id=SeriesId(sid), provider="static", provider_code=f"{group}:{column}", kind=kind,
-                          frequency=freq, unit=unit, asset_id=AssetId(asset) if asset else None, lag=lag,
-                          name=name or column)
+    def add(
+        sid: str,
+        group: str,
+        column: str,
+        kind: SeriesKind,
+        freq: Frequency,
+        lag: str = "0D",
+        name: str = "",
+        unit: str = "",
+        asset: str | None = None,
+    ) -> None:
+        spec = SeriesSpec(
+            series_id=SeriesId(sid),
+            provider="static",
+            provider_code=f"{group}:{column}",
+            kind=kind,
+            frequency=freq,
+            unit=unit,
+            asset_id=AssetId(asset) if asset else None,
+            lag=lag,
+            name=name or column,
+        )
         out[spec.series_id] = _Entry(spec, group, column)
 
     M, D = Frequency.MONTHLY, Frequency.DAILY
@@ -145,38 +348,230 @@ def _build_catalog() -> dict[SeriesId, _Entry]:
     for code in FREDMD_CODES:
         _, kind = _fredmd_lag_kind(code)
         sid = f"static:fredmd_rt:{_FREDMD_ID.get(code, code)}"
-        spec = SeriesSpec(series_id=SeriesId(sid), provider="static", provider_code=f"fredmd_rt:{code}", kind=kind,
-                          frequency=M, lag=_fredmd_lag_kind(code)[0], vintages="archive",
-                          name=f"FRED-MD {code}, real time from archived vintages")
+        spec = SeriesSpec(
+            series_id=SeriesId(sid),
+            provider="static",
+            provider_code=f"fredmd_rt:{code}",
+            kind=kind,
+            frequency=M,
+            lag=_fredmd_lag_kind(code)[0],
+            vintages="archive",
+            name=f"FRED-MD {code}, real time from archived vintages",
+        )
         out[spec.series_id] = _Entry(spec, "fredmd_rt", code)
     for col in ("Mkt-RF", "SMB", "HML", "RF"):
-        add(f"static:french:ff3:{col.replace('-', '_').upper()}", "ff3", col, SeriesKind.RETURN, M, name=f"French FF3 {col}")
+        add(
+            f"static:french:ff3:{col.replace('-', '_').upper()}",
+            "ff3",
+            col,
+            SeriesKind.RETURN,
+            M,
+            name=f"French FF3 {col}",
+        )
     for col in FF5_COLUMNS:
-        add(f"static:french:ff5:{col.upper()}", "ff5", col, SeriesKind.RETURN, M, name=f"French FF5+Mom {col}")
+        add(
+            f"static:french:ff5:{col.upper()}", "ff5", col, SeriesKind.RETURN, M, name=f"French FF5+Mom {col}"
+        )
     for col, (lag, kind) in SHILLER_COLUMNS.items():
         add(f"static:shiller:{_shiller_slug(col)}", "shiller", col, kind, M, lag, name=f"Shiller {col}")
     add("static:lbma:GOLD", "lbma", "GOLD", SeriesKind.PRICE, D, name="LBMA gold PM fix USD", unit="USD/oz")
-    add("static:lbma:SILVER", "lbma", "SILVER", SeriesKind.PRICE, D, name="LBMA silver fix USD", unit="USD/oz")
-    add("static:usmkt:TR", "usmkt", "Adjusted Close", SeriesKind.TOTAL_RETURN, D, name="US equities total return (S&P, dividends reinvested)")
+    add(
+        "static:lbma:SILVER", "lbma", "SILVER", SeriesKind.PRICE, D, name="LBMA silver fix USD", unit="USD/oz"
+    )
+    add(
+        "static:usmkt:TR",
+        "usmkt",
+        "Adjusted Close",
+        SeriesKind.TOTAL_RETURN,
+        D,
+        name="US equities total return (S&P, dividends reinvested)",
+    )
     add("static:usmkt:CLOSE", "usmkt", "Close", SeriesKind.INDEX, D, name="US equities price index")
     add("static:cboe:VIX", "vix", "CLOSE", SeriesKind.INDEX, D, name="CBOE VIX close")
-    add("static:ice:HY_OAS", "hyoas", "BAMLH0A0HYM2", SeriesKind.YIELD, D, "1D", name="ICE BofA US HY OAS", unit="pct")
-    add("static:fred:DTWEXM", "usd", "DTWEXM", SeriesKind.INDEX, D, name="Trade-weighted dollar, major currencies")
+    add(
+        "static:ice:HY_OAS",
+        "hyoas",
+        "BAMLH0A0HYM2",
+        SeriesKind.YIELD,
+        D,
+        "1D",
+        name="ICE BofA US HY OAS",
+        unit="pct",
+    )
+    add(
+        "static:fred:DTWEXM",
+        "usd",
+        "DTWEXM",
+        SeriesKind.INDEX,
+        D,
+        name="Trade-weighted dollar, major currencies",
+    )
     add("static:fred:DTWEXBGS", "usd", "DTWEXBGS", SeriesKind.INDEX, D, name="Trade-weighted dollar, broad")
     for col, sid in WB_PRICES.items():
-        add(f"static:{sid}", "wb_prices", col, SeriesKind.PRICE, M, name=f"World Bank {col} (monthly average)")
+        add(
+            f"static:{sid}", "wb_prices", col, SeriesKind.PRICE, M, name=f"World Bank {col} (monthly average)"
+        )
     for sid in WB_INDICES:
-        add(f"static:{sid}", "wb_indices", sid, SeriesKind.INDEX, M, name=f"World Bank index {sid} (2010=100, monthly average)")
+        add(
+            f"static:{sid}",
+            "wb_indices",
+            sid,
+            SeriesKind.INDEX,
+            M,
+            name=f"World Bank index {sid} (2010=100, monthly average)",
+        )
     # research constructs
-    add("static:GOLD", "constructs", "GOLD", SeriesKind.PRICE, M, name="Gold: LBMA month-end, World Bank average before 1968-04")
-    add("static:TBILL", "constructs", "TBILL", SeriesKind.TOTAL_RETURN, M, name="T-bill index from TB3MS (month t earns TB3MS(t-1)/12)")
+    add(
+        "static:GOLD",
+        "constructs",
+        "GOLD",
+        SeriesKind.PRICE,
+        M,
+        name="Gold: LBMA month-end, World Bank average before 1968-04",
+    )
+    add(
+        "static:TBILL",
+        "constructs",
+        "TBILL",
+        SeriesKind.TOTAL_RETURN,
+        M,
+        name="T-bill index from TB3MS (month t earns TB3MS(t-1)/12)",
+    )
+    add(
+        "static:TBILL_IY",
+        "constructs",
+        "TBILL_IY",
+        SeriesKind.TOTAL_RETURN,
+        M,
+        name="T-bill index on the investment yield of TB3MS (month t earns IY(t-1)/12; round 4, ADR 058)",
+    )
     for m in (10, 5, 1):
-        add(f"static:UST{m}", "constructs", f"UST{m}", SeriesKind.TOTAL_RETURN, M, name=f"Synthetic {m}y Treasury total return (par bond, GS{m})")
-    add("static:USD_IDX", "constructs", "USD_IDX", SeriesKind.INDEX, M, name="Dollar index: major currencies, broad from first overlap (chained)")
-    add("static:FF_MKT", "constructs", "FF_MKT", SeriesKind.RETURN, M, name="US total market return (French Mkt-RF + RF)", asset="FF_MKT")
+        add(
+            f"static:UST{m}",
+            "constructs",
+            f"UST{m}",
+            SeriesKind.TOTAL_RETURN,
+            M,
+            name=f"Synthetic {m}y Treasury total return (par bond, GS{m})",
+        )
+    add(
+        "static:USD_IDX",
+        "constructs",
+        "USD_IDX",
+        SeriesKind.INDEX,
+        M,
+        name="Dollar index: major currencies, broad from first overlap (chained)",
+    )
+    add(
+        "static:FF_MKT",
+        "constructs",
+        "FF_MKT",
+        SeriesKind.RETURN,
+        M,
+        name="US total market return (French Mkt-RF + RF)",
+        asset="FF_MKT",
+    )
+    add(
+        "static:fred:DGS10_ME",
+        "live_me",
+        "DGS10_ME",
+        SeriesKind.YIELD,
+        M,
+        name="10y Treasury CMT, month-end (FRED DGS10, P5 extract)",
+        unit="pct",
+    )
+    add(
+        "static:UST10_ME",
+        "constructs",
+        "UST10_ME",
+        SeriesKind.TOTAL_RETURN,
+        M,
+        name="Synthetic 10y Treasury total return on month-end yields (par bond, DGS10)",
+    )
+    add(
+        "static:fred:DGS2_ME",
+        "live_me",
+        "DGS2_ME",
+        SeriesKind.YIELD,
+        M,
+        name="2y Treasury CMT, month-end (FRED DGS2, extract; ADR 052)",
+        unit="pct",
+    )
+    add(
+        "static:fred:DGS3MO_ME",
+        "live_me",
+        "DGS3MO_ME",
+        SeriesKind.YIELD,
+        M,
+        name="3m Treasury CMT, month-end (FRED DGS3MO, extract)",
+        unit="pct",
+    )
+    add(
+        "static:UST2_ME",
+        "constructs",
+        "UST2_ME",
+        SeriesKind.TOTAL_RETURN,
+        M,
+        name="Synthetic 2y Treasury total return on month-end yields (par bond, DGS2; ADR 052)",
+    )
     for ind in FRENCH_INDUSTRIES:
-        add(f"static:FF_{ind.upper()}", "ind10", ind, SeriesKind.RETURN, M, name=f"French industry {ind} (value-weighted)",
-            asset=f"FF_{ind.upper()}")
+        add(
+            f"static:FF_{ind.upper()}",
+            "ind10",
+            ind,
+            SeriesKind.RETURN,
+            M,
+            name=f"French industry {ind} (value-weighted)",
+            asset=f"FF_{ind.upper()}",
+        )
+    if countries:  # research round 4 (ADR 057 a, 058): only once the data is frozen
+        for ccy in r4.FX_SPOT:
+            add(
+                f"static:r4:FX_{ccy}",
+                "r4_daily",
+                f"FX_{ccy}",
+                SeriesKind.TOTAL_RETURN,
+                D,
+                name=f"{ccy} deposit in USD: H.10 spot and OECD short rate published a month later",
+            )
+        for code_name, (code, maturity) in r4.TREASURIES.items():
+            add(
+                f"static:r4:{code_name}",
+                "r4_daily",
+                code_name,
+                SeriesKind.TOTAL_RETURN,
+                D,
+                name=f"{maturity:.0f}y Treasury par bond, daily total return on {code}",
+            )
+        for ind in FRENCH_INDUSTRIES:
+            add(
+                f"static:r4:IND_{ind.upper()}",
+                "r4_daily",
+                f"IND_{ind.upper()}",
+                SeriesKind.TOTAL_RETURN,
+                D,
+                name=f"French industry {ind}, daily total return (value-weighted)",
+            )
+        for ccy in r4.FX_SPOT:
+            add(
+                f"static:r4:RATE_{ccy}",
+                "r4_rates",
+                f"RATE_{ccy}",
+                SeriesKind.YIELD,
+                M,
+                f"{r4.RATE_LAG_MONTHS}M",
+                name=f"{ccy} short rate (OECD 3M interbank, call money before its first value)",
+                unit="pct",
+            )
+        for c in countries:
+            add(
+                f"static:r4:CTRY_{c}",
+                "r4_countries",
+                f"CTRY_{c}",
+                SeriesKind.TOTAL_RETURN,
+                M,
+                name=f"French country {c}: market return with dividends in USD, total-return index",
+            )
     return out
 
 
@@ -199,22 +594,39 @@ def _daily_to_me(s: pd.Series) -> pd.Series:
 
 
 def read_french_section(text: str, header_contains: str | None = None) -> pd.DataFrame:
-    """First monthly block of a Kenneth French CSV (or the block after `header_contains`), in decimals."""
+    """First data block of a Kenneth French CSV (or the block after `header_contains`), in decimals. A block
+    is monthly (YYYYMM, labelled with the month-end) or daily (YYYYMMDD, labelled with the day); the width of
+    the first date decides, and the block ends at the first line of another width (an annual block)."""
     lines = text.splitlines()
     start = 0
     if header_contains:
         start = next(i for i, ln in enumerate(lines) if header_contains in ln) + 1
     h = next(i for i in range(start, len(lines)) if lines[i].startswith(","))
+    first = lines[h + 1].split(",")[0].strip() if h + 1 < len(lines) else ""
+    width = 8 if len(first) == 8 and first.isdigit() else 6
     rows = [lines[h]]
-    for ln in lines[h + 1:]:
-        if not ln.strip() or not ln.strip()[:6].isdigit() or len(ln.split(",")[0].strip()) != 6:
+    for ln in lines[h + 1 :]:
+        key = ln.split(",")[0].strip()
+        if not ln.strip() or not key.isdigit() or len(key) != width:
             break
         rows.append(ln)
     df = pd.read_csv(io.StringIO("\n".join(rows)), index_col=0)
-    df.index = pd.to_datetime(df.index.astype(str).str.strip(), format="%Y%m") + pd.offsets.MonthEnd(0)
+    if width == 8:
+        df.index = pd.to_datetime(df.index.astype(str).str.strip(), format="%Y%m%d")
+    else:
+        df.index = pd.to_datetime(df.index.astype(str).str.strip(), format="%Y%m") + pd.offsets.MonthEnd(0)
     df = df.rename(columns=lambda c: str(c).strip())
     out: pd.DataFrame = df.apply(pd.to_numeric, errors="coerce").replace([-99.99, -999], np.nan) / 100.0
     return out
+
+
+def bill_investment_yield(discount_pct: pd.Series, days: int = 91) -> pd.Series:
+    """Investment (coupon-equivalent) yield in percent of a `days`-day bill quoted on a discount basis: price
+    P = 1 − d·days/360, yield = (1/P − 1)·365/days. TB3MS is a discount rate, which understates what a holder
+    earns – by about 0.13, 0.40 and 0.71 percentage points at 5, 10 and 14 % (ADR 058)."""
+    d = discount_pct.astype(float) / 100.0
+    price = 1.0 - d * days / 360.0
+    return (1.0 / price - 1.0) * 365.0 / days * 100.0
 
 
 def bond_total_return(yields_pct: pd.Series, maturity_years: float, freq: int = 2) -> pd.Series:
@@ -245,6 +657,7 @@ class StaticProvider(BaseProvider):
         "usd": ("fred_usd_major_index.csv", "fred_usd_broad_index.csv"),
         "wb_prices": "wb_commodity_prices_monthly.xlsx",
         "wb_indices": "wb_commodity_prices_monthly.xlsx",
+        "live_me": "p5_live_monthend.csv.gz",
     }
     VINTAGE_DIR = "fredmd_vintages"
 
@@ -317,7 +730,7 @@ class StaticProvider(BaseProvider):
             out = empty_frame()
             out.attrs["real_vintages"] = True
             return out
-        wide = pd.DataFrame(cols).sort_index()                       # obs × vintage date
+        wide = pd.DataFrame(cols).sort_index()  # obs × vintage date
         prev = wide.ffill(axis=1).shift(1, axis=1)
         changed = wide.notna() & (prev.isna() | ((wide - prev).abs() > 1e-12 * prev.abs().clip(lower=1e-12)))
         stacked = cast(pd.Series, wide.where(changed).stack().dropna())
@@ -333,7 +746,7 @@ class StaticProvider(BaseProvider):
     # -- groups --------------------------------------------------------------
     def _all_files(self) -> set[str]:
         out: set[str] = set()
-        for v in self.FILES.values():
+        for v in {**self.FILES, **(R4_FILES if R4_COUNTRIES else {})}.values():
             out.update((v,) if isinstance(v, str) else v)
         return out
 
@@ -362,8 +775,10 @@ class StaticProvider(BaseProvider):
         return read_french_section(self._path("ff_3_factors_monthly.csv").read_text(encoding="latin-1"))
 
     def _load_ind10(self) -> pd.DataFrame:
-        return read_french_section(self._path("ff_10_industry_portfolios.csv").read_text(encoding="latin-1"),
-                                   "Average Value Weighted Returns -- Monthly")
+        return read_french_section(
+            self._path("ff_10_industry_portfolios.csv").read_text(encoding="latin-1"),
+            "Average Value Weighted Returns -- Monthly",
+        )
 
     def _load_ff5(self) -> pd.DataFrame:
         f5 = pd.read_csv(self._path("ff5_mom_monthly.csv.gz"), index_col=0, parse_dates=True) / 100.0
@@ -397,11 +812,37 @@ class StaticProvider(BaseProvider):
         out: pd.DataFrame = df[["BAMLH0A0HYM2"]].apply(pd.to_numeric, errors="coerce").sort_index()
         return out
 
+    LIVE_ME_EXTRACTED = pd.Timestamp(
+        "2026-10-26"
+    )  # the extract's store date: its last row is the running month
+
+    def _load_live_me(self) -> pd.DataFrame:
+        """Month-end extract of the live store (scripts/p5_extract_live_monthend.py); only DGS10_ME is catalogued.
+        Rows after the extract date are the running month, not a month-end, and are dropped."""
+        df = pd.read_csv(self._path("p5_live_monthend.csv.gz"), index_col=0, parse_dates=True)
+        df.index = _me(df.index)
+        out: pd.DataFrame = df.apply(pd.to_numeric, errors="coerce").sort_index()
+        dropped = int((out.index > self.LIVE_ME_EXTRACTED).sum())
+        if dropped > 1:
+            raise DataError(
+                f"p5_live_monthend.csv.gz: {dropped} rows after LIVE_ME_EXTRACTED {self.LIVE_ME_EXTRACTED.date()} – "
+                "a new extract needs the constant updated (only the running month may be dropped)"
+            )
+        return out[out.index <= self.LIVE_ME_EXTRACTED]
+
     def _load_usd(self) -> pd.DataFrame:
-        major = pd.read_csv(self._path("fred_usd_major_index.csv"), parse_dates=["observation_date"]).set_index("observation_date")["DTWEXM"]
-        broad = pd.read_csv(self._path("fred_usd_broad_index.csv"), parse_dates=["observation_date"]).set_index("observation_date")["DTWEXBGS"]
-        return pd.DataFrame({"DTWEXM": pd.to_numeric(major, errors="coerce"),
-                             "DTWEXBGS": pd.to_numeric(broad, errors="coerce")}).sort_index()
+        major = pd.read_csv(
+            self._path("fred_usd_major_index.csv"), parse_dates=["observation_date"]
+        ).set_index("observation_date")["DTWEXM"]
+        broad = pd.read_csv(
+            self._path("fred_usd_broad_index.csv"), parse_dates=["observation_date"]
+        ).set_index("observation_date")["DTWEXBGS"]
+        return pd.DataFrame(
+            {
+                "DTWEXM": pd.to_numeric(major, errors="coerce"),
+                "DTWEXBGS": pd.to_numeric(broad, errors="coerce"),
+            }
+        ).sort_index()
 
     @cached_property
     def _wb(self) -> dict[str, pd.DataFrame]:
@@ -420,14 +861,47 @@ class StaticProvider(BaseProvider):
 
     def _load_wb_indices(self) -> pd.DataFrame:
         i = self._wb["Monthly Indices"]
-        idx = i.iloc[9:, [0, 1, 2, 3, 4, 13, 14, 15, 16]].copy().set_axis(
-            ["date", "WB_TOTAL", "WB_ENERGY", "WB_NONENERGY", "WB_AGRI", "WB_FERT", "WB_METALS", "WB_BASEMETALS",
-             "WB_PRECIOUS"], axis=1)
+        idx = (
+            i.iloc[9:, [0, 1, 2, 3, 4, 13, 14, 15, 16]]
+            .copy()
+            .set_axis(
+                [
+                    "date",
+                    "WB_TOTAL",
+                    "WB_ENERGY",
+                    "WB_NONENERGY",
+                    "WB_AGRI",
+                    "WB_FERT",
+                    "WB_METALS",
+                    "WB_BASEMETALS",
+                    "WB_PRECIOUS",
+                ],
+                axis=1,
+            )
+        )
         idx["date"] = pd.to_datetime(idx["date"].astype(str), format="%YM%m")
         idx = idx.set_index("date")
         idx.index = _me(idx.index)
         out: pd.DataFrame = idx.apply(pd.to_numeric, errors="coerce")
         return out
+
+    def _r4_csv(self, name: str) -> pd.DataFrame:
+        df = pd.read_csv(self._path(name), index_col=0, parse_dates=True)
+        out: pd.DataFrame = df.apply(pd.to_numeric, errors="coerce").sort_index()
+        return out
+
+    def _load_r4_daily(self) -> pd.DataFrame:
+        return r4.build_daily(
+            self._r4_csv("r4_fred_daily.csv.gz"),
+            self._r4_csv("r4_oecd_rates_monthly.csv.gz"),
+            self._r4_csv("ff_10_industry_daily.csv.gz"),
+        )
+
+    def _load_r4_rates(self) -> pd.DataFrame:
+        return r4.build_rates(self._r4_csv("r4_oecd_rates_monthly.csv.gz"))
+
+    def _load_r4_countries(self) -> pd.DataFrame:
+        return r4.build_countries(self._r4_csv("ff_intl_countries_monthly.csv.gz"))
 
     def _load_constructs(self) -> pd.DataFrame:
         fred = self._group("fredmd")
@@ -445,13 +919,17 @@ class StaticProvider(BaseProvider):
         cons = {
             "GOLD": gold,
             "TBILL": (1 + tb.shift(1) / 1200.0).cumprod() * 100.0,
+            "TBILL_IY": (1 + bill_investment_yield(tb).shift(1) / 1200.0).cumprod() * 100.0,
             "UST10": (1 + bond_total_return(fred["GS10"], 10.0)).cumprod() * 100.0,
             "UST5": (1 + bond_total_return(fred["GS5"], 5.0)).cumprod() * 100.0,
             "UST1": (1 + bond_total_return(fred["GS1"], 1.0)).cumprod() * 100.0,
             "FF_MKT": ff3["Mkt-RF"] + ff3["RF"],
+            # same par-bond formula on the month-end yield: an index that exists at the month-end close (ADR 047)
+            "UST10_ME": (1 + bond_total_return(self._group("live_me")["DGS10_ME"], 10.0)).cumprod() * 100.0,
+            "UST2_ME": (1 + bond_total_return(self._group("live_me")["DGS2_ME"], 2.0)).cumprod() * 100.0,
         }
         major, broad = _daily_to_me(usd["DTWEXM"]), _daily_to_me(usd["DTWEXBGS"])
         link = major.index.intersection(broad.index).min()
         scale = major.loc[link] / broad.loc[link]
-        cons["USD_IDX"] = pd.concat([major.loc[:link], (broad * scale).loc[link + pd.Timedelta(days=1):]])
+        cons["USD_IDX"] = pd.concat([major.loc[:link], (broad * scale).loc[link + pd.Timedelta(days=1) :]])
         return pd.DataFrame(cons).sort_index()

@@ -52,16 +52,20 @@ class PitIndex:
     def series_ids(self) -> list[str]:
         return sorted(self._s)
 
-    def as_of(self, series_id: str, d: pd.Timestamp) -> pd.Series:
+    def as_of(self, series_id: str, d: pd.Timestamp, knowledge: pd.Timestamp | None = None) -> pd.Series:
+        """Rows with obs_date <= d known at `knowledge` (default d): vintage_date <= knowledge < valid_to.
+        A knowledge date after d is the late-data case of the live run (observations through a month-end
+        that reached the store only afterwards); it never admits an observation after d."""
         a = self._s.get(series_id)
         if a is None:
             return pd.Series(dtype="float64", index=pd.DatetimeIndex([]), name=series_id)
         t = np.int64(pd.Timestamp(d).value)
+        tk = t if knowledge is None else np.int64(max(int(t), int(pd.Timestamp(knowledge).value)))
         if a.simple:
-            k = min(int(np.searchsorted(a.obs, t, side="right")), int(np.searchsorted(a.vintage, t, side="right")))
+            k = min(int(np.searchsorted(a.obs, t, side="right")), int(np.searchsorted(a.vintage, tk, side="right")))
             idx, val = a.obs[:k], a.value[:k]
         else:
-            m = (a.obs <= t) & (a.vintage <= t) & (t < a.valid_to)
+            m = (a.obs <= t) & (a.vintage <= tk) & (tk < a.valid_to)
             idx, val = a.obs[m], a.value[m]
         return pd.Series(val, index=pd.DatetimeIndex(idx.view("datetime64[ns]")), name=series_id)
 
@@ -76,13 +80,14 @@ class PitIndex:
         a = self._s.get(series_id)
         return a is not None and a.simple and bool((a.vintage == a.obs).all())
 
-    def prefix_len(self, series_id: str, d: pd.Timestamp) -> int:
-        """For a simple series, as_of(d) is the first k rows of its full history; returns k."""
+    def prefix_len(self, series_id: str, d: pd.Timestamp, knowledge: pd.Timestamp | None = None) -> int:
+        """For a simple series, as_of(d, knowledge) is the first k rows of its full history; returns k."""
         a = self._s[series_id]
         if not a.simple:
             raise ValueError(f"{series_id} has revisions: no prefix property")
         t = np.int64(pd.Timestamp(d).value)
-        return min(int(np.searchsorted(a.obs, t, side="right")), int(np.searchsorted(a.vintage, t, side="right")))
+        tk = t if knowledge is None else np.int64(max(int(t), int(pd.Timestamp(knowledge).value)))
+        return min(int(np.searchsorted(a.obs, t, side="right")), int(np.searchsorted(a.vintage, tk, side="right")))
 
     def full(self, series_id: str) -> pd.Series:
         """Every stored observation of a simple series (its as-of answer at the end of time)."""

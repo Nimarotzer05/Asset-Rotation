@@ -47,7 +47,7 @@ class FeatureMeta:
         key = (
             self.name,
             None if assets is None else tuple(str(a) for a in assets),
-            tuple(sorted(kw.items())),
+            tuple(sorted((k, _hashable(v)) for k, v in kw.items())),
         )
         if memo is not None and key in memo:
             hit = memo[key]
@@ -64,6 +64,16 @@ class FeatureMeta:
         if unknown:
             raise RegistryError(f"feature '{self.name}': undeclared parameter(s) {sorted(unknown)}")
         return self.panel_fn(panel, **{**self.params, **params})
+
+
+def _hashable(v: Any) -> Any:
+    """Memo-key form of a parameter value: mappings and sequences become sorted tuples (a feature may take
+    a weight mapping, e.g. `sleeve_vol_12m`)."""
+    if isinstance(v, Mapping):
+        return tuple(sorted((str(k), _hashable(x)) for k, x in v.items()))
+    if isinstance(v, (list, tuple, set, frozenset)):
+        return tuple(_hashable(x) for x in (sorted(v) if isinstance(v, (set, frozenset)) else v))
+    return v
 
 
 _FEATURES: dict[str, FeatureMeta] = {}

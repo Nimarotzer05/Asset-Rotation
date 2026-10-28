@@ -55,6 +55,21 @@ def test_cost_model_rates_cash_leg_and_borrow(bundle) -> None:
         CostSpec(default_bps=7.5, cash_bps=7.5, per_asset={"SPY": 1.0}), bundle.universe
     )
     assert r.bps("GLD") == 7.5 and r.bps("SPY") == 1.0 and r.bps(CASH) == 7.5
+    # a per-run financing spread on a negative cash leg (leverage, ADR 057); nothing on positive cash
+    f = CostModel.from_config(CostSpec(borrow_bps={str(CASH): 30.0}), bundle.universe)
+    assert f.carry({"IEF": 1.4, CASH: -0.4}, 365) == pytest.approx(0.4 * 30 / 1e4)
+    assert f.carry({"IEF": 0.6, CASH: 0.4}, 365) == 0.0
+    assert u.carry({"IEF": 1.4, CASH: -0.4}, 365) == 0.0  # default: no spread – earlier runs are unchanged
+
+
+def test_book_pays_the_financing_spread_on_leverage() -> None:
+    """A book 150 % long, financed at the cash index plus 30 bp: after a year of flat prices it has lost exactly
+    the spread on the borrowed half (the cash index itself is flat here)."""
+    book = Book("RF", CostModel(default_bps=0.0, borrow_bps={str(CASH): 30.0}))  # no trading cost here
+    book.mark({"RF": 100.0, "A": 50.0}, date(2000, 1, 3))
+    book.rebalance(targets({"A": 1.5}), {"RF": 100.0, "A": 50.0}, date(2000, 1, 3))
+    book.mark({"RF": 100.0, "A": 50.0}, date(2001, 1, 2))
+    assert book.equity() == pytest.approx(100.0 * (1 - 0.5 * 30 / 1e4 * 365 / 365), rel=1e-9)
 
 
 # ---------------------------------------------------------------------------- book
@@ -324,3 +339,65 @@ def test_equity_exposure_with_valuation_scaling(bundle, static_factory) -> None:
         )
     early, _ = s.propose(static_factory.at(date(1930, 6, 30)), s.initial_state())
     assert early.warmup and "valuation" in early.notes[0]
+
+
+# ---------------------------------------------------------------------------- execution timing (ADR 042)
+class Flip(BaseStrategy):
+    """Holds A in even months, B in odd months (a signal that changes every decision)."""
+
+    strategy_id = "flip"
+
+    def propose(self, view, state: StrategyState) -> tuple[Proposal, StrategyState]:
+        a = "A" if view.date.month % 2 == 0 else "B"
+        return self.proposal(view, {a: 1.0}, 1.0), state
+
+
+def _two_assets():
+    a = [100 * 1.03**k for k in range(8)]
+    b = [100 * (1.01 if k % 2 else 0.98) ** k for k in range(8)]
+    return Toy().monthly("A", a).monthly("B", b).cash("RF", 0.0, n=8), a, b
+
+
+def test_next_month_close_trades_at_the_next_decision() -> None:
+    w, a, b = _two_assets()
+    f = w.factory()
+    s = Flip(spec("flip", ["A", "B", "RF"], {"cash": "RF"}, warmup=0))
+    clock = MonthEndClock(f.cal, date(2000, 1, 31), date(2000, 6, 30))
+    res = Engine(
+        f, clock, [s], SingleStrategy(), Book("RF", CostModel(default_bps=0.0)), execution="next_month_close"
+    ).run()
+    r = res.returns
+    # decision 01-31 (B) trades 02-29: Feb is still cash; Mar earns B; Apr earns the 02-29 decision (A)
+    assert r.iloc[0] == pytest.approx(0.0)
+    assert r.iloc[1] == pytest.approx(b[2] / b[1] - 1)
+    assert r.iloc[2] == pytest.approx(a[3] / a[2] - 1)
+    assert pd.isna(res.decisions["execution"].iloc[0])
+    assert res.decisions["execution"].iloc[1] == pd.Timestamp("2000-02-29")
+    assert res.active.tolist()[:2] == [False, True]  # the first decision shapes the second period
+    same = Engine(
+        f, clock, [s], SingleStrategy(), Book("RF", CostModel(default_bps=0.0)), execution="same_close"
+    ).run()
+    assert same.returns.iloc[0] == pytest.approx(b[1] / b[0] - 1)  # same_close: B from January on
+
+
+def test_next_tradable_defers_only_assets_valued_at_monthly_averages() -> None:
+    w, a, b = _two_assets()
+    f = w.factory()
+    s = Flip(spec("flip", ["A", "B", "RF"], {"cash": "RF"}, warmup=0))
+    clock = MonthEndClock(f.cal, date(2000, 1, 31), date(2000, 6, 30))
+
+    def run(execution, averaged=(), bps=0.0):
+        book = Book("RF", CostModel(default_bps=bps))
+        return Engine(f, clock, [s], SingleStrategy(), book, execution=execution, averaged=averaged).run()
+
+    # nothing averaged: identical to next_close
+    pd.testing.assert_frame_equal(
+        run("next_tradable", bps=10.0).decisions, run("next_close", bps=10.0).decisions
+    )
+    r = run("next_tradable", ("B",)).returns
+    assert r.iloc[0] == pytest.approx(0.0)  # 01-31 → B (averaged): bought at 02-29, February is cash
+    # 02-29 → A (closing prices): bought at once; B (averaged) is sold only at 03-31, so March holds both,
+    # the overlap financed in cash (here at 0 %)
+    assert r.iloc[1] == pytest.approx((a[2] / a[1] - 1) + (b[2] / b[1] - 1))
+    # 03-31 → B again: B bought 04-30 (averaged), A sold at once → April in cash
+    assert r.iloc[2] == pytest.approx(0.0)

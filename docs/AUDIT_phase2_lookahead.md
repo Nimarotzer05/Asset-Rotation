@@ -203,6 +203,17 @@ nie verglichen; beides behoben.
   `vintage_date` wird außerhalb des Filters nirgends gelesen (`grep` in features/, strategies/, engine/,
   portfolio/ ohne Treffer).
 
+## Umsetzung der Empfehlungen (2026-10-25, nach der Zweitprüfung)
+
+| Empfehlung | Stand |
+|---|---|
+| 1 Tagesloop nur Risikoregeln | Vorgabe für Phase 3 |
+| 2 Timing der Monatsmittel | **umgesetzt**: `next_tradable` und `next_month_close` (ADR 042); Rohstoff-Trend ehrlich 0.42 statt 0.74, Multi-Asset 0.557 statt 0.571, Walk-forward 0.69 statt 0.77 (`output/execution/TIMING.md`), gepinnt |
+| 3 `pct_start` | **umgesetzt**: `pct_start: 1926-07-31` in `us_equity_exposure.yaml` |
+| 4 `research_factory` | **umgesetzt**: Monatsanfang über `to_period("M")`; Test für 1., 15. und Monatsende |
+| 5 Kalender im Cash-Index (Befund B) | **umgesetzt**: Sonderschließungen nach D zählen als Sitzung; Test mit 9/11 |
+| 6 Mehr Schnitte | **umgesetzt**: Truncation-Sweep, 17 Schnitte je Modul 1976–2024 (Januar, Mai, September wechselnd), alle fünf Module unter `next_tradable`, 85 Schnitte ohne Befund; wöchentlich im `network`-Workflow (~10 min) |
+
 ## Empfehlungen
 
 1. Phase 3: Monatsmodule entscheiden an Monatsenden, der Tagesloop führt nur Risikoregeln aus (Punkt 1).

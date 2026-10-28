@@ -35,7 +35,7 @@ from rotationlab.strategies import build_strategy, build_walkforward, strategy_s
 from rotationlab.strategies.walkforward import WalkForward
 from tests.fixtures.toy import Toy, spec
 from tests.lookahead.harness import LookaheadHarness
-from tests.lookahead.test_modules_lookahead import ASSETS, FEATURE_SERIES
+from tests.lookahead.test_modules_lookahead import ASSETS, FEATURE_PARAMS, FEATURE_SERIES
 
 pytestmark = [
     pytest.mark.lookahead,
@@ -44,7 +44,6 @@ pytestmark = [
     pytest.mark.filterwarnings("ignore:divide by zero encountered:RuntimeWarning"),
 ]
 
-FEATURE_PARAMS = {"excess_mom_12m": {"cash": "TBILL"}, "ecy_percentile": {"pct_start": "1926-07-31"}}
 # mid-month dates: stress months and ordinary ones, never a month-end
 MID_MONTH = sorted(  # ascending: module state (tranches, walk-forward prev_date) must move forward in time
     [
@@ -177,6 +176,7 @@ CUTS = [date(2003, 3, 31), date(2004, 6, 30), date(2005, 9, 30), date(2006, 6, 3
         "multi_asset_rotation",
         "commodity_trend",
         "precious_metals",
+        "forecast_portfolio",
     ],
 )
 def test_engine_run_is_invariant_to_truncating_the_store(reduced, bundle, cal, sid) -> None:
@@ -433,3 +433,33 @@ def test_direction_is_unknown_not_falling_on_missing_data() -> None:
         d.iloc[15:21].isna().all()
     )  # the gap, the two means containing it, and the comparisons against them
     assert d.iloc[21:].eq(1.0).all()
+
+
+def test_daily_cash_index_does_not_know_later_special_closings(bundle, catalog, cal) -> None:
+    """The month's accrual is spread over its sessions; a closing decided after D (9/11) must not change the
+    share accrued by D. At month-end the index equals the monthly one either way."""
+    from rotationlab.data.calendar import SPECIAL_CLOSINGS
+
+    y = pd.Series([3.5, 3.4, 3.3], index=pd.to_datetime(["2001-07-31", "2001-08-31", "2001-09-30"]))
+    w = Toy().series("t:Y:yield", y, kind=SeriesKind.YIELD, freq=Frequency.MONTHLY)
+    w.roles["CASHY"] = {"yield": ["t:Y:yield"]}
+    f = StoreViewFactory(pd.concat(w.frames, ignore_index=True), w.specs, w.roles, cal)
+    sep4 = f.at(date(2001, 9, 4)).total_return(["CASHY"], None)["CASHY"]
+    aug31 = sep4.loc["2001-08-31"]
+    n_known = len(cal.trading_days(date(2001, 9, 1), date(2001, 9, 30))) + sum(
+        1 for x in SPECIAL_CLOSINGS if x.year == 2001 and x.month == 9
+    )
+    assert n_known == 19
+    assert sep4.iloc[-1] / aug31 == pytest.approx((1 + 3.4 / 1200) ** (1 / 19))
+    month_end = f.at(date(2001, 9, 30)).total_return(["CASHY"], None)["CASHY"]
+    monthly = f.at(date(2001, 9, 30)).total_return(["CASHY"], "ME")["CASHY"]
+    assert month_end.iloc[-1] == pytest.approx(monthly.iloc[-1])
+
+
+def test_research_factory_cuts_at_the_first_of_the_month(bundle, static_store, cal) -> None:
+    obs = static_store.observations()
+    obs = obs[obs["series_id"] == "static:french:ff3:RF"]
+    for d in (date(1972, 12, 1), date(1972, 12, 15), date(1972, 12, 31)):
+        f = research_factory(bundle, obs, cal, d)
+        s = f.at(date(1973, 6, 30)).series("static:french:ff3:RF")
+        assert s.index[0] == pd.Timestamp("1972-12-31"), d

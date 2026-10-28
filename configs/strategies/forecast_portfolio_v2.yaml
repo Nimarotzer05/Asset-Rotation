@@ -1,0 +1,49 @@
+id: forecast_portfolio_v2
+version: 1
+role: paper                        # outside the risk budgets: the pre-registered paper rule on the forecast (ADR 048)
+cadence: monthly
+universe: [SPY, IEF, SHY, GLD, SLV, BIL]
+long_history_universe: [US_EQ, UST10_ME, UST2_ME, GOLD, SILVER, TBILL]   # ADR 052: five classes with month-end prices
+warmup_months: 61                  # value needs 60 months
+params:
+  # the round-2 composite (configs/forecast_v2.yaml; ADR 052) – identical formula, pointwise through the registry;
+  # load_bundle rejects any drift between the two files
+  feature_weights: { mom_12_1: 1.0, carry_yield: 1.0, value_rev_60m: 1.0 }
+  zscore_clip: 3.0
+  feature_params:
+    carry_yield:
+      spec:
+        US_EQ:    { kind: equity_dy, tr: "static:usmkt:TR", px: "static:usmkt:CLOSE" }
+        UST10_ME: { kind: yield, series: "static:fred:DGS10_ME" }
+        UST2_ME:  { kind: yield, series: "static:fred:DGS2_ME" }
+        GOLD:     { kind: zero }
+        SILVER:   { kind: zero }
+        SPY:      { kind: dividend_dy, close: "yahoo:SPY:close", dividend: "yahoo:SPY:dividend" }
+        IEF:      { kind: yield, series: "fred:DGS10" }
+        SHY:      { kind: yield, series: "fred:DGS2" }
+        GLD:      { kind: zero }
+        SLV:      { kind: zero }
+  top_n: 2                         # the two best-ranked of five, equal-weighted (ADR 052 f)
+  trend_filter: true               # a pick below its 10-month average goes to cash
+  trend_window_months: 10
+  vol_target: 0.10                 # annualised; sleeve scaled by min(vol_target / sleeve_vol_12m, max_exposure)
+  vol_window_months: 12
+  vol_floor: 0.05                  # house convention (configs/portfolio.yaml vol_floor)
+  max_exposure: 1.0                # no leverage (pre-registered); 1.5 = named sensitivity, not the rule
+confidence:
+  kind: score_dispersion
+  floor: 0.5
+  params: { scale: 1.0 }
+# Reference run of the round-2 rule (ADR 052 d/f): data from 1976-06 (DGS2), decisions to 2018-12 (traded 2019-01-02,
+# never evaluated), sample from the first decision with all three families; golden pinned after the first run.
+# pinned from the first run (regression pin, not a success criterion – ADR 048 e was NOT met, ADR 053)
+golden: { sharpe_ex_cash: 0.605, ann_return: 0.076, max_drawdown: -0.091 }   # first run 2026-10-27, output/forecast_v2/PORTFOLIO.md
+golden_tolerance: { sharpe_ex_cash: 0.02, ann_return: 0.01, max_drawdown: 0.02 }
+golden_run:
+  data_from: 1976-06-30
+  start: 1976-06-30
+  end: 2018-12-31
+  sample: [1981-08-31, 2018-12-31]
+  count_warmup: false
+  execution: next_tradable
+  costs: { default_bps: 7.5, cash_bps: 7.5 }

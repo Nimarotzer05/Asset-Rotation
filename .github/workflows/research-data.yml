@@ -1,0 +1,51 @@
+name: research-data
+# One-off download of the raw research files for round 4 (ADR 057), started by hand. It never touches the store,
+# the journal or the daily run: the files land unchanged (gzip) with MANIFEST.json on the orphan branch
+# `research-data`, from where scripts/freeze_research_data.py freezes a pinned commit into data/raw.
+on:
+  workflow_dispatch:
+concurrency: research-data
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    env:
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main }
+      - uses: astral-sh/setup-uv@v3
+      - run: uv python install 3.12
+      - run: uv sync
+      - name: download the raw files (FRED H.10 spot, Treasury yields, OECD short rates, French industries and countries)
+        id: fetch
+        shell: bash
+        run: |
+          set +e
+          uv run python scripts/fetch_research_data.py --out "$RUNNER_TEMP/research_data" | tee "$RUNNER_TEMP/fetch.log"
+          code=${PIPESTATUS[0]}
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          { echo "## research data $(date -u +%FT%TZ)"; cat "$RUNNER_TEMP/fetch.log"; } >> "$GITHUB_STEP_SUMMARY"
+          exit 0
+      - name: commit them to branch research-data
+        shell: bash
+        run: |
+          W="$RUNNER_TEMP/rd"
+          if git ls-remote --exit-code --heads origin research-data > /dev/null; then
+            git fetch --depth=1 origin research-data && git worktree add --detach "$W" FETCH_HEAD
+          else
+            git worktree add --detach "$W" && git -C "$W" checkout -q --orphan research-data && git -C "$W" rm -rfq --cached .
+            find "$W" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          fi
+          rm -rf "$W/research_data" && cp -r "$RUNNER_TEMP/research_data" "$W/research_data"
+          cd "$W"
+          git add -A research_data
+          git -c user.name=rotationlab-bot -c user.email=bot@users.noreply.github.com commit -qm "research data $(date -u +%FT%TZ)" || echo "nothing new"
+          git push origin HEAD:refs/heads/research-data
+          echo "branch research-data at $(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+      - name: fail if a required source is missing
+        if: steps.fetch.outputs.code != '0'
+        run: |
+          echo "a required source failed – see the step summary; the files that arrived are on research-data"
+          exit 1
