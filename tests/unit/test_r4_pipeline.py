@@ -201,14 +201,18 @@ def test_the_bill_index_earns_the_investment_yield() -> None:
     assert y.iloc[0] / 100 == pytest.approx((1 / (1 - d * 91 / 360) - 1) * 365 / 91)
 
 
-def test_the_round4_series_stay_out_of_the_catalog_until_the_data_is_frozen(tmp_path) -> None:
-    """ADR 058: with `R4_COUNTRIES` empty the static catalog and its raw-file fingerprint are those of round 3; with
-    the countries filled the catalog holds every round-4 series, and the loaders build them from the frozen files."""
+def test_the_round4_series_enter_the_catalog_with_the_frozen_countries(tmp_path) -> None:
+    """ADR 058: with `R4_COUNTRIES` empty the static catalog and its raw-file fingerprint are those of round 3
+    (the state before the freeze); with the countries filled – since 2026-10-28 the 21 members of the French file in
+    zip order – the catalog holds every round-4 series, and the loaders build them from the frozen files."""
     from rotationlab.core.types import Frequency, SeriesKind
     from rotationlab.data.providers import static as st
 
-    assert st.R4_COUNTRIES == () and not [k for k in st.STATIC_CATALOG if k.startswith("static:r4:")]
-    assert "r4_fred_daily.csv.gz" not in st.StaticProvider(tmp_path)._all_files()
+    dormant = st._build_catalog(())
+    assert not [k for k in dormant if k.startswith("static:r4:")]
+    assert len(st.R4_COUNTRIES) == 21 and st.R4_COUNTRIES[0] == "UK" and st.R4_COUNTRIES[-1] == "SWITZERLAND"
+    assert "r4_fred_daily.csv.gz" in st.StaticProvider(tmp_path)._all_files()
+    assert len([k for k in st.STATIC_CATALOG if k.startswith("static:r4:CTRY_")]) == 21
     cat = st._build_catalog(("JAPAN", "UK"))
     r4ids = sorted(k for k in cat if k.startswith("static:r4:"))
     assert len(r4ids) == 9 + 3 + 10 + 9 + 2

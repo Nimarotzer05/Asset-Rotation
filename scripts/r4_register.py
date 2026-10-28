@@ -75,7 +75,24 @@ def universe_block(ctry: list[str]) -> str:
     return "\n".join(rows) + "\n"
 
 
-def strategy_yaml(ctry: list[str], sample: tuple[str, str]) -> str:
+GOLDEN_KEYS = ("sharpe_ex_cash", "ann_return", "max_drawdown")
+GOLDEN_TOLERANCE = "golden_tolerance: { sharpe_ex_cash: 0.02, ann_return: 0.01, max_drawdown: 0.02 }"
+
+
+def golden_block(golden: tuple[float, float, float] | None) -> str:
+    """The pinned result of the run (ADR 057 j): values measured by the walk-forward, written after it, so the
+    golden test and `rotationlab golden` catch any later drift of code or data."""
+    if golden is None:
+        return ""
+    vals = ", ".join(f"{k}: {v:.4f}" for k, v in zip(GOLDEN_KEYS, golden, strict=True))
+    return (
+        f"golden: {{ {vals} }}   # run 2026-10-28, output/allocator_v2/WALKFORWARD.md\n{GOLDEN_TOLERANCE}\n"
+    )
+
+
+def strategy_yaml(
+    ctry: list[str], sample: tuple[str, str], golden: tuple[float, float, float] | None = None
+) -> str:
     ind = [f"IND_{i.upper()}" for i in INDUSTRIES]
     cty = [f"CTRY_{c}" for c in ctry]
     ust = list(TREASURIES)
@@ -129,7 +146,7 @@ confidence:
   kind: score_dispersion
   floor: 0.5
   params: {{ scale: 1.0 }}
-golden_run:
+{golden_block(golden)}golden_run:
   data_from: 1971-01-31            # panel from the first H.10 quotes (ADR 058)
   start: 1971-01-31
   end: 2026-09-30
@@ -161,12 +178,18 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--sample", required=True, help="first,last return month (window rule, ADR 057 f)")
     ap.add_argument("--write", action="store_true")
+    ap.add_argument(
+        "--golden", help="sharpe_ex_cash,ann_return,max_drawdown of the run to pin (after the run)"
+    )
     a = ap.parse_args()
     s0, s1 = a.sample.split(",")
+    golden = tuple(float(x) for x in a.golden.split(",")) if a.golden else None
+    if golden is not None and len(golden) != 3:
+        raise SystemExit("--golden needs three values")
     ctry = countries()
     uni_now = open(UNIVERSE, encoding="utf-8").read()
     uni_new = universe_with_block(uni_now, universe_block(ctry))
-    cfg_new = strategy_yaml(ctry, (s0, s1))
+    cfg_new = strategy_yaml(ctry, (s0, s1), golden)  # type: ignore[arg-type]
     if a.write:
         with open(UNIVERSE, "w", encoding="utf-8") as fh:
             fh.write(uni_new)

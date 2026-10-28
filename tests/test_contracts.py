@@ -50,6 +50,7 @@ def test_configs_load_and_cross_check() -> None:
         "forecast_portfolio_v2",  # ADR 052
         "fixed_weights",
         "sleeve_allocator",  # ADR 054
+        "sleeve_allocator_v2",  # ADR 057/058, registered 2026-10-28 with the window by rule
     }
     # every forecast config names a paper rule that exists and is registered (ADR 048/052)
     assert set(b.forecasts) == {"forecast", "forecast_v2"}

@@ -32,8 +32,8 @@ def test_validate(configs) -> None:
 
 def test_ingest_store_asof_cycle(configs) -> None:
     c = ["--configs", str(configs)]
-    assert main([*c, "ingest", "--full", "--provider", "static", "--date", "2026-10-24"]) == 0
-    assert main([*c, "ingest", "--provider", "static", "--date", "2026-10-25"]) == 0  # unchanged → skipped
+    assert main([*c, "ingest", "--full", "--provider", "static", "--date", "2026-10-28"]) == 0
+    assert main([*c, "ingest", "--provider", "static", "--date", "2026-10-29"]) == 0  # unchanged → skipped
     assert main([*c, "store", "verify"]) == 0
     assert main([*c, "store", "status"]) == 0
     assert main([*c, "asof", "--date", "2008-06-30", "--series", "static:fredmd:CPIAUCSL"]) == 0
@@ -62,7 +62,7 @@ def engine_configs(tmp_path_factory) -> Path:
     system["raw_path"] = str(ROOT / "data" / "raw")
     (cfg / "system.yaml").write_text(yaml.safe_dump(system))
     assert (
-        main(["--configs", str(cfg), "ingest", "--full", "--provider", "static", "--date", "2026-10-24"]) == 0
+        main(["--configs", str(cfg), "ingest", "--full", "--provider", "static", "--date", "2026-10-28"]) == 0
     )
     return cfg
 

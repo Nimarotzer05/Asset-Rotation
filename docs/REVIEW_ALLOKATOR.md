@@ -165,3 +165,33 @@ Langbein-Gewichte, Verfügbarkeit unabhängig von den Schaltern, Risikoparität 
 Folgemonat (ein Orakel-Score ergibt t = 63), Newey-West, Holm, Deflated Sharpe (gegen scipy), gepaarter Block-Bootstrap,
 MDE, Finanzierungsaufschlag, `next_tradable`, B1–B4 und die elf Varianten.
 
+
+## F. Zweitprüfung des Ergebnisses von Runde 4 (2026-10-28, ADR 060)
+
+Frischer Prüfer ohne Vorgeschichte, rein lesend, eigene Nachrechnungen aus `output/allocator_v2/*.csv` und `data/raw/`.
+**Kein Blocker, kein Datenleck, keine Abweichung des Codes von ADR 057/058/059 in der Sache, keine nach dem Datenblick
+gewählte Grösse** (ausser Länder-Parser, Länderliste und Fenster – alle drei nach Regel, wie angekündigt). Jede Kennzahl
+des Berichts reproduziert (Abweichung < 1e-14); die drei Rang-Portfolios aus den Rohdateien unabhängig nachgebaut
+(maximale Abweichung 1e-16) – die Scores nutzen nur Daten bis D und den mit 1M Lag publizierten Zins. Bootstrap-Robustheit:
+Seeds 1–5 und Block 24 geben [+0.13, +0.43]. Datenplausibilität: Cash 4.5 % p.a., UST 2/5/10 J. 5.1/5.6/6.2 % bei Vol
+2.9/5.6/8.4 %, Par-Bond flach 5 % → 5.08 % p.a.
+
+| Nr | Schwere | Befund | Umgang |
+|---|---|---|---|
+| F1 | gewichtig | Das JA ist ein Trendfilter-Ergebnis: Allokator − „ohne Querschnitt“ −0.001 [−0.069, +0.060] bei Korrelation 0.96 – ein *präziser* Nullbefund, kein schwacher Test; „ohne Querschnitt“ − B1 +0.286 [+0.139, +0.442]. Die Variante ohne Querschnitt hat weniger Vol (6.8 %), Drawdown (−10 %), Umsatz und Kosten. | Deutung so in ADR 060, Abnahme, README; beide Differenzen jetzt im Bericht (Abschnitt „Nach der Zweitprüfung ergänzt“, nicht vorregistriert). |
+| F2 | gewichtig | EQ_INTL und FX seit 2008 flach (−0.1 % / +0.0 % p.a., t ≈ 0); Evidenz aus der Literaturperiode; Holm 10 % einseitig ist eine milde Hürde. | Rang-Portfolios je Teilperiode im Bericht ergänzt; Deutung in ADR 060. |
+| F3 | gewichtig | Teilperiode 2008–Ende +0.08 [−0.18, +0.28] und Deflated Sharpe 0.895 < 0.95 gehören ins Urteil. | In ADR 060 und Abnahme als Grund gegen Live genannt. |
+| F4 | gewichtig | Regimekonzentration: Filtervorteil aus Zinswende-Jahren (1980/81, 2013, 2022) und der Hochzinsphase bis 1989; Long-Buch > 1.0 in 47 % der Monate; Finanzierung −0.017 Sharpe je +100 bp. | Berichtet hier; Hebelannahme (T-Bill + 30 bp) ist für 1977–89 eher optimistisch. |
+| F5 | klein | SE und MDE wurden nur bei NEIN gedruckt (ADR 057 f verlangt sie immer): SE 0.088, MDE 0.22. | Skript gibt sie jetzt immer aus. |
+| F6 | klein | ADR 057 (c) „Rang − (N+1)/2“ zweideutig; Code und Docstring (die Spezifikation) eindeutig: Rang 1 = höchster Score, Offset (N+1)/2 − Rang. | Klargestellt in ADR 060. |
+| F7 | klein | Zeitangabe in ADR 059 ohne Zone. | „17:10 MEZ (16:10 UTC)“ nachgetragen; Lauf 1 16:04 UTC, Lauf 2 16:34 UTC. |
+| F8 | klein | `register()` schlüsselte nach Namen, Runde 3 und 4 teilen Namen – im genutzten Pfad folgenlos. | Schlüssel jetzt `round/name`; DSR unverändert (26 Reihen, Wahrscheinlichkeit 0.895). |
+| F9 | klein | Fensterende 2025-11 durch die Darstellungs-Baselines B3/B4 (US-Markt) gesetzt. | So in ADR 058 (e) vorgesehen; keine Änderung. |
+| F10 | klein | Länderindizes mit Lag 0D, gehandelt zum Entscheidungskurs; French publiziert Wochen später. | Als Einschränkung benannt (ein Länder-ETF-Schlusskurs wäre am Monatsende verfügbar). |
+| F11 | klein | Einlagenindex verzinst mit dem zuletzt *publizierten* Monatszins (um einen Monat verschobener Carry). | Gewollte Konvention (ADR 057 a), vernachlässigbar. |
+| F12 | klein | Bootstrap-Intervalle schliessen den Punktschätzer ein; hier ohne Wirkung. | – |
+| F13 | klein | DSR-Varianz von Designunterschieden der Runden dominiert; ohne die eigenen 12 Läufe wäre p 0.968. | Konservative Fassung ist vorregistriert (ADR 058). |
+
+**Urteil des Prüfers (gekürzt):** Protokoll eingehalten, ehrlich gerechnet. Die richtige Schlussfolgerung lautet
+„Risikoparität mit 12-Monats-Trendfilter, Hebel bis 1.5“ – nicht „Allokator mit fünf Sleeves und drei Signalen“; ein Drittel
+des Ergebnisses stammt aus einer Hochzinsphase, die sich seit 2008 nicht wiederholt hat.

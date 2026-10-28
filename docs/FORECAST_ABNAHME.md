@@ -712,6 +712,54 @@ Hauptvergleich hätte eine Mischungsdifferenz gemessen. Nach der Korrektur: k gl
 
 **Trockenlauf (synthetisch, zählt nicht im Versuchsregister):** Beide Welten liefen durch die ganze Kette (Fenster nach Regel 1977-01 bis 2025-11, 587 Monate; Währungs-Overlay ab 1993, 394 Monate). **Signalwelt** (eingebaute Persistenz): alle drei Signale gefunden – Rang-Portfolio EQ_US t = 21.2, EQ_INTL t = 23.9, FX t = 8.1 (Holm: beide neuen Signale belegt); Δ Sharpe zu B1 +1.79 [+1.60, +2.05]. **Nullwelt** (keine Persistenz): die Querschnittsignale korrekt nicht belegt (t = 0.83 / −0.35 / 0.41, IC um null). Der Allokator lag trotzdem +0.26 [+0.10, +0.44] über B1 – geprüft statt hingenommen: Der Vorteil stammt fast ganz aus 1977–1989 (Sharpe +0.32 gegen B1 −0.28), als der *echte* Cash-Satz (8.8 % p.a.) über der festen Drift der *synthetischen* Anlagen lag; der Trendfilter sass dann in Cash (Filtergewinn +9.5 % p.a. bei Cash über 8 %, −1.2 % sonst). 2008–2025 liegt der Allokator wie erwartet knapp unter B1 (1.21 gegen 1.26). Also ein Artefakt der Testwelt (synthetische Renditen ohne Zinsbezug gegen echten Cash), kein Leck – das bestätigen auch die Querschnittstests und der Look-ahead-Test des Moduls. Die Lehre für die echte Auswertung ist ernst: Der Filter verdient, wenn Cash hoch gegenüber den Anlagerenditen ist (1979–1985); genau dafür sind die Teilperioden und der Ausweis ohne das stärkste Jahr vorab festgelegt. Ein erster Trockenlauf mit dem alten Code hatte den Carry-Fehler (a) bestätigt; die Datenprüfung stoppt auf den synthetischen Daten wie verlangt (G2–G5 verfehlt, weil die Vergleichsreihen echt sind). Der Berichtsteil lief zusätzlich auf einem kurzen Fenster (2008–2025) durch und fand zwei Schwächen, die den echten Lauf erst am Ende getroffen hätten: eine Teilperiode ohne Monate brach die Bootstrap-Rechnung ab, und Monate mit ganz in Cash liegendem Buch machten die Vol-Kalibrierung unbestimmt (Division durch null) – beide behoben; ausserdem zeigt der Bericht die Mischung jetzt vor und nach dem Filter (kurzes Nullfenster: Allokator vor Filter physisch 0.87 / Zinsen 0.63, B1 0.90 / 0.60; Urteil dort NEIN, Δ −0.06, wie in einer Welt ohne Signal und ohne Zinsartefakt zu erwarten).
 
-**Offen (Reihenfolge):** Upload (ein Paket, ersetzt das von 22 Uhr); Actions → `research-data`; frühesten vollständigen
-Commit einfrieren; Länder-Parser nach `--describe`; `R4_COUNTRIES` aus der Datei; Datenprüfung; Registrierung;
-Walk-forward; Golden; Zweitprüfung; Schluss-Paket mit Ergebnissen und Interview-Material.
+**Erledigt am 28.10.:** Upload über Pull Request #3 (Zugriff über die Claude-GitHub-App), `daily` schreibt die erste
+Live-Prognose (Entscheid 30.9. „nachgeholt“, Anker auf `anchors`), `research-data` liefert die Rohdaten – Fortsetzung unten.
+
+## Runde 4 gerechnet (2026-10-28, ADR 059/060): Hauptkriterium erfüllt, Mehrwert ist der Trendfilter
+
+**Daten.** Der erste `research-data`-Lauf (16:04 UTC) holte 34 von 35 Dateien; die Pflichtreihe DEXGEUS (D-Mark täglich,
+1971–2001) antwortete mit HTTP 400 – FRED führt sie nicht mehr. Notfallregel ADR 057 (h): kein Lauf, neuer ADR. **ADR 059**
+(Entscheid von Nima um 17:10 MEZ, vor jedem Datenblick): DEXGEUS optional, der Euro tritt ohne Verkettung am ersten Euro-Kurs
+(1999-01-04) ein – Eintritt nach Datenverfügbarkeit wie bei jedem Instrument; der FX-Sleeve läuft ab 1991 mit acht Währungen.
+Zweiter Lauf (16:34 UTC, PR #4 vorher gemerged): Branch `research-data@5e175d2`, Werte Byte für Byte gleich wie im ersten
+Lauf (nur FRED-Zeitstempel anders), eingefroren nach `data/raw/` mit `r4_PROVENANCE.json`. Länderdatei: 21 Länder
+(`<Country>.Dat`, erster Block „Value-Weight Dollar Returns, All 4 Data Items Not Reqd“, Spalte `Mkt`), 1975-01 bis
+2025-12, kein US; Malaysia nur 1994–2001 (Austritt nach Daten, wie vorgesehen). Parser mit Test. Abgleich mit den Jahrestabellen derselben Datei (957 Länder-Jahre mit 12 Monaten): aus den Monaten
+aufgezinst gegen die Jahreszahl Korrelation 0.9992, mediane Abweichung 0.03 Pp (seit 2008 0.007 Pp), 90 % unter 0.63 Pp,
+Maximum 19.9 Pp (Singapur 1993), 5 Jahre mit anderem Vorzeichen (alle nahe null) – French bildet die Jahresportfolios mit
+Jahresgewichten, die Monatsrenditen mit Monatsgewichten; keine exakte Abstimmung zu erwarten. Den Dollar-Bezug prüft G5. Datenprüfung G1–G6 bestanden (`output/allocator_v2/DATA.md`): Industrien täglich = Monatsdatei (Korrelation
+≥ 0.9998, Abweichung ≤ 0.02 Pp), Par-Bonds täglich ~ Monatsende (0.9999/0.9995), Notierungen richtig (Korrelation mit dem
+Dollar-Index −0.54 bis −0.90), Länder in USD (Median +0.52), Breite (neun Währungen ab 1991, 21 Länder).
+
+**Registrierung.** `R4_COUNTRIES` = die 21 Länder in Dateireihenfolge; Platzhalter-Registrierung, Ingest (106 Assets, 540
+Reihen), erster Lauf bricht mit dem Fenster nach Regel ab: **1977-01 bis 2025-11** (587 Monate; Beginn: erste Entscheidung
+mit allen Long-Sleeves 1976-12; Ende: US-Markt-Reihe für B3/B4 endet 2025-12-19). Registrierung mit dem Fenster = Vorlage.
+Der Walk-forward lief 31 Minuten. Nach dem Lauf wurde nichts geändert (ADR 057 j); die Golden-Werte wurden gepinnt.
+
+**Verifiziert (`output/allocator_v2/WALKFORWARD.md`):**
+- Allokator: 10.8 % p.a., Vol 8.0 %, Sharpe ex Cash **0.791**, Max Drawdown −13.1 %, Umsatz 3.2 p.a., Kosten 0.40 % p.a.
+  B1 passive Risikoparität: 9.1 %, Vol 9.4 %, Sharpe **0.506**, Drawdown −20.9 %.
+- Gepaarte Sharpe-Differenz zu B1 **+0.285 [+0.140, +0.430]** (90-%-Block-Bootstrap) → beide Primärkriterien **ja**.
+  Gegen B2/B3/B4 (ex post auf gleiche Vol): +0.18 [−0.02, +0.34], +0.23 [−0.01, +0.42], +0.27 [+0.01, +0.47].
+- Sekundär (Rang-Portfolios, Newey-West 12 Lags, Holm 10 % über die neuen Signale): EQ_INTL 2.3 % p.a., t = 2.26, p Holm
+  0.024 **belegt**; FX 1.1 % p.a. (394 Monate), t = 1.74, p Holm 0.041 **belegt**; EQ_US t = 2.28 (Replikation Runde 3).
+- Berichtet: Teilperioden Δ Sharpe +0.41 [+0.11, +0.72] (1977–89), +0.38 [+0.17, +0.60] (1990–2007), **+0.08 [−0.18,
+  +0.28] (2008–2025)**; ohne 2013 +0.26 [+0.11, +0.40]. Vol-Kalibrierung 1.26 / 1.01 / 0.95. Kappen bindend: Zinsen 91 %
+  (B1 gleich), Overlay 67 %, physisch 13 %. Deflated Sharpe (N = 70): +0.65 p.a. gegen Hürde +0.46, Wahrscheinlichkeit **0.895** (< 0.95; kein p-Wert).
+- Varianten: ohne Zeitreihenfilter 0.552; **ohne Querschnitt (B1 + Filter) 0.792**; ohne FX 0.788; Kosten ×2 0.735;
+  Entscheidungskurs 0.803; Vol monatlich 0.778; einzelne Sleeves 0.58 / 0.55 / 0.42 / 0.22 / 0.48.
+- Reproduktion: `rotationlab golden --strategy sleeve_allocator_v2` 0.7911 / 0.1083 / −0.1309 exakt;
+  `test_sleeve_allocator_v2_golden` (587 Monate, Long-Buch ≤ 1.5, Overlay ≤ 0.5). Register: 12 Läufe gespeichert,
+  N = 70 unverändert; DSR aus den gespeicherten Reihen nachgerechnet (Hürde +0.460, Wahrscheinlichkeit 0.895 identisch; ohne den
+  Schutz gegen Doppelzählung wäre sie 0.925 gewesen). Tests: 367 Haupttests, 28 Golden, ruff, mypy grün.
+
+**Deutung (ADR 060).** Das vorab festgelegte Kriterium ist erfüllt; es misst den Allokator gegen die passive
+Risikoparität. Die vorab benannte Ablation sagt, woher der Vorteil kommt: Risikoparität + Trendfilter ohne jede
+Querschnittsauswahl erreicht denselben Sharpe (0.792 gegen 0.791). Die Querschnittssignale sind als Rang-Portfolios je für
+sich messbar (2.3 % bzw. 1.1 % p.a. vor Kosten), tragen aber im Buch nach Vol-Ziel, Kappen und Kosten nichts Messbares bei.
+Der Filtervorteil stammt aus 1977–2007 und ist seit 2008 nicht belegt – genau das Muster, das der Trockenlauf (Nullwelt)
+als Risiko benannt hatte (Filter verdient, wenn Cash hoch gegenüber den Anlagerenditen ist). Deflated Sharpe unter der
+Hürde. B1 ist allerdings die schwächste der vier Baselines (Sharpe 0.506 gegen Buy-and-Hold 0.524, 60/40 0.563, Equal Weight 0.614); gegen B2–B4 enthält das Intervall die Null oder streift sie, und seit 2008 liegt der Allokator (0.594) unter Equal Weight (0.719) und 60/40 (0.720) – Punktschätzer, nachgerechnet in der Projekt-Rückschau vom 28.10. Entscheid: kein Live-Betrieb von v2; die Live-Prognose von Runde 1 bleibt der einzige Live-Track. Ein Trendfilter auf
+Risikoparität ist ein bekanntes Ergebnis der Literatur, kein neues dieses Projekts.
+
+**Zweitprüfung (frischer Prüfer, `docs/REVIEW_ALLOKATOR.md` Teil F):** kein Blocker, kein Leck, alle Zahlen bis 1e-14 reproduziert, Rang-Portfolios aus Rohdaten bit-genau nachgebaut. Gewichtig: das JA ist ein Trendfilter-Ergebnis (Allokator − „ohne Querschnitt“ −0.001 [−0.069, +0.060], präziser Nullbefund), die neuen Signale sind seit 2008 flach, Regimekonzentration auf Zinswende-Jahre. Umgesetzt: SE/MDE immer im Bericht (0.088 / 0.22), Abschnitt „Nach der Zweitprüfung ergänzt“ mit beiden Differenzen und den Rang-Portfolios je Teilperiode (nicht vorregistriert, ändert kein Urteil), Register nach `round/name`, Zeitzone in ADR 059, Wortlaut ADR 057 (c) in ADR 060 klargestellt. Der Walk-forward wurde dafür ein zweites Mal gerechnet; alle Ergebnisdateien sind Byte für Byte gleich, im Bericht kamen nur die neuen Zeilen dazu.

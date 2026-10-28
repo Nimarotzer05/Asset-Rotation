@@ -284,7 +284,11 @@ WB_PRICES = {  # pink sheet column -> id
 # Research round 4 (ADR 057/058): the countries of the frozen French file, in its column order. Empty until the
 # data is frozen – then no round-4 series exists and the catalog and the raw-file fingerprint are those of round 3.
 # Filled from the file by rule (scripts/r4_register.py prints the tuple), never by choice.
-R4_COUNTRIES: tuple[str, ...] = ()
+R4_COUNTRIES: tuple[str, ...] = (  # the 21 members of F-F_International_Countries.zip in zip order (frozen 2026-10-28)
+    "UK", "AUSTRIA", "AUSTRALIA", "BELGIUM", "CANADA", "DENMARK", "FINLAND", "FRANCE", "GERMANY", "HONGKONG",
+    "IRELAND", "ITALY", "JAPAN", "MALAYSIA", "NETHERLANDS", "NEWZEALAND", "NORWAY", "SINGAPORE", "SPAIN", "SWEDEN",
+    "SWITZERLAND",
+)  # fmt: skip
 R4_FILES: dict[str, str | tuple[str, ...]] = {
     "r4_daily": ("r4_fred_daily.csv.gz", "r4_oecd_rates_monthly.csv.gz", "ff_10_industry_daily.csv.gz"),
     "r4_rates": "r4_oecd_rates_monthly.csv.gz",

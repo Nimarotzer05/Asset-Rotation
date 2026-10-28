@@ -90,14 +90,63 @@ def describe_zip(raw: bytes, lines: int = 12) -> str:
     return "\n".join(out)
 
 
+COUNTRY_NAMES = {  # the zip abbreviates some member names (8.3 style); full names for readable slugs only
+    "Austrlia": "Australia",
+    "Nethrlnd": "Netherlands",
+    "NewZland": "NewZealand",
+    "Singapor": "Singapore",
+    "Swtzrlnd": "Switzerland",
+}
+COUNTRY_BLOCK = "Value-Weight Dollar Returns"  # first block of every member: monthly, with dividends, in USD
+COUNTRY_GROUP = "All 4 Data Items Not Reqd"  # the broader portfolio group (all firms with B/M data)
+MISSING = -99.99
+
+
+def parse_country_member(text: str) -> pd.Series:
+    """The `Mkt` column of the first monthly block (dollar returns, broader group) of one country file:
+    rows `YYYYMM  Mkt  ...`, percent, -99.99 missing; the block ends at the first blank line."""
+    lines = text.splitlines()
+    try:
+        start = next(i for i, ln in enumerate(lines) if COUNTRY_BLOCK in ln and COUNTRY_GROUP in ln)
+    except StopIteration as e:
+        raise DataError(f"country file without a '{COUNTRY_BLOCK} / {COUNTRY_GROUP}' block") from e
+    header = lines[start + 2].split()
+    if not header or header[0] != "Mkt":
+        raise DataError(f"country file: first column is {header[:1]}, not Mkt")
+    rows: dict[pd.Timestamp, float] = {}
+    for ln in lines[start + 3 :]:
+        parts = ln.split()
+        if not parts:
+            break
+        if len(parts[0]) != 6 or not parts[0].isdigit():
+            raise DataError(f"country file: unexpected row {ln[:40]!r} in the monthly block")
+        v = float(parts[1])
+        rows[pd.Timestamp(parts[0][:4] + "-" + parts[0][4:] + "-01") + pd.offsets.MonthEnd(0)] = (
+            float("nan") if v == MISSING else v / 100.0
+        )
+    if len(rows) < 24:
+        raise DataError(f"country file: only {len(rows)} monthly rows")
+    return pd.Series(rows, dtype=float)
+
+
 def parse_international_countries(raw: bytes) -> pd.DataFrame:
-    """Country market returns from F-F_International_Countries.zip (rule in the module docstring, ADR 058 c). The
-    Data Library does not document the layout; the parser is written against the downloaded file and its first
-    lines are printed by `describe_zip` when this raises (ADR 057 h: without a market column with dividends in
-    USD the country sleeve is dropped – the dollar test is gate G5 of scripts/r4_data_check.py)."""
-    raise NotImplementedError(
-        "layout of F-F_International_Countries.zip not inspected yet:\n" + describe_zip(raw)
-    )
+    """Country market returns from F-F_International_Countries.zip (rule in the module docstring, ADR 058 c).
+    Layout seen on 2026-10-28 (`--describe`): one `<Country>.Dat` per country, 21 members, no United States;
+    each starts with the monthly block `Value-Weight Dollar Returns  All 4 Data Items Not Reqd` whose first
+    column `Mkt` is the market return with dividends in USD of the broader group (the one whose annual table
+    reports more `Firms`); then the local-currency block, the `Required` blocks, annual tables and ratios.
+    Every member in zip order; decimals; missing (-99.99) → NaN."""
+    out: dict[str, pd.Series] = {}
+    with zipfile.ZipFile(io.BytesIO(raw)) as z:
+        for n in z.namelist():
+            stem = n.rsplit(".", 1)[0]
+            if stem.lower() in {"us", "usa", "unitedstates"}:
+                continue
+            name = COUNTRY_NAMES.get(stem, stem)
+            out[name] = parse_country_member(z.read(n).decode("latin-1", errors="replace"))
+    if not out:
+        raise DataError("country zip: no members\n" + describe_zip(raw))
+    return pd.DataFrame(out).sort_index()
 
 
 def write_csv(df: pd.DataFrame, path: Path) -> dict[str, object]:

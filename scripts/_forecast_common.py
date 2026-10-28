@@ -80,11 +80,13 @@ def years(a: date | pd.Timestamp, z: date | pd.Timestamp) -> str:
     return f"{pd.Timestamp(a).year}–{pd.Timestamp(z).year}"
 
 
-def register(include_planned: bool = False) -> tuple[int, pd.Series]:
+def register(include_planned: bool = False, own_file: str | None = None) -> tuple[int, pd.Series]:
     """The trial register (docs/TRIALS.yaml): N = every variant ever scored on the overlapping history, and the
     annualised appraisal ratio (Sharpe of the beta-adjusted residual against its baseline) of every trial with a
     stored series – the statistic the deflated Sharpe tests (ADR 056: the variance must be that of the tested
-    statistic, and the statistic must not reward a different level of risk)."""
+    statistic, and the statistic must not reward a different level of risk). `own_file`: the output file of the
+    round being scored – its stored entries count in N but their series are supplied by the run itself (`extra`
+    of `trials_variance`), so they are not read twice once the round moved from `planned` to `stored`."""
     import numpy as np
     import yaml
 
@@ -97,19 +99,23 @@ def register(include_planned: bool = False) -> tuple[int, pd.Series]:
         n += sum(int(e["count"]) for e in doc.get("planned", []))
     sharpes: dict[str, float] = {}
     for e in doc.get("stored", []):
+        if own_file is not None and str(e["file"]) == own_file:
+            continue
         df = pd.read_csv(os.path.join(ROOT, e["file"]), index_col=0)
         a = appraisal_residual(df[e["column"]], df[e["baseline"]], df["cash"])
-        sharpes[str(e["name"])] = float(a.mean() / a.std(ddof=1) * np.sqrt(12))
+        sharpes[f"{e['round']}/{e['name']}"] = float(
+            a.mean() / a.std(ddof=1) * np.sqrt(12)
+        )  # names repeat across rounds
     return n, pd.Series(sharpes, dtype=float)
 
 
-def trials_variance(extra: pd.Series | None = None) -> float:
+def trials_variance(extra: pd.Series | None = None, own_file: str | None = None) -> float:
     """Variance of the monthly (not annualised) appraisal ratios across the stored trials, together with `extra`
     – the annualised appraisal ratios of the runs of the round being scored, which are produced in the same run
     (ADR 058: the variance must include the round's own trials)."""
     import numpy as np
 
-    _, sh = register()
+    _, sh = register(own_file=own_file)
     if extra is not None and len(extra):
         sh = pd.concat([sh, extra.astype(float)])
     return float((sh / np.sqrt(12)).var(ddof=1))

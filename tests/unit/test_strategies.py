@@ -223,8 +223,12 @@ def test_build_strategies_from_configuration(bundle) -> None:
         long = build_strategy(bundle, sid, "long_history")
         assert isinstance(live, Strategy) and isinstance(long, Strategy)
         # the portfolio modules hold the synthetic CASH index; the paper modules of the forecast (ADR 048)
-        # share the forecast's live cash asset (BIL, configs/forecast.yaml)
-        expected_cash = bundle.forecast.universe["live"].cash if cfg.role == "paper" else "CASH"
+        # share the forecast's live cash asset (BIL, configs/forecast.yaml); research round 4 (paper too)
+        # is registered on the T-bill index with the investment yield (ADR 058 h, scripts/r4_register.py)
+        if sid == "sleeve_allocator_v2":
+            expected_cash = "TBILL_IY"
+        else:
+            expected_cash = bundle.forecast.universe["live"].cash if cfg.role == "paper" else "CASH"
         assert live.spec.params["cash"] == expected_cash, sid
         assert str(long.spec.universe[-1]) == long.spec.params["cash"]
     eq = build_strategy(bundle, "us_equity_exposure", "long_history")
