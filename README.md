@@ -1,186 +1,124 @@
-# rotationlab – Monatsprognose der Anlageklassen
+# rotationlab – which asset class next month? Four pre-registered research rounds and a live forecast
 
-An jedem Monatsende sagt `rotationlab`, welche von vier Anlageklassen – US-Aktien, US-Treasuries (10 J.), Gold,
-Silber – im nächsten Monat relativ attraktiv sind: eine **Rangfolge** mit einer kalibrierten **Wahrscheinlichkeit** je
-Klasse, in der oberen Hälfte zu landen, und dem historischen Mittel je Rang; Basismetalle nur mit ihrem Trend (auf/ab;
-der Energie-Trend wurde mangels Nachweis gestrichen, ADR 047). Einen Monat später wird jede Prognose gegen das Ergebnis
-und gegen einfache Baselines abgerechnet – in einem append-only Journal mit Hash-Kette, dessen Kopf ausserhalb des
-Repos verankert wird. Paper-Betrieb, kein Kapital (ADR 043–048).
+*Nima Rotzer · BSc Mathematics, ETH Zürich · built Oct 2026*
 
-**Was die Evaluation zeigt (1973–2018, Pseudo-Holdout 2019–2025 unberührt, Kriterien vorab fixiert):** Rang-IC +0.098
-[+0.051, +0.141], Rang 1 schlägt Rang 4 in 56.8 % der Monate, positiv in allen vier Jahrzehnten, Permutations-p < 0.0005
-– ein kleiner, systematischer Vorteil, nicht „meistens richtig“ (`output/forecast/EVALUATION.md`). **In-sample
-bezüglich der Modellwahl:** Features und Gewichte stammen aus der Forschungsphase auf demselben Zeitraum; vorab fixiert
-sind Kriterien und Auswertung. Das reine 12-1-Momentum ohne angepasste Gewichte erreicht IC +0.108 (Robustheit). Echte
-Out-of-Sample-Evidenz entsteht erst im Pseudo-Holdout (einmalig, am Schluss) und in der Live-Bilanz ab November 2026.
-Die Rangfolge überlebt handelbare Preise (ETFs, Monatsend-Renditen: IC +0.099; `output/forecast/INVESTABILITY.md`). Die
-Wahrscheinlichkeiten sind kalibriert, ihr Brier-Skill gegen die Grundrate je Klasse ist mit 488 Monaten nicht von Null
-zu trennen; der Basismetall-Trend ist beschreibend, kein belegter Vorteil. Abnahmeprotokolle: `docs/FORECAST_ABNAHME.md`.
+In plain words: a program that, every month, ranks stocks, bonds, gold and silver by how likely they are to do well
+next month – and a careful, documented attempt to find out whether such rankings actually work.
 
-**Pseudo-Holdout 2019–2025 (einmalig gerechnet, Lesart vorab, ADR 049): Replikation gescheitert.** Rang-IC
-**−0.03** [−0.18, +0.05] über 83 Monate, Rang 1 schlägt Rang 4 in 48 %, Wahrscheinlichkeiten schlechter als die
-Grundrate; die Portfolio-Regel 8.1 % p.a. (Sharpe 0.61) gegen Equal Weight 16.3 % (Sharpe 1.03). Der In-sample-Vorteil
-hat sich auf dieser Periode nicht gezeigt – ob er Anpassung war oder in 83 Monaten nur nicht sichtbar, entscheidet
-allein die Live-Bilanz ab November 2026, die ohne Vorschuss beginnt (`output/forecast/HOLDOUT.md`). Modell und Regel
-wurden danach nicht angefasst.
+**The question.** At every month-end, which asset classes are relatively attractive for the next month – and can
+that be shown honestly, out of sample, after costs?
 
-**Portfolio-Schicht (P8, Regel und Kriterium vorab fixiert, ADR 048):** Top-2 der Rangfolge gleichgewichtet, Trendfilter,
-Vol-Ziel 10 % ohne Hebel, handelbares Timing und 15 bp Kosten, 1974–2018 durch dieselbe Engine wie die Baselines:
-Sharpe 0.49 bei 9.2 % p.a., Vol 9.6 %, Max Drawdown −16 % – gegen Equal Weight 0.31 (Drawdown −39 %), 60/40 0.51 (−29 %),
-Buy-and-Hold 0.44 (−51 %). Die gepaarte Sharpe-Differenz zu Equal Weight (+0.18 [−0.01, +0.39]) schliesst die Null
-knapp nicht aus: **nach dem vorab fixierten Kriterium nicht belegt**; die Gewichte laufen als Paper-Spur im Journal mit
-(`output/forecast/PORTFOLIO.md`).
+**The short answer.** A monthly ranking of US equities, Treasuries, gold and silver runs live since October 2026.
+Its historical edge (rank IC +0.10, 1973–2018) did **not** replicate in a held-out period (2019–2025). Across four
+research rounds, each fixed in writing before its data was evaluated, exactly one pre-registered primary criterion
+passed: risk parity with a 12-month trend filter beats passive risk parity, 1977–2025. Ablations show where that comes from –
+the trend filter, not the cross-sectional signals – and that it is not significant since 2008, neither on research
+indices nor on tradable ETFs. The project's result is a documented negative: careful testing, nothing overstated.
+(That round's two secondary signal tests also passed as stand-alone rank portfolios; they add nothing to the book.)
 
-**Forschungsrunde 2 (ADR 052/053, vorab fixiert, Ergebnis negativ):** drei Standardfamilien – 12-1-Momentum, Carry
-(laufende Ertragsrendite), Value (Fünfjahres-Umkehr) – gleichgewichtet über fünf Klassen mit echten Monatsendpreisen
-(US_EQ, UST10_ME, neu UST2_ME, GOLD, SILVER), 1981–2018: Rang-IC +0.056 [−0.002, +0.106] – Kriterium knapp verfehlt;
-Value allein schadet (−0.10); Pseudo-Holdout 2019–2025 IC **−0.16** [−0.23, −0.05], Regel Sharpe 0.42 gegen Equal
-Weight 1.01: Replikation deutlich gescheitert (`output/forecast_v2/`). Das Modell bleibt als reproduzierbares
-Negativergebnis im Repo (`configs/forecast_v2.yaml`, `forecast_portfolio_v2`, `--config forecast_v2` in Skripten und
-CLI) und läuft nicht live. Die veröffentlichte Prognose bleibt Runde 1.
+![Primary tests and key breakdowns](docs/figures/tests.png)
 
-**Forschungsrunde 3 (ADR 054–056, Sleeve-Allokator, vorab fixiert, Walk-forward ohne Holdout-Blick):** Breite statt
-Parameter – 10 US-Industrien (French), 2 Treasury-Laufzeiten, Gold/Silber in drei Sleeves; Querschnitt innerhalb des
-Sleeves, Zeitreihenfilter, inverse EWMA-Vol, Risikoparität, Vol-Ziel 10 %. Nach der Zweitprüfung (ein Gleichstand-Fehler
-behoben, ADR 056) 1979–2026: Sharpe 0.683 gegen die signalfreie Risikoparität 0.685, Δ −0.002 [−0.19, +0.16] →
-**Signale nicht belegt**; der scheinbare Renditevorsprung der ersten Fassung war Hebel. Industrie-Momentum (IC +0.05) ist
-die einzige robuste Querschnittsbeobachtung und schwächt sich nach der Originalstudie deutlich ab. Der Test hätte
-Effekte unter 0.27 Sharpe nicht erkannt (`output/allocator/WALKFORWARD.md`). Deflated Sharpe gegen das Versuchsregister
-(`docs/TRIALS.yaml`, N = 58): Runde 1 0.56, Runde 2 0.84, Runde 3 0.22 – keine Runde überlebt die Mehrfachprüfung.
+## Results at a glance
 
-**Forschungsrunde 4 (ADR 057, vorab fixiert, bevor die Daten im Projekt sind):** Stufe 2 der Breite – fünf Sleeves,
-≈ 45 Instrumente: US-Industrien (täglich), Länderaktien (French International), Treasuries 2/5/10 J. (täglich),
-neun G10-Währungen dollar-neutral nach Carry und Momentum, Gold/Silber; jede Schwachstelle der Zweitprüfung als Designregel
-(Hebel nur Anleihen, Tages-Vol mit langsamer Korrelation, Folgetag-Ausführung, kein Band, konservative Kosten mit
-Finanzierungsaufschlag, Teststärke und Sekundärtests je Signal mit Holm-Korrektur). Die Daten holt der Workflow
-`research-data` (die Forschungsumgebung erreicht FRED/French nicht); Ergebnis folgt nach dem Einfrieren. **Vor dem
-Download gehärtet (ADR 058):** Trockenlauf der ganzen Kette auf zwei synthetischen Welten und frische Zweitprüfung des
-Designs – zwei Fehler behoben (FX-Carry mit Monatslag wäre nie verfügbar gewesen; Kappen wirkten nach dem Trendfilter),
-Vol-Ziel auf dem Long-Buch mit dem Währungs-Overlay ausserhalb (sonst mass der Vergleich mit B1 eine mechanische
-Anleihe-Übergewichtung), Fenster an beiden Enden nach Regel, Währungen erst ab 1991 (Kapitalverkehrskontrollen), Cash
-mit Investitionsrendite, Datenprüfung mit Schwellen vor dem Download, Registrierung aus einer Vorlage. **Gerechnet am 28.10. (ADR 059/060):** FRED liefert die D-Mark-Reihe nicht mehr, der Euro tritt ohne Verkettung 1999 ein (Notfallregel, vor dem Datenblick entschieden); Datenprüfung G1–G6 bestanden; Fenster nach Regel 1977-01 bis 2025-11 (587 Monate). Ergebnis (`output/allocator_v2/WALKFORWARD.md`): Allokator Sharpe 0.79 gegen passive Risikoparität 0.51, Δ +0.285 [+0.14, +0.43] → **Primärkriterium erfüllt**; Länder-Momentum und Währungs-Carry/Momentum als Rang-Portfolios je belegt (Holm 10 %). Nüchterne Deutung, die im Bericht steht: Die Variante „Risikoparität + Trendfilter ohne Querschnitt“ erreicht denselben Sharpe (0.792) – der Mehrwert ist der Zeitreihen-Trendfilter, nicht die Auswahl innerhalb der Sleeves; seit 2008 Δ +0.08 [−0.18, +0.28], Deflated-Sharpe-Wahrscheinlichkeit 0.895 (unter 0.95). B1 ist allerdings die schwächste der vier Baselines (Sharpe 0.506 gegen Buy-and-Hold 0.524, 60/40 0.563, Equal Weight 0.614); gegen B2–B4 enthält das Intervall die Null oder streift sie, und seit 2008 liegt der Allokator (0.594) unter Equal Weight (0.719) und 60/40 (0.720) – Punktschätzer, nachgerechnet in der Projekt-Rückschau vom 28.10. Deshalb kein Live-Betrieb von v2 (ADR 060); die Live-Prognose von Runde 1 bleibt der einzige Live-Track.
+| Round | What was tested | Data | Pre-registered criterion | Result |
+|---|---|---|---|---|
+| 1 | Composite of momentum, trend, low volatility ranks 4 classes | 1973–2018 + holdout 2019–25 | rank IC > 0 in-sample **and** in holdout | IC +0.098 [+0.051, +0.141] in-sample; **holdout −0.03** (83 months) – not replicated |
+| 1 | Paper portfolio: top 2, trend filter, 10 % vol target | 1974–2018 | Sharpe above equal weight, interval > 0 | +0.18 [−0.01, +0.39] – missed |
+| 2 | + carry and value, 5 classes | 1981–2018 + holdout | as round 1 | IC +0.056 [−0.002, +0.106]; holdout IC −0.16 – missed |
+| 3 | Sleeve allocator: industries, Treasuries, metals | 1979–2026 | Sharpe above passive risk parity, interval > 0 | −0.002 [−0.19, +0.16] – not established |
+| 4 | Five sleeves, ≈ 45 instruments (industries, 21 countries, Treasuries, 9 currencies, metals) | 1977–2025 | as round 3 | **+0.285 [+0.14, +0.43] – met** |
+| 4 | … ablation: same book without cross-sectional selection | 1977–2025 | reported | allocator − ablation **−0.001 [−0.07, +0.06]**: the edge is the trend filter |
+| 4 | … since 2008 | 2008–2025 | reported | +0.08 [−0.18, +0.28] |
+| ETF | Round 4's ablation with tradable ETFs (sector SPDRs, EFA, SHY/IEF, GLD/SLV) | 2008–2026 | filter vs. no filter, interval > 0 | +0.06 [−0.21, +0.20] – not met; tracks the index study (ρ = 0.96) |
 
-```bash
-python -m rotationlab.cli forecast run                    # Prognose am letzten Monatsende, fällige abrechnen, Report (täglich in Actions)
-python -m rotationlab.cli forecast verify                 # Hash-Ketten des Journals prüfen (mit --anchor gegen den Kopf aus dem Actions-Log)
-python scripts/forecast_evaluation.py                     # historische Evaluation 1973–2018 (≈ 1 min); --config forecast_v2 für Runde 2
-python scripts/forecast_investability.py                  # Rangfolge mit handelbaren Preisen
-python scripts/forecast_portfolio.py                      # Portfolio-Regel gegen Baselines 1974–2018 (≈ 1 min); --config forecast_v2
-python scripts/forecast_holdout.py                        # Pseudo-Holdout 2019–2025 – je Modell einmal gelaufen; Wiederholung nur mit --again
-python scripts/allocator_walkforward.py                   # Runde 3: Sleeve-Allokator, Walk-forward 1979–2026, mit Diagnosen der Zweitprüfung (≈ 8 min)
-python scripts/fetch_research_data.py --out research_data # Runde 4: Rohdaten laden (läuft im Workflow research-data)
-python scripts/freeze_research_data.py --src <Checkout> --commit <SHA>   # Runde 4: eingefrorene, geprüfte Daten nach data/raw
-python scripts/r4_data_check.py                            # Runde 4: Datenprüfung G1–G6 (ein NEIN stoppt die Runde)
-python scripts/r4_register.py --sample <Beginn>,<Ende> --write   # Runde 4: Universum und Konfiguration aus der Vorlage
-python scripts/allocator_v2_walkforward.py                 # Runde 4: Walk-forward nach ADR 057/058 (≈ 1 h; prüft zuerst das Fenster)
-```
+Intervals are 90 % moving-block bootstrap (block 12) of paired monthly differences. Every trial ever run on this
+history is counted in a register (`docs/TRIALS.yaml`, N = 71); the deflated Sharpe probability (Bailey & López de
+Prado) is 0.56 / 0.84 / 0.22 for rounds 1–3 (computed when the register held 58 trials) and 0.895 for round 4 (70);
+with today's register of 71 round 4 stands at 0.90 – none reaches 0.95. Round 4's passive risk parity is the
+weakest of its four baselines (Sharpe 0.51 vs. equal weight 0.61, 60/40 0.56); against equal weight and 60/40 the
+allocator's interval includes zero, and since 2008 it trails both (0.59 vs. 0.72).
 
-Darunter liegt das unveränderte Fundament: Point-in-time-Store mit Vintages, acht Provider, `MarketView`; 42
-registrierte Features; fünf Strategie-Module und Walk-forward mit Goldens (eingefroren: `us_equity_exposure`,
-`us_sector_rotation`, `precious_metals`; zurückgestellt: Combiner, Risikoschicht, Szenarien); eine Engine mit vier
-Ausführungsmodi (`docs/PHASE2_ABNAHME.md`, ADR 042). Look-ahead-Audits in zwei Durchgängen
-(`docs/AUDIT_phase1_vintage.md`, `docs/AUDIT_phase2_lookahead.md`); ruff und mypy strict ohne Befund. Architektur
-`docs/ARCHITECTURE.md` (§12 Bauplan), Entscheidungen `docs/ADR.md`, Betrieb `docs/RUNBOOK.md`.
+![Round 4 growth](docs/figures/round4_growth.png)
 
-```bash
-python -m rotationlab.cli validate                                   # 62 Assets, 487 Reihen
-python -m rotationlab.cli ingest --full --provider static            # Forschungshistorie in den Store
-python -m rotationlab.cli asof --date 2008-06-30 --series static:fredmd:CPIAUCSL   # was war damals bekannt?
-python -m rotationlab.cli golden --walkforward                       # alle Module gegen die Forschung
-python -m rotationlab.cli backtest --strategy multi_asset_rotation --execution next_tradable   # ehrliches Timing
-```
+## What runs live
 
-**Forschungscode bleibt absichtlich im Repo:** `src/`, `config.py`, `run.py`, `requirements.txt` und `scripts/run_*.py` sind die Studien, aus denen die Module hervorgingen. Sie werden nicht weiterentwickelt, aber die Golden-Tests (`tests/golden/`) rechnen ihre Formeln auf dem Store nach und vergleichen sie mit der Engine – sie sind die Referenz, gegen die das Produktionssystem geprüft wird. Nicht löschen, nicht ändern.
+`.github/workflows/daily.yml` ingests prices and macro data every weekday into a point-in-time store and, after each
+month-end, writes the round-1 ranking for the next month: rank, probability of finishing in the top half, trend per
+class. Forecasts and their outcomes go into an append-only, hash-chained journal (branch `data`,
+`journal/forecast/`); its head is anchored outside the repo (branch `anchors`), so a forecast cannot be changed after
+the fact. The report is `reports/forecast/latest.md` on branch `data`. The first counted decision is 2026-10-31,
+written on Monday 2026-11-02.
 
+**How much can a live record prove?** Monthly rank ICs scatter with a standard deviation of 0.64. Even if the true IC
+were the in-sample 0.098, about 10 years of live months would be needed for t = 1.65, and about 22 years for 80 %
+power. The live track demonstrates an honest, tamper-evident process; it will not be statistical evidence soon.
 
-Systematisches Modell, das monatlich die relative Attraktivität von Anlageklassen (Aktien, Treasuries,
-Gold, Silber, Energie, Basismetalle; alternativ ein ETF-Universum) bewertet und ein Portfolio aus den
-stärksten Assets bildet. Signale: Momentum, Trend, Volatilität und ein Makro-Regime
-(Wachstum × Inflation). Dazu eine vollständige statistische Studie auf 53 Jahren Daten (1973–2025):
-Regime-Renditen, Treiber-Regressionen, Information Coefficients, Walk-forward-Backtest, Sensitivität.
+## What I take away
 
-**Ergebnisse:** `output/long/REPORT.md` (Tabellen + Grafiken). Datenquellen: `data/DATA_SOURCES.md`.
+1. **A strong backtest is the starting point, not the result.** Round 1 passed every in-sample test and failed the
+   held-out period.
+2. **Ablations decide what a result means.** Round 4 "worked", but the same book without its signals worked equally
+   well – the signals added complexity, not Sharpe.
+3. **Count every trial.** Four rounds on one history are a multiple-testing problem; the register and the deflated
+   Sharpe make that visible instead of hiding it.
+4. **Check the research data against tradable instruments.** The ETF rebuild tracks the index study closely
+   (ρ = 0.96); the post-2008 period is where both lose the edge.
+5. **Rebuild the headline independently.** A short pandas version (`examples/trend_filter_from_scratch.py`)
+   reproduces the engine (Sharpe 0.79 vs. 0.80, ρ = 0.98) – after finding a pandas alignment bug in the rebuild itself.
 
-## Struktur
+## Method
 
-```
-asset-rotation/
-├── run.py                      # Schneller Backtest (--dataset long | etf | synthetic)
-├── config.py                   # Universen, FRED-Reihen, Parameter, Kosten, Regime-Tilts
-├── scripts/
-│   ├── build_dataset.py        # Rohquellen (data/raw) → data/assets_monthly.csv, data/macro_monthly.csv
-│   ├── collect_data.py         # Yahoo + FRED auf dem eigenen Rechner laden (ETFs, TIPS, HY-Spread, ...)
-│   ├── run_analysis.py         # Vollständige Studie → output/long/REPORT.md + CSV + PNG
-│   ├── run_commodities.py      # Rohstoff-Rotation + Wegweiser → output/commodities/REPORT.md
-│   └── run_gold_silver.py      # Gold/Silber-Spread: Signale, Mean Reversion, Wegweiser → output/gold_silver/REPORT.md
-├── src/
-│   ├── data.py                 # Laden der drei Datensätze
-│   ├── features.py             # Asset-Features, Makro-Features, Regime-Definitionen
-│   ├── signals.py              # z-Score-Composite → Top-N, inverse Vol, Trendfilter
-│   ├── backtest.py             # Rebalancing, Kosten, synthetische Benchmarks, Walk-forward
-│   ├── metrics.py              # Sharpe (ex Cash), Drawdown, Calmar, Turnover, Regime-Breakdown
-│   └── analysis.py             # Regime-Tabellen, OLS mit Newey-West, ICs, Mean-Reversion, Sensitivität
-├── data/
-│   ├── raw/                    # Rohquellen (FRED-MD, LBMA, World Bank, Shiller, VIX, ...)
-│   ├── assets_monthly.csv      # Monatspanel Anlageklassen 1960–2025
-│   ├── macro_monthly.csv       # Monatspanel Makro/Zinsen/Risiko 1959–2026
-│   ├── coverage.csv            # Start/Ende jeder Reihe
-│   └── DATA_SOURCES.md         # Herkunft, Konstruktion, bekannte Schwächen
-├── output/long/                # Multi-Asset-Studie: REPORT.md, CSV, PNG
-└── output/commodities/         # Rohstoff-Rotation: REPORT.md, CSV, PNG
-```
+- **Pre-registration:** each round's rules, data, baselines, criterion and variants are written down (`docs/ADR.md`)
+  and merged before the evaluation runs; nothing is changed afterwards. Emergencies follow pre-written rules
+  (e.g. ADR 059: a FRED series vanished – decided before any data was seen).
+- **Point-in-time data:** every observation carries its publication (vintage) date; a decision at date D sees only
+  what was known at D. One stated convention: research returns that are computable from public prices on their date
+  (Kenneth French industry and country portfolios) carry no publication lag, although French publishes them weeks
+  later; the tradable ETF check uses real closing prices instead. Look-ahead is tested by mutating the future and
+  checking that no decision changes.
+- **Execution and costs:** trades at the next session after the decision, per-instrument costs, financing of leverage.
+- **Statistics:** paired block bootstrap for Sharpe differences, Newey-West t-tests for signal portfolios, Holm
+  correction across signals, minimum detectable effect, deflated Sharpe against the full trial register.
+- **Engineering:** one engine for backtest and live, golden tests that pin every published number, 369 unit and
+  integration tests plus 28 golden tests, ruff, mypy strict, CI on every pull request.
 
-## Setup
+Notes on each method in plain language: `docs/METHODS.md`. Two-page summary: `docs/WRITEUP.md`.
+Interview questions and honest answers: `docs/INTERVIEW.md`.
+
+## Reproduce
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-python run.py                       # Backtest auf dem Langfrist-Panel (offline)
-python scripts/run_analysis.py      # vollständige Studie (ca. 3–4 Minuten)
-python scripts/run_gold_silver.py    # Gold/Silber-Pair-Trade: wann long Gold / short Silber?
-python scripts/run_commodities.py   # Rohstoff-Rotation (Gold, Silber, Platin, Öl, Gas, Kupfer, Alu, Nickel, Agrar) + Wegweiser
-python scripts/collect_data.py      # optional: aktuelle Yahoo/FRED-Daten laden (Internet)
-python run.py --dataset etf         # ETF-Universum ab 2004
+uv sync --extra dev                                      # or: pip install -e ".[dev]"
+python -m rotationlab.cli ingest --full --provider static   # research history into the local store (≈ 20 s)
+python scripts/allocator_v2_walkforward.py                 # round 4 (≈ 30 min) → output/allocator_v2/
+python examples/trend_filter_from_scratch.py               # independent rebuild of round 4's headline (≈ 10 s)
+python -m rotationlab.cli golden --strategy sleeve_allocator_v2   # reproduces 0.7911 / 10.83 % / −13.09 %
+pytest                                                     # 397 tests, about 15 min (golden tests included)
 ```
 
-## Methodik (Kurzfassung)
+Each output folder names its script (`output/README.md`); the reports inside are written in German. The ETF check needs the live store of branch `data`
+(`python scripts/etf_check.py --store <checkout>/data/store --data-commit <sha>`).
 
-1. **Daten:** Monatsendpanel aus FRED-MD (127 Makroreihen), LBMA Gold/Silber, World-Bank-Rohstoffindizes,
-   S&P 500 Total Return, synthetische Treasury-Returns aus CMT-Renditen, VIX, Dollar-Index, Kreditspreads.
-2. **Features (nur Vergangenheitsdaten):** Momentum 3/6/12M mit 1-Monats-Skip, Abstand zum 10M-Schnitt,
-   inverse 12M-Vol, relative Stärke. Makro: Realzins, Dollar, Inflation, Kreditspread, Zinskurve, VIX
-   (Niveau, Änderung, rollierender z-Score).
-3. **Regime:** Trendrichtung von Industrieproduktion (yoy) × CPI (yoy) → 4 Quadranten, um einen Monat
-   verzögert. Zusätzlich binäre Regimes (Realzins, Dollar, Zinskurve, Kredit, Fed Funds, VIX).
-4. **Signal:** z-Standardisierung über Assets, gewichtete Summe, optional Regime-Tilt (a-priori gesetzt,
-   nicht gefittet). Top-N, inverse-Vol-Gewichtung, Trendfilter (unter 10M-Schnitt → T-Bills).
-5. **Backtest:** Monatsende-Rebalancing, 15 bp Kosten auf Turnover, Sharpe stets auf Überschussrendite
-   über T-Bills. Walk-forward: erstes Fenster 10 Jahre, Parameter jährlich neu auf Vergangenheit gewählt.
-   Benchmarks: Equal Weight, 60/40, US-Aktien, Gold, T-Bills.
-6. **Statistik:** Renditen je Regime mit t-Werten, OLS der Überschussrenditen auf Faktoränderungen
-   (Newey-West), Information Coefficients (Spearman), Tercil-Spreads, AR(1)-Halbwertszeit der
-   Gold/Silber-Ratio, Sensitivitäts-Heatmaps.
+## Repository map
 
-## Zentrale Befunde (1973–2025)
+| path | content |
+|---|---|
+| `rotationlab/data/` | point-in-time store, providers (FRED, Yahoo, Stooq, BLS, CFTC, French, Shiller), quality checks |
+| `rotationlab/forecast/` | the live model, journal with hash chain, evaluation statistics |
+| `rotationlab/strategies/`, `engine/`, `portfolio/` | strategy modules of all rounds, the engine, costs and book |
+| `scripts/` | one script per study; `output/` holds what they wrote |
+| `configs/` | every parameter, including each round's pre-registered configuration |
+| `docs/` | decision log (`ADR.md`, German), acceptance protocols, reviews, trial register, methods, write-up |
 
-- Rotation (Top-3, Trendfilter): 11.9 % p.a., Vol 13.5 %, Sharpe ex Cash 0.57, Max-DD −24 %;
-  60/40: 9.4 %, Sharpe 0.51, Max-DD −29 %; Equal Weight: Sharpe 0.40. Walk-forward OOS 1983–2025:
-  Sharpe 0.77, Max-DD −11 % (wählt durchgehend Top-4 + Trendfilter).
-- 12M-Momentum ist das stärkste Querschnittssignal (IC 0.07–0.10, t ≈ 3.4–3.7); inverse Vol und
-  36M-Reversal haben keinen Erklärungswert.
-- Gold: beste Überschussrendite in "Wachstum fällt, Inflation steigt" (+9.5 % p.a.) und bei fallenden
-  Fed Funds; negativ in "Wachstum steigt, Inflation fällt" (−6 % p.a.). Dollar ist der stabilste
-  Treiber (t ≈ −7); der "Realzins"-Kanal war in den 1970/80ern ein Inflationskanal, seit 2006 ein
-  Nominalzinskanal.
-- Gold/Silber-Ratio: Halbwertszeit ≈ 29 Monate, nicht signifikant stationär; kein verlässliches
-  Timing-Signal für Silber vs. Gold.
-- Basismetalle: einziges Asset mit klarem Wachstumsbezug (+13.6 % p.a. in "Wachstum + Inflation steigen", t = 3.3).
+The first exploratory code (Oct 2026) lives on branch `archive/legacy-research`; the package reproduces its formulas
+to 1e-9 (`tests/fixtures/legacy_reference/`).
 
-## Bekannte Limitationen (ehrlich bleiben!)
+## How this was built
 
-- World-Bank-Rohstoffindizes sind Monatsdurchschnitte (künstliche Autokorrelation) und Spotpreise
-  (keine Roll-/Collateral-Rendite). Kernaussagen werden mit dem Monatsend-Universum gegengeprüft.
-- Makrodaten sind revidierte Endstände (FRED-MD); echte Echtzeit-Tests bräuchten ALFRED-Vintages.
-- Ex-post-Realzins statt TIPS; Markt-Realzins und Breakevens erst ab 2003 (über `collect_data.py`).
-- Universum ex post gewählt; Transaktionskosten pauschal; keine Steuern, Slippage, Finanzierung.
-- Regime-t-Werte sind wegen Autokorrelation der Regimes optimistisch.
+I set the questions, the goals and the standard, and made the decisions recorded as mine in the decision log (for
+example ADR 059 and the live/no-live calls). The code and documents were written with Claude (Anthropic) as an AI
+coding and research assistant, and every result was checked by an independent review pass before it was accepted
+(`docs/REVIEW_ALLOKATOR.md`). The detailed logs are in German: decision log `docs/ADR.md`, acceptance protocols
+`docs/FORECAST_ABNAHME.md`, full status `docs/STATUS_DE.md`.
+
+Paper trading only; nothing here is investment advice.

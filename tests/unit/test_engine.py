@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from datetime import date
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -32,7 +33,6 @@ from rotationlab.portfolio.combine import CapitalWeights, SingleStrategy
 from rotationlab.portfolio.costs import CostModel
 from rotationlab.stats import change_over, drawdown_episodes
 from rotationlab.strategies.base import BaseStrategy
-from src import metrics as research_metrics
 from tests.fixtures.toy import Toy, spec
 
 D0 = date(2026, 1, 30)
@@ -239,7 +239,15 @@ def test_metrics_equal_the_research_definitions() -> None:
     r = pd.Series(rng.normal(0.008, 0.04, 240))
     c = pd.Series(rng.normal(0.003, 0.001, 240))
     m = metrics.summary(r, c, pd.Series(0.1, index=r.index))
-    ref = research_metrics.summary(r, cash=c)
+    # src/metrics.py summary on the same draws, frozen 2026-10-28 (legacy code archived on archive/legacy-research)
+    ref = json.loads(
+        (
+            Path(__file__).resolve().parents[1]
+            / "fixtures"
+            / "legacy_reference"
+            / "metrics_summary_seed0.json"
+        ).read_text()
+    )
     assert m["ann_return"] == pytest.approx(ref["Ann. Return"]) and m["ann_vol"] == pytest.approx(
         ref["Ann. Vol"]
     )

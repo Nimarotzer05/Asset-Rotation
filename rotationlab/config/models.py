@@ -394,38 +394,6 @@ class ForecastConfig(_Strict):
 
 
 # ---------------------------------------------------------------------------
-# scenarios/*.yaml
-# ---------------------------------------------------------------------------
-class AnalogSpec(_Strict):
-    rule: Literal["equity_drawdown", "ratio_change", "regime", "dates"]
-    threshold: float | None = None
-    measure: Literal["peak_to_trough", "window"] = "peak_to_trough"
-    dates: list[list[str]] = Field(default_factory=list)  # [[start, end], ...]
-    regime: dict[str, Any] = Field(default_factory=dict)
-
-
-class BootstrapSpec(_Strict):
-    block_months: int = 6
-    draws: int = 5000
-    regime_filter: dict[str, Any] = Field(default_factory=dict)
-
-
-class ScenarioConfig(_Strict):
-    id: str
-    description: str = ""
-    horizon_months: int
-    analog: AnalogSpec | None = None
-    factor_shock: dict[str, float] | None = None
-    bootstrap: BootstrapSpec | None = None
-
-    @model_validator(mode="after")
-    def _at_least_one(self) -> ScenarioConfig:
-        if not (self.analog or self.factor_shock or self.bootstrap):
-            raise ValueError("scenario needs at least one method")
-        return self
-
-
-# ---------------------------------------------------------------------------
 # loading
 # ---------------------------------------------------------------------------
 def load_yaml(path: str | Path) -> dict[str, Any]:
@@ -447,7 +415,6 @@ class Bundle(_Strict):
     series: SeriesCatalogConfig = Field(default_factory=SeriesCatalogConfig)
     portfolio: PortfolioConfig
     strategies: dict[str, StrategyConfig]
-    scenarios: dict[str, ScenarioConfig]
     live: LiveConfig | None = None
     forecasts: dict[str, ForecastConfig] = Field(default_factory=dict)  # configs/forecast*.yaml by file stem
 
@@ -463,7 +430,6 @@ class Bundle(_Strict):
             self.series,
             self.portfolio,
             *self.strategies.values(),
-            *self.scenarios.values(),
         ]
         if self.live:
             parts.append(self.live)
@@ -476,7 +442,6 @@ def load_bundle(root: str | Path = "configs") -> Bundle:
     strategies = {
         p.stem: StrategyConfig(**load_yaml(p)) for p in sorted((root / "strategies").glob("*.yaml"))
     }
-    scenarios = {p.stem: ScenarioConfig(**load_yaml(p)) for p in sorted((root / "scenarios").glob("*.yaml"))}
     live_path = root / "live.yaml"
     series_path = root / "series.yaml"
     forecasts = {p.stem: ForecastConfig(**load_yaml(p)) for p in sorted(root.glob("forecast*.yaml"))}
@@ -488,7 +453,6 @@ def load_bundle(root: str | Path = "configs") -> Bundle:
         else SeriesCatalogConfig(),
         portfolio=PortfolioConfig(**load_yaml(root / "portfolio.yaml")),
         strategies=strategies,
-        scenarios=scenarios,
         live=LiveConfig(**load_yaml(live_path)) if live_path.exists() else None,
         forecasts=forecasts,
     )

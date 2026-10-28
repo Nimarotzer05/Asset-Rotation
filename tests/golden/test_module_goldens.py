@@ -15,17 +15,15 @@ and what production timing (execution at the next close, ADR 011) changes where 
 from __future__ import annotations
 
 from datetime import date
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import pytest
 
-import config as research_config
 from rotationlab.engine.modes import golden, research_factory, walkforward_golden
 from rotationlab.features.ratio import monthly_last
 from rotationlab.stats import change_over, drawdown_episodes
-from src import commodity_model, signals
-from src import features as research_features
 
 pytestmark = [pytest.mark.golden, pytest.mark.slow]
 
@@ -38,6 +36,9 @@ RESEARCH_SHARPE = {
     "precious_metals": 0.2201169366771409,  # output/gold_silver/05_slow_strategies.csv
 }
 SIDS = list(RESEARCH_SHARPE)
+
+
+LEGACY = Path(__file__).resolve().parents[1] / "fixtures" / "legacy_reference"
 
 
 @pytest.fixture(scope="module")
@@ -69,19 +70,20 @@ def _engine_weights(rep, columns) -> pd.DataFrame:
     return w
 
 
-def test_multi_asset_weights_equal_the_research_code(bundle, obs, cal, reports) -> None:
-    uni = list(research_config.LONG_UNIVERSE)
-    lv = _panel(bundle, obs, cal, "multi_asset_rotation").total_return(uni, "ME").loc["1972-12-31":]
-    score = signals.composite_score(research_features.asset_features(lv), research_config.FEATURE_WEIGHTS)
-    ref = signals.build_weights(score, lv, top_n=3, trend_filter=True)
+def _legacy(name: str) -> pd.DataFrame:
+    """Weights the legacy research code (src/signals.py, src/commodity_model.py; archived on branch
+    archive/legacy-research) produced on this panel, frozen on 2026-10-28 (tests/fixtures/legacy_reference)."""
+    return pd.read_csv(LEGACY / name, index_col=0, parse_dates=True)
+
+
+def test_multi_asset_weights_equal_the_research_code(reports) -> None:
+    ref = _legacy("multi_asset_rotation_weights.csv.gz")
     eng = _engine_weights(reports["multi_asset_rotation"], ref.columns).reindex(ref.index)
     assert np.abs(eng.to_numpy() - ref.to_numpy()).max() < 1e-9
 
 
-def test_commodity_weights_equal_the_research_code(bundle, obs, cal, reports) -> None:
-    uni = list(commodity_model.COMMODITIES)
-    lv = _panel(bundle, obs, cal, "commodity_trend").total_return(uni, "ME").loc["1972-12-31":]
-    ref = commodity_model.tilted_weights(pd.DataFrame(0.0, index=lv.index, columns=lv.columns), lv, lam=0.0)
+def test_commodity_weights_equal_the_research_code(reports) -> None:
+    ref = _legacy("commodity_trend_weights.csv.gz")
     eng = _engine_weights(reports["commodity_trend"], ref.columns).reindex(ref.index)
     assert np.abs(eng.to_numpy() - ref.to_numpy()).max() < 1e-9
 

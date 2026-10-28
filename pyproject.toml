@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "rotationlab"
 version = "0.1.0"
-description = "Cross-asset rotation system: point-in-time data, pure features, pluggable strategies, one engine for backtest and live, scenarios, relationships, paper-trading journal."
+description = "Monthly asset-class forecast and pre-registered research rounds: point-in-time data, pure features, pluggable strategies, one engine for backtest and live, hash-chained forecast journal."
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
@@ -21,7 +21,6 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dashboard = ["streamlit>=1.35"]
 analytics = ["duckdb>=1.1"]   # ad-hoc SQL on the store files (AS_OF_SQL); not needed by the system
 dev = [
   "pytest>=8",
@@ -47,7 +46,7 @@ packages = ["rotationlab"]
 line-length = 110
 target-version = "py312"
 src = ["."]
-extend-exclude = ["research", "data", "output", "scripts", "src", "config.py", "run.py"]
+extend-exclude = ["research", "data", "output", "scripts"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "N", "W", "PL", "RUF", "T20"]
@@ -100,7 +99,6 @@ filterwarnings = [
 
 [tool.coverage.run]
 source = ["rotationlab"]
-omit = ["rotationlab/reporting/dashboard.py"]
 
 [tool.coverage.report]
 fail_under = 85

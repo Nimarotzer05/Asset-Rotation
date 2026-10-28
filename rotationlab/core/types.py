@@ -28,7 +28,6 @@ class Mode(StrEnum):
     BACKTEST = "backtest"
     WALKFORWARD = "walkforward"
     LIVE = "live"
-    SCENARIO = "scenario"
 
 
 class Cadence(StrEnum):

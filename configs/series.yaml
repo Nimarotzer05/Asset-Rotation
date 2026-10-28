@@ -34,7 +34,7 @@ role_kinds:
 required_roles: [close]
 
 series:
-  # ---- Yahoo: futures and indices (context, scenarios, analogs; not traded) -------------------
+  # ---- Yahoo: futures and indices (context and research; not traded) --------------------------
   "yahoo:GC=F:close":     { kind: price, frequency: D, name: "Gold futures (front)" }
   "yahoo:SI=F:close":     { kind: price, frequency: D, name: "Silver futures (front)" }
   "yahoo:CL=F:close":     { kind: price, frequency: D, name: "WTI crude futures (front)" }

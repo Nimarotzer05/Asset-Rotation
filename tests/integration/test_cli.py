@@ -46,9 +46,12 @@ def test_ingest_store_asof_cycle(configs) -> None:
     assert main([*c, "store", "verify"]) == 3  # tampering → data error
 
 
-def test_later_phase_commands_exit_cleanly(configs) -> None:
-    assert main(["--configs", str(configs), "live"]) == 1  # arrives in phase 4
-    assert main(["--configs", str(configs), "scenarios"]) == 1  # arrives in phase 3
+def test_the_never_built_phase_commands_are_gone(configs) -> None:
+    """Phases 3/4 (live portfolio, scenarios, relationships, report) were never built and were removed on
+    2026-10-28 (ADR 062); argparse rejects them like any unknown command."""
+    for cmd in ("live", "scenarios", "relationships", "report", "dashboard"):
+        with pytest.raises(SystemExit):
+            main(["--configs", str(configs), cmd])
 
 
 @pytest.fixture(scope="module")

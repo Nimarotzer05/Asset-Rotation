@@ -5,7 +5,7 @@
 
 Positions are as of Tuesday and published on Friday (store lag 7D); the value at D is the latest report
 public by D. The research panel holds no CFTC history: in backtests before the live store has a few years
-of reports the feature is NaN, and nothing in v1 trades on it (report and scenario context only).
+of reports the feature is NaN, and nothing trades on it (context only).
 """
 
 from __future__ import annotations

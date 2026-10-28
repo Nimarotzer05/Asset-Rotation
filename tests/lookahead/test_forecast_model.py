@@ -9,6 +9,7 @@
 from __future__ import annotations
 
 from datetime import date
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -28,7 +29,6 @@ from rotationlab.forecast.model import (
 )
 from rotationlab.strategies.forecast_portfolio import ForecastPortfolio
 from rotationlab.strategies.multi_asset_rotation import MultiAssetRotation
-from src.signals import composite_score
 from tests.fixtures.toy import Toy
 from tests.lookahead.harness import mutate_future
 from tests.lookahead.test_audit_phase2 import truncate
@@ -113,7 +113,15 @@ def test_scores_equal_the_research_formula(model, factory) -> None:
     v = factory.at(date(2018, 12, 31))
     feats = {k: feature_panel(v, k, model.ranked) for k in model.weights}
     ours = composite(feats, model.weights, model.clip)
-    research = composite_score(feats, model.weights)  # src/signals.py: clip ±3, weights normalised
+    # src/signals.py composite_score (clip ±3, weights normalised), frozen 2026-10-28 – legacy code archived
+    research = pd.read_csv(
+        Path(__file__).resolve().parents[1]
+        / "fixtures"
+        / "legacy_reference"
+        / "forecast_composite_2018-12-31.csv.gz",
+        index_col=0,
+        parse_dates=True,
+    ).reindex(index=ours.index, columns=ours.columns)
     assert (ours - research).abs().max().max() <= 1e-9
     assert ours.notna().sum().sum() > 4 * 500
 

@@ -4,8 +4,6 @@ on:
     - cron: "30 6 * * 1-5"      # 06:30 UTC, Mon–Fri: after US close, before Europe opens
   workflow_dispatch:
 concurrency: daily
-env:
-  PHASE: 2          # built phases (docs/ARCHITECTURE.md §12); the portfolio steps below stay off (ADR 043)
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -41,16 +39,6 @@ jobs:
             curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d chat_id="${TELEGRAM_CHAT_ID}" \
               --data-urlencode text="rotationlab $(grep '^forecast run' "$RUNNER_TEMP/forecast.log") | $HEAD" > /dev/null || true
           fi
-      - run: uv run rotationlab live              # exit 4 = risk halt; still produce the report below
-        if: ${{ env.PHASE >= 4 }}
-        continue-on-error: true
-        id: live
-      - run: uv run rotationlab scenarios
-        if: ${{ env.PHASE >= 3 }}
-      - run: uv run rotationlab relationships
-        if: ${{ env.PHASE >= 3 }}
-      - run: uv run rotationlab report
-        if: ${{ env.PHASE >= 4 }}
       - name: commit state to branch data
         if: always()                              # keep what was ingested even if a later step failed
         run: |
@@ -89,9 +77,6 @@ jobs:
           git add journal-anchors.txt
           git -c user.name=rotationlab-bot -c user.email=bot@users.noreply.github.com commit -qm "anchor $(date -u +%F)"
           git push origin HEAD:refs/heads/anchors
-      - name: fail job if live halted
-        if: steps.live.outcome == 'failure'
-        run: exit 1
   heartbeat:
     needs: run
     if: failure()

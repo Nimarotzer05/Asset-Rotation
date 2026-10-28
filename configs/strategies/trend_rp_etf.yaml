@@ -35,7 +35,7 @@ golden_run:
   data_from: 1998-12-31            # first full month of the sector SPDRs
   start: 1998-12-31
   end: 2026-09-30
-  sample: [1900-01-31, 1900-01-31]   # set by the window rule of ADR 058 (e) after the first run, like round 4
+  sample: [2008-06-30, 2026-09-30]   # window rule of ADR 058 (e), registered 2026-10-28 before any result (ADR 061 e)
   count_warmup: false
   execution: next_tradable
   costs:

@@ -763,3 +763,41 @@ Hürde. B1 ist allerdings die schwächste der vier Baselines (Sharpe 0.506 gegen
 Risikoparität ist ein bekanntes Ergebnis der Literatur, kein neues dieses Projekts.
 
 **Zweitprüfung (frischer Prüfer, `docs/REVIEW_ALLOKATOR.md` Teil F):** kein Blocker, kein Leck, alle Zahlen bis 1e-14 reproduziert, Rang-Portfolios aus Rohdaten bit-genau nachgebaut. Gewichtig: das JA ist ein Trendfilter-Ergebnis (Allokator − „ohne Querschnitt“ −0.001 [−0.069, +0.060], präziser Nullbefund), die neuen Signale sind seit 2008 flach, Regimekonzentration auf Zinswende-Jahre. Umgesetzt: SE/MDE immer im Bericht (0.088 / 0.22), Abschnitt „Nach der Zweitprüfung ergänzt“ mit beiden Differenzen und den Rang-Portfolios je Teilperiode (nicht vorregistriert, ändert kein Urteil), Register nach `round/name`, Zeitzone in ADR 059, Wortlaut ADR 057 (c) in ADR 060 klargestellt. Der Walk-forward wurde dafür ein zweites Mal gerechnet; alle Ergebnisdateien sind Byte für Byte gleich, im Bericht kamen nur die neuen Zeilen dazu.
+
+## Projekt-Rückschau und Nacharbeiten (2026-10-28 abends, ADR 061/062)
+
+**Auftrag (19:27):** alle Ziele vollständig erfüllen, keine Totschlagfrage mehr offen lassen, das Audit der
+Projekt-Rückschau entkräften. **Vorgehen:** ein unabhängiges Audit (Sicht Quant-Research/Hiring) hat Ziel, Schwächen
+und Interviewrisiken bewertet; jeder Punkt wurde entweder behoben oder – wo er ein Befund über die Daten ist und kein
+Mangel der Arbeit – offen benannt und begründet. Einen belegten Prognosevorteil herbeizurechnen, wäre selbst die
+Totschlagfrage; das ist ausgeschlossen.
+
+| Audit-Punkt | Umgang | Beleg |
+|---|---|---|
+| Runde 4 schlägt nur die schwächste Baseline, seit 2008 unter EW/60-40 | offen benannt in README, Write-up, ADR 060 | README „Results at a glance“ |
+| „Deflated Sharpe p = 0.895“ falsch bezeichnet | korrigiert: Wahrscheinlichkeit | ADR 060, README |
+| Forschungsindizes statt handelbarer Instrumente | ETF-Check vorregistriert (ADR 061, vor dem Lauf gemerged), gerechnet (ADR 062): Filter-Vorteil nicht belegt (+0.06 [−0.21, +0.20]), Index-Studie und ETF-Umsetzung korrelieren 0.96 | `output/etf_check/ETF_CHECK.md` |
+| README unlesbar, veralteter Altteil, Deutsch | neues englisches 1-Seiten-README mit Ergebnistabelle und zwei Grafiken; deutscher Stand in `docs/STATUS_DE.md`; Altteil mit dem Legacy-Code archiviert | `README.md`, `docs/figures/` |
+| toter Ballast | Legacy-Forschungscode auf Branch `archive/legacy-research`; Phasen-3/4-Platzhalter entfernt; Paritätstests behalten über eingefrorene Referenzen | ADR 062, `tests/fixtures/legacy_reference/` |
+| Live-Bilanz kann nichts beweisen | Power-Rechnung im README und in den Methoden: ≈ 10 Jahre für t = 1.65 bei IC 0.10 | `docs/METHODS.md` §3 |
+| Kann der Autor jede Zahl erklären? | Methodennotizen (11 Abschnitte), Interview-Fragen mit Antworten, unabhängiger pandas-Nachbau von Runde 4 (Sharpe 0.789 gegen Engine 0.802, Korrelation 0.98; ohne Filter 0.535 ≈ passive Risikoparität 0.507) | `docs/METHODS.md`, `docs/INTERVIEW.md`, `examples/trend_filter_from_scratch.py` |
+| Rolle der KI im Projekt | offen und sachlich im README und Write-up | README „How this was built“ |
+
+**Nicht widerlegbar und deshalb so stehen gelassen:** Kein Modell hat einen belegten Prognosevorteil; Runde 4 ist ein
+Trendfilter-Ergebnis ohne Signifikanz seit 2008; die Live-Bilanz braucht Jahre. Das Projekt sagt das selbst – das ist
+die Antwort auf die Totschlagfrage, nicht ihr Gegenstand.
+
+**Verifiziert:** 368 Haupttests (1 übersprungen lokal: aufgezeichnete Provider-Antworten liegen nur auf GitHub),
+ruff, mypy, validate; Golden-Tests über die eingefrorenen Legacy-Referenzen; ETF-Check auf `data@1c110a4` aus dem
+sauberen `main@5ccf391`; Nachbau wie oben.
+
+**Abschluss-Audit (frischer Prüfer, gleiche Fragen wie die Rückschau):** keine Blocker; 25 Zahlen nachgerechnet, 19
+exakt, 6 Abweichungen in Formulierung oder Rundung, alle korrigiert: Deflated-Sharpe-Wahrscheinlichkeit 0.895 gilt
+für N = 70 beim Lauf (mit dem heutigen Register N = 71: 0.902, selbst nachgerechnet); Power-Rechnung einheitlich mit
+IC 0.098 (116 / 265 Monate); „halbiert die Vol“ → Vol um gut ein Viertel, Drawdown um fast die Hälfte tiefer;
+Block-24-Intervall [+0.13, +0.43]; Testzahl 397 (369 + 28 Golden); die Grafik liest jetzt jeden Wert aus `output/`
+(drei Dezimalen wie die Berichte). Ausserdem: die Konvention „French-Renditen ohne Publikationslag“ steht jetzt im
+README, in den Methoden und in Interviewfrage 8; drei neue Interviewfragen (warum das gescheiterte Modell live läuft,
+Herkunft der langen Historie, Hebelfinanzierung 1977–89); `docs/STATUS_DE.md` auf den Stand nach dem Holdout
+gebracht; tote Verweise auf Szenarien und das archivierte `build_dataset.py` entfernt; `.hypothesis/` ignoriert. Der
+unabhängige Nachbau wurde vom Prüfer ausgeführt und lieferte exakt 0.789 / 0.802 / ρ 0.980 / ohne Filter 0.535.
