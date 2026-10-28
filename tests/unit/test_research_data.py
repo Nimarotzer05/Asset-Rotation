@@ -64,7 +64,9 @@ def test_download_keeps_raw_bytes_and_records_failures(tmp_path) -> None:
     assert json.loads((tmp_path / "MANIFEST.json").read_text()) == m
     # every source of ADR 057 is listed exactly once
     keys = [s.key for s in fetch.sources()]
-    assert len(keys) == len(set(keys)) == 10 + 3 + 10 + 10 + 2
+    assert len(keys) == len(set(keys)) == 9 + 1 + 3 + 10 + 10 + 2
+    required = {s.code: s.required for s in fetch.sources()}
+    assert required["DEXGEUS"] is False and required["DEXUSEU"] is True  # ADR 059
 
 
 def test_missing_required_source_and_fredgraph_fallback(tmp_path) -> None:

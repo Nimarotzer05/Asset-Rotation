@@ -41,7 +41,9 @@ def _gz(df: pd.DataFrame, path: Path) -> None:
     path.write_bytes(gzip.compress(df.rename_axis("date").to_csv(date_format="%Y-%m-%d").encode(), mtime=0))
 
 
-def _world(tmp: Path, *, invert_gbp: bool = False, local_countries: bool = False) -> dict[str, object]:
+def _world(
+    tmp: Path, *, invert_gbp: bool = False, local_countries: bool = False, no_dem: bool = False
+) -> dict[str, object]:
     """A consistent little world 1971–1985 in the frozen formats, and the comparison series of the static panel."""
     rng = np.random.default_rng(5)
     days = pd.bdate_range("1971-01-04", "1985-12-31")
@@ -58,6 +60,8 @@ def _world(tmp: Path, *, invert_gbp: bool = False, local_countries: bool = False
         days >= pd.Timestamp("1980-01-02")
     ]
     fred.loc[days >= pd.Timestamp("1980-01-02"), "DEXGEUS"] = np.nan
+    if no_dem:  # ADR 059: FRED no longer serves DEXGEUS – the frozen file has no DEM column
+        fred = fred.drop(columns="DEXGEUS")
     y = 6.0 + np.cumsum(0.04 * rng.standard_normal(len(days)))
     fred["DGS2"], fred["DGS5"], fred["DGS10"] = y, y + 0.4, y + 0.9
     me = pd.date_range("1970-01-31", "1985-12-31", freq="ME")
@@ -107,6 +111,15 @@ def test_the_data_gates_pass_on_consistent_data(tmp_path) -> None:
     assert [ok for _, ok, _ in result] == [True] * 6, result
     assert "fred/IRSTCI01GBM156N" in result[0][2]  # a missing optional source is reported
     assert any(ln.startswith("- EUR: DE: 3M ab") for ln in lines)
+
+
+def test_the_data_gates_pass_without_the_dem_series(tmp_path) -> None:
+    """ADR 059: no DEXGEUS – nothing to splice, the euro enters at its first quote, G4 says so."""
+    ref = _world(tmp_path, no_dem=True)
+    result, _ = gates.check(str(tmp_path), ref)
+    assert [ok for _, ok, _ in result] == [True] * 6, result
+    g4 = next(d for g, _, d in result if g.startswith("G4"))
+    assert "keine DEM-Reihe, EUR ab 1980-01-02 (ADR 059)" in g4 and "DEM→EUR" not in g4
 
 
 @pytest.mark.parametrize(

@@ -50,9 +50,11 @@ FX_SPOT = [
     "DEXUSNZ",
     "DEXSDUS",
     "DEXNOUS",
-    "DEXGEUS",
     "DEXUSEU",
 ]
+DEM_SPOT = [
+    "DEXGEUS"
+]  # optional since ADR 059: FRED answered HTTP 400 on 2026-10-28 (series no longer served)
 TREASURY = ["DGS2", "DGS5", "DGS10"]
 AREAS = ["JP", "GB", "CH", "CA", "AU", "NZ", "SE", "NO", "DE", "EZ"]  # currency areas of the nine currencies
 RATES_3M = [f"IR3TIB01{a}M156N" for a in AREAS]
@@ -70,7 +72,7 @@ class Source:
 
 def sources() -> list[Source]:
     out = [Source(f"fred/{c}", "fred", c, True) for c in [*FX_SPOT, *TREASURY]]
-    out += [Source(f"fred/{c}", "fred", c, False) for c in [*RATES_3M, *RATES_CALL]]
+    out += [Source(f"fred/{c}", "fred", c, False) for c in [*DEM_SPOT, *RATES_3M, *RATES_CALL]]
     out += [Source(f"french/{z}", "french", z, True) for z in FRENCH]
     return out
 

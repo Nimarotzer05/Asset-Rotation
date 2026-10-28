@@ -131,7 +131,8 @@ geschwärzt), SHA-256 und Grösse der Rohbytes, Abrufzeit (UTC), Format und Stat
 
 | Quelle | Reihen | Pflicht |
 |---|---|---|
-| FRED H.10, täglich | DEXJPUS, DEXUSUK, DEXSZUS, DEXCAUS, DEXUSAL, DEXUSNZ, DEXSDUS, DEXNOUS, DEXGEUS (bis 2001), DEXUSEU (ab 1999) | ja |
+| FRED H.10, täglich | DEXJPUS, DEXUSUK, DEXSZUS, DEXCAUS, DEXUSAL, DEXUSNZ, DEXSDUS, DEXNOUS, DEXUSEU (ab 1999) | ja |
+| FRED H.10, täglich | DEXGEUS (DEM, bis 2001; Verkettung des Euro vor 1999) – seit dem 28.10.2026 von FRED nicht mehr geliefert (HTTP 400), ohne sie beginnt der Euro 1999 (ADR 059) | nein |
 | FRED, täglich | DGS2, DGS5, DGS10 (Constant-Maturity-Renditen) | ja |
 | FRED/OECD, monatlich | IR3TIB01{JP,GB,CH,CA,AU,NZ,SE,NO,DE,EZ}M156N (3-M-Interbank), IRSTCI01{…}M156N (Tagesgeld, Ersatz) | nein |
 | Kenneth French | `10_Industry_Portfolios_daily_CSV.zip`, `F-F_International_Countries.zip` | ja |

@@ -139,18 +139,20 @@ def check(
         corr = float(both["s"].corr(both["d"])) if len(both) > 2 else float("nan")
         det.append(f"{ccy} {corr:+.2f}")
         ok &= bool(corr <= FX_CORR)
-    dem = r4.DEM_PER_EUR / fred["DEXGEUS"].dropna()
     eur = fred["DEXUSEU"].dropna()
-    last_dem = dem[dem.index < eur.index[0]]
-    step = float(eur.iloc[0] / last_dem.iloc[-1] - 1.0)
-    ok &= abs(step) < EUR_SPLICE
+    if "DEXGEUS" in fred.columns and not fred["DEXGEUS"].dropna().empty:
+        dem = r4.DEM_PER_EUR / fred["DEXGEUS"].dropna()
+        last_dem = dem[dem.index < eur.index[0]]
+        step = float(eur.iloc[0] / last_dem.iloc[-1] - 1.0)
+        ok &= abs(step) < EUR_SPLICE
+        splice = f"; DEM→EUR {step:+.2%} ({last_dem.index[-1].date()} → {eur.index[0].date()})"
+    else:  # ADR 059: no DEM series – the euro starts at its first quote, nothing to splice
+        splice = f"; keine DEM-Reihe, EUR ab {eur.index[0].date()} (ADR 059)"
     gates.append(
         (
             "G4 Notierung und Euro-Verkettung",
             ok,
-            "Korrelation mit dem Dollar-Index: "
-            + ", ".join(det)
-            + f"; DEM→EUR {step:+.2%} ({last_dem.index[-1].date()} → {eur.index[0].date()})",
+            "Korrelation mit dem Dollar-Index: " + ", ".join(det) + splice,
         )
     )
 
