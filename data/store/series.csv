@@ -12,8 +12,8 @@ cftc:088691:open_interest,cftc,088691:open_interest,positioning,W,7D,none,False,
 cftc:13874A:noncomm_net,cftc,13874A:noncomm_net,positioning,W,7D,none,False,,E-mini S&P 500 non-commercial net,1997-09-16,2026-10-20,1514,1514
 fred:AAA,fred,AAA,yield,M,0D,none,False,pct,"Moody's Aaa, monthly average",1919-01-31,2026-09-30,1293,1293
 fred:BAA,fred,BAA,yield,M,0D,none,False,pct,"Moody's Baa, monthly average",1919-01-31,2026-09-30,1293,1293
-fred:BAMLC0A0CM,fred,BAMLC0A0CM,yield,D,1D,none,False,pct,ICE BofA US IG OAS,2023-10-24,2026-10-26,787,787
-fred:BAMLH0A0HYM2,fred,BAMLH0A0HYM2,yield,D,1D,none,False,pct,ICE BofA US HY OAS,2023-10-24,2026-10-26,788,788
+fred:BAMLC0A0CM,fred,BAMLC0A0CM,yield,D,1D,none,False,pct,ICE BofA US IG OAS,2023-10-24,2026-10-27,788,788
+fred:BAMLH0A0HYM2,fred,BAMLH0A0HYM2,yield,D,1D,none,False,pct,ICE BofA US HY OAS,2023-10-24,2026-10-27,789,789
 fred:CPIAUCSL,fred,CPIAUCSL,macro,M,1M,alfred,False,index,CPI-U SA,1947-01-31,2026-09-30,3121,687
 fred:CPILFESL,fred,CPILFESL,macro,M,1M,alfred,False,index,Core CPI SA,1957-01-31,2026-09-30,2737,854
 fred:DFII10,fred,DFII10,yield,D,1D,none,False,pct,10Y TIPS real yield,2003-01-02,2026-10-26,5958,5958
@@ -35,7 +35,7 @@ fred:T10YIE,fred,T10YIE,yield,D,1D,none,False,pct,10Y breakeven inflation,2003-0
 fred:TB3MS,fred,TB3MS,yield,M,0D,none,False,pct,"3M T-bill, monthly average",1934-01-31,2026-09-30,1113,1113
 fred:UMCSENT,fred,UMCSENT,macro,M,1M,alfred,False,index,Michigan sentiment,1952-11-30,2026-09-30,1118,681
 fred:UNRATE,fred,UNRATE,macro,M,1M,alfred,False,pct,Unemployment rate,1948-01-31,2026-09-30,2342,944
-fred:VIXCLS,fred,VIXCLS,index,D,1D,none,False,,VIX close (FRED),1990-01-02,2026-10-26,9303,9303
+fred:VIXCLS,fred,VIXCLS,index,D,1D,none,False,,VIX close (FRED),1990-01-02,2026-10-27,9304,9304
 french:ff3:HML,french,ff3:HML,return,M,0D,none,False,,,1926-07-31,2026-09-30,1203,1203
 french:ff3:MKT_RF,french,ff3:MKT_RF,return,M,0D,none,False,,,1926-07-31,2026-09-30,1203,1203
 french:ff3:RF,french,ff3:RF,return,M,0D,none,False,,,1926-07-31,2026-09-30,1203,1203
@@ -72,9 +72,12 @@ static:FF_TELCM,static,ind10:Telcm,return,M,0D,none,False,,French industry Telcm
 static:FF_UTILS,static,ind10:Utils,return,M,0D,none,False,,French industry Utils (value-weighted),1926-07-31,2026-07-31,1201,1201
 static:GOLD,static,constructs:GOLD,price,M,0D,none,False,,"Gold: LBMA month-end, World Bank average before 1968-04",1960-01-31,2026-02-28,794,794
 static:TBILL,static,constructs:TBILL,total_return,M,0D,none,False,,T-bill index from TB3MS (month t earns TB3MS(t-1)/12),1959-02-28,2026-08-31,811,811
+static:TBILL_IY,static,constructs:TBILL_IY,total_return,M,0D,none,False,,"T-bill index on the investment yield of TB3MS (month t earns IY(t-1)/12; round 4, ADR 058)",1959-02-28,2026-08-31,811,811
 static:USD_IDX,static,constructs:USD_IDX,index,M,0D,none,False,,"Dollar index: major currencies, broad from first overlap (chained)",1973-01-31,2025-12-31,636,636
 static:UST1,static,constructs:UST1,total_return,M,0D,none,False,,"Synthetic 1y Treasury total return (par bond, GS1)",1959-02-28,2026-08-31,811,811
 static:UST10,static,constructs:UST10,total_return,M,0D,none,False,,"Synthetic 10y Treasury total return (par bond, GS10)",1959-02-28,2026-08-31,811,811
+static:UST10_ME,static,constructs:UST10_ME,total_return,M,0D,none,False,,"Synthetic 10y Treasury total return on month-end yields (par bond, DGS10)",1962-02-28,2026-09-30,776,776
+static:UST2_ME,static,constructs:UST2_ME,total_return,M,0D,none,False,,"Synthetic 2y Treasury total return on month-end yields (par bond, DGS2; ADR 052)",1976-07-31,2026-09-30,603,603
 static:UST5,static,constructs:UST5,total_return,M,0D,none,False,,"Synthetic 5y Treasury total return (par bond, GS5)",1959-02-28,2026-08-31,811,811
 static:WB_AGRI,static,wb_indices:WB_AGRI,index,M,0D,none,False,,"World Bank index WB_AGRI (2010=100, monthly average)",1960-01-31,2026-01-31,793,793
 static:WB_ALUMINUM,static,wb_prices:Aluminum,price,M,0D,none,False,,World Bank Aluminum (monthly average),1960-01-31,2026-01-31,793,793
@@ -94,6 +97,9 @@ static:WB_SILVER_AVG,static,wb_prices:Silver,price,M,0D,none,False,,World Bank S
 static:WB_TOTAL,static,wb_indices:WB_TOTAL,index,M,0D,none,False,,"World Bank index WB_TOTAL (2010=100, monthly average)",1960-01-31,2026-01-31,793,793
 static:WB_WTI,static,"wb_prices:Crude oil, WTI",price,M,0D,none,False,,"World Bank Crude oil, WTI (monthly average)",1982-01-31,2026-01-31,529,529
 static:cboe:VIX,static,vix:CLOSE,index,D,0D,none,False,,CBOE VIX close,1990-01-02,2026-09-22,9278,9278
+static:fred:DGS10_ME,static,live_me:DGS10_ME,yield,M,0D,none,False,pct,"10y Treasury CMT, month-end (FRED DGS10, P5 extract)",1962-01-31,2026-09-30,777,777
+static:fred:DGS2_ME,static,live_me:DGS2_ME,yield,M,0D,none,False,pct,"2y Treasury CMT, month-end (FRED DGS2, extract; ADR 052)",1976-06-30,2026-09-30,604,604
+static:fred:DGS3MO_ME,static,live_me:DGS3MO_ME,yield,M,0D,none,False,pct,"3m Treasury CMT, month-end (FRED DGS3MO, extract)",1981-09-30,2026-09-30,541,541
 static:fred:DTWEXBGS,static,usd:DTWEXBGS,index,D,0D,none,False,,"Trade-weighted dollar, broad",2006-01-02,2025-12-31,5013,5013
 static:fred:DTWEXM,static,usd:DTWEXM,index,D,0D,none,False,,"Trade-weighted dollar, major currencies",1973-01-02,2019-12-31,11834,11834
 static:fredmd:AAA,static,fredmd:AAA,yield,M,0D,none,False,,FRED-MD AAA,1959-01-31,2026-08-31,812,812
@@ -379,6 +385,7 @@ stooq:EFA:close,stooq,EFA:close,price,D,0D,none,False,,MSCI EAFE ETF close,,,0,0
 stooq:GLD:close,stooq,GLD:close,price,D,0D,none,False,,Gold ETF close,,,0,0
 stooq:IEF:close,stooq,IEF:close,price,D,0D,none,False,,7-10y Treasury ETF close,,,0,0
 stooq:PPLT:close,stooq,PPLT:close,price,D,0D,none,False,,Platinum ETF close,,,0,0
+stooq:SHY:close,stooq,SHY:close,price,D,0D,none,False,,1-3y Treasury ETF close,,,0,0
 stooq:SLV:close,stooq,SLV:close,price,D,0D,none,False,,Silver ETF close,,,0,0
 stooq:SPY:close,stooq,SPY:close,price,D,0D,none,False,,S&P 500 ETF close,,,0,0
 stooq:TIP:close,stooq,TIP:close,price,D,0D,none,False,,TIPS ETF close,,,0,0
@@ -423,6 +430,9 @@ yahoo:IEF:dividend,yahoo,IEF:dividend,dividend,D,0D,none,False,,7-10y Treasury E
 yahoo:IEF:split,yahoo,IEF:split,split,D,0D,none,False,,7-10y Treasury ETF split,,,0,0
 yahoo:PPLT:close,yahoo,PPLT:close,price,D,0D,none,True,,Platinum ETF close,2010-01-08,2026-10-27,4226,4226
 yahoo:PPLT:split,yahoo,PPLT:split,split,D,0D,none,False,,Platinum ETF split,2026-05-18,2026-05-18,1,1
+yahoo:SHY:close,yahoo,SHY:close,price,D,0D,none,True,,1-3y Treasury ETF close,2002-07-30,2026-10-27,6101,6101
+yahoo:SHY:dividend,yahoo,SHY:dividend,dividend,D,0D,none,False,,1-3y Treasury ETF dividend,2002-09-03,2026-10-01,290,290
+yahoo:SHY:split,yahoo,SHY:split,split,D,0D,none,False,,1-3y Treasury ETF split,,,0,0
 yahoo:SI=F:close,yahoo,SI=F:close,price,D,0D,none,False,,Silver futures (front),2000-08-30,2026-10-27,6567,6566
 yahoo:SLV:close,yahoo,SLV:close,price,D,0D,none,True,,Silver ETF close,2006-04-28,2026-10-27,5157,5157
 yahoo:SLV:split,yahoo,SLV:split,split,D,0D,none,False,,Silver ETF split,2008-07-24,2008-07-24,1,1

@@ -27,1816 +27,1859 @@
    "name": "delta-20261028T132004Z-4aa259b2.csv.gz",
    "rows": 750,
    "sha256": "4aa259b285149802500eb8bfdd9f1b66555fb4431c535b79201c1388141fafc6"
+  },
+  {
+   "ingested_at": "2026-10-28T16:04:00Z",
+   "kind": "delta",
+   "name": "delta-20261028T160400Z-597c8326.csv.gz",
+   "rows": 10506,
+   "sha256": "597c8326ac1b5da2a895eea8e01c0d7afe681e3f4c487277d54716a837b3846f"
   }
  ],
  "format": 1,
  "series": {
   "bls:CES0000000001": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "bls:CUSR0000SA0": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "bls:CUSR0000SA0L1E": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "bls:LNS14000000": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "cftc:067651:noncomm_net": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "cftc:084691:noncomm_net": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "cftc:084691:open_interest": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "cftc:085692:noncomm_net": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "cftc:088691:noncomm_net": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "cftc:088691:open_interest": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "cftc:13874A:noncomm_net": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:AAA": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:BAA": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:BAMLC0A0CM": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:BAMLH0A0HYM2": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:CPIAUCSL": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:CPILFESL": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:DFII10": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:DGS10": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:DGS2": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:DGS3MO": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:DTWEXBGS": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:FEDFUNDS": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:GS10": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:HOUST": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:ICSA": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:INDPRO": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:M2SL": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:MICH": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:NFCI": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:PAYEMS": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:PCEPILFE": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:T10YIE": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:TB3MS": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:UMCSENT": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:UNRATE": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "fred:VIXCLS": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ff3:HML": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ff3:MKT_RF": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ff3:RF": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ff3:SMB": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ff5:CMA": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ff5:RMW": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ind10:DURBL": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ind10:ENRGY": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ind10:HITEC": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ind10:HLTH": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ind10:MANUF": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ind10:NODUR": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ind10:OTHER": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ind10:SHOPS": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ind10:TELCM": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:ind10:UTILS": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "french:mom:MOM": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "shiller:CAPE": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "shiller:CPI": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "shiller:D": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "shiller:E": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "shiller:GS10": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "shiller:P": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:FF_DURBL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:FF_ENRGY": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:FF_HITEC": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:FF_HLTH": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:FF_MANUF": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:FF_MKT": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:FF_NODUR": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:FF_OTHER": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:FF_SHOPS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:FF_TELCM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:FF_UTILS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:GOLD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:TBILL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
+  },
+  "static:TBILL_IY": {
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:USD_IDX": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:UST1": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:UST10": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
+  },
+  "static:UST10_ME": {
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
+  },
+  "static:UST2_ME": {
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:UST5": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_AGRI": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_ALUMINUM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_BASEMETALS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_COPPER": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_ENERGY": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_FERT": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_GOLD_AVG": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_METALS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_NATGAS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_NICKEL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_NONENERGY": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_OIL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_PLATINUM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_PRECIOUS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_SILVER_AVG": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_TOTAL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:WB_WTI": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:cboe:VIX": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
+  },
+  "static:fred:DGS10_ME": {
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
+  },
+  "static:fred:DGS2_ME": {
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
+  },
+  "static:fred:DGS3MO_ME": {
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fred:DTWEXBGS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fred:DTWEXM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:AAA": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:AAAFFM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:ACOGNO": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:AMDMNOx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:AMDMUOx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:ANDENOx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:AWHMAN": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:AWOTMAN": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:BAA": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:BAAFFM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:BOGMBASE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:BUSINVx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:BUSLOANS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CE16OV": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CES0600000007": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CES0600000008": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CES1021000001": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CES2000000008": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CES3000000008": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CLAIMSx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CLF16OV": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CMRMTSPLx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:COMPAPFFx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CONSPI": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CP3Mx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CPIAPPSL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CPIAUCSL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CPIMEDSL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CPITRNSL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CPIULFSL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CUMFNS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CUSR0000SA0L2": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CUSR0000SA0L5": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CUSR0000SAC": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CUSR0000SAD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:CUSR0000SAS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:DDURRG3M086SBEA": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:DMANEMP": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:DNDGRG3M086SBEA": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:DPCERA3M086SBEA": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:DSERRG3M086SBEA": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:DTCOLNVHFNM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:DTCTHFNM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:EXCAUSx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:EXJPUSx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:EXSZUSx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:EXUSUKx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:FEDFUNDS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:GS1": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:GS10": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:GS5": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:HOUST": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:HOUSTMW": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:HOUSTNE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:HOUSTS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:HOUSTW": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:HWI": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:HWIURATIO": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:INDPRO": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:INVEST": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:IPB51222S": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:IPBUSEQ": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:IPCONGD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:IPDCONGD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:IPDMAT": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:IPFINAL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:IPFPNSS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:IPFUELS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:IPMANSICS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:IPMAT": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:IPNCONGD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:IPNMAT": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:ISRATIOx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:M1SL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:M2REAL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:M2SL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:MANEMP": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:NDMANEMP": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:NONBORRES": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:NONREVSL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:OILPRICEx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:PAYEMS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:PCEPI": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:PERMIT": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:PERMITMW": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:PERMITNE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:PERMITS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:PERMITW": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:PPICMM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:REALLN": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:RETAILx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:RPI": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:SP500": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:SP_DIVYIELD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:SP_PE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:SRVPRD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:T10YFFM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:T1YFFM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:T5YFFM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:TB3MS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:TB3SMFFM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:TB6MS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:TB6SMFFM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:TOTRESNS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:TWEXAFEGSMTHx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:UEMP15OV": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:UEMP15T26": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:UEMP27OV": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:UEMP5TO14": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:UEMPLT5": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:UEMPMEAN": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:UMCSENTx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:UNRATE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:USCONS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:USFIRE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:USGOOD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:USGOVT": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:USTPU": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:USTRADE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:USWTRADE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:VIXCLSx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:W875RX1": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:WPSFD49207": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:WPSFD49502": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:WPSID61": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd:WPSID62": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:AAA": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:AAAFFM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:ACOGNO": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:AMDMNOx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:AMDMUOx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:ANDENOx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:AWHMAN": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:AWOTMAN": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:BAA": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:BAAFFM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:BOGMBASE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:BUSINVx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:BUSLOANS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CE16OV": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CES0600000007": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CES0600000008": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CES1021000001": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CES2000000008": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CES3000000008": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CLAIMSx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CLF16OV": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CMRMTSPLx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:COMPAPFFx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CONSPI": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CP3Mx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CPIAPPSL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CPIAUCSL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CPIMEDSL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CPITRNSL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CPIULFSL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CUMFNS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CUSR0000SA0L2": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CUSR0000SA0L5": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CUSR0000SAC": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CUSR0000SAD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:CUSR0000SAS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:DDURRG3M086SBEA": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:DMANEMP": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:DNDGRG3M086SBEA": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:DPCERA3M086SBEA": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:DSERRG3M086SBEA": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:DTCOLNVHFNM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:DTCTHFNM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:EXCAUSx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:EXJPUSx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:EXSZUSx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:EXUSUKx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:FEDFUNDS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:GS1": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:GS10": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:GS5": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:HOUST": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:HOUSTMW": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:HOUSTNE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:HOUSTS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:HOUSTW": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:HWI": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:HWIURATIO": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:INDPRO": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:INVEST": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:IPB51222S": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:IPBUSEQ": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:IPCONGD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:IPDCONGD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:IPDMAT": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:IPFINAL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:IPFPNSS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:IPFUELS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:IPMANSICS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:IPMAT": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:IPNCONGD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:IPNMAT": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:ISRATIOx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:M1SL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:M2REAL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:M2SL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:MANEMP": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:NDMANEMP": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:NONBORRES": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:NONREVSL": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:OILPRICEx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:PAYEMS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:PCEPI": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:PERMIT": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:PERMITMW": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:PERMITNE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:PERMITS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:PERMITW": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:PPICMM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:REALLN": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:RETAILx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:RPI": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:SP500": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:SP_DIVYIELD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:SP_PE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:SRVPRD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:T10YFFM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:T1YFFM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:T5YFFM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:TB3MS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:TB3SMFFM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:TB6MS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:TB6SMFFM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:TOTRESNS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:TWEXAFEGSMTHx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:UEMP15OV": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:UEMP15T26": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:UEMP27OV": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:UEMP5TO14": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:UEMPLT5": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:UEMPMEAN": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:UMCSENTx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:UNRATE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:USCONS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:USFIRE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:USGOOD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:USGOVT": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:USTPU": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:USTRADE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:USWTRADE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:VIXCLSx": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:W875RX1": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:WPSFD49207": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:WPSFD49502": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:WPSID61": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:fredmd_rt:WPSID62": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:french:ff3:HML": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:french:ff3:MKT_RF": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:french:ff3:RF": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:french:ff3:SMB": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:french:ff5:CMA": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:french:ff5:HML": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:french:ff5:MKT_RF": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:french:ff5:MOM": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:french:ff5:RF": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:french:ff5:RMW": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:french:ff5:SMB": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:ice:HY_OAS": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:lbma:GOLD": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:lbma:SILVER": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:shiller:Consumer_Price_Index": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:shiller:Dividend": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:shiller:Earnings": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:shiller:Long_Interest_Rate": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:shiller:PE10": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:shiller:SP500": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:usmkt:CLOSE": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "static:usmkt:TR": {
-   "last_fetch": "2026-10-25",
-   "last_ingest": "2026-10-25T11:01:17Z"
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:BIL:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:BIL:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:BIL:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:CL=F:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:CPER:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:CPER:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:DBA:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:DBA:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:DBC:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:DBC:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:DX-Y.NYB:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:EEM:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:EEM:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:EEM:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:EFA:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:EFA:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:EFA:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:GC=F:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:GLD:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:GLD:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:HG=F:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:IEF:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:IEF:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:IEF:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:PPLT:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:PPLT:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
+  },
+  "yahoo:SHY:close": {
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
+  },
+  "yahoo:SHY:dividend": {
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
+  },
+  "yahoo:SHY:split": {
+   "last_fetch": "2026-10-28",
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:SI=F:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:SLV:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:SLV:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:SPY:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:SPY:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:SPY:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:TIP:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:TIP:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:TIP:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:TLT:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:TLT:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:TLT:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:UNG:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:UNG:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:USO:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:USO:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:VNQ:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:VNQ:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:VNQ:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLB:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLB:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLB:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLC:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLC:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLC:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLE:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLE:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLE:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLF:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLF:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLF:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLI:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLI:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLI:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLK:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLK:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLK:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLP:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLP:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLP:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLRE:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLRE:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLRE:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLU:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLU:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLU:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLV:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLV:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLV:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLY:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLY:dividend": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:XLY:split": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:^GSPC:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   },
   "yahoo:^VIX:close": {
    "last_fetch": "2026-10-28",
-   "last_ingest": "2026-10-28T13:20:04Z"
+   "last_ingest": "2026-10-28T16:04:00Z"
   }
  },
  "sources": {
-  "static": "6c3d7503f16451f0"
+  "static": "e325d6fe1077e63c"
  }
 }

@@ -1,0 +1,58 @@
+<!-- copy of 2026-09.md -->
+# Prognose der Anlageklassen – Entscheidung 2026-09-30
+
+Erstellt 2026-10-28 · Modell `composite` v1 · Datenstand `2026-10-28T16:04:00Z/b2a5ffd242` · gerankt SPY, IEF, GLD, SLV · nur Trend CPER · Cash BIL
+
+## 1 Monat (Hauptprognose) – Status: `signal` (mindestens eine Wahrscheinlichkeit weicht um mehr als die Marge von 50 % ab; beschreibend, kein Verlässlichkeitsmass)
+
+| Rang | Klasse | P(obere Hälfte) | Score | Mittel des Rangs bisher [90-%-KI des Mittels] | Trend | Gewicht (Paper-Regel) |
+|---|---|---|---|---|---|---|
+| 1 | SPY | 56 % | +0.62 | +0.06 % [-0.40, +0.66] | auf ▲ (+6.3 % zum 10M-Schnitt) | 50 % |
+| 2 | IEF | 47 % | +0.03 | +0.10 % [-0.28, +0.44] | ab ▼ (-4.0 % zum 10M-Schnitt) | 0 % |
+| 3 | GLD | 51 % | -0.16 | -0.05 % [-0.41, +0.38] | ab ▼ (-7.7 % zum 10M-Schnitt) | 0 % |
+| 4 | SLV | 45 % | -0.49 | -0.11 % [-0.49, +0.15] | ab ▼ (-15.9 % zum 10M-Schnitt) | 0 % |
+| – | Cash | | | | | 50 % |
+
+**Nachgeholt (ADR 050):** Diese Prognose wurde mehr als die erlaubte Frist nach dem Entscheidungsdatum geschrieben. Sie ist korrekt aus der Sicht am Entscheidungsdatum berechnet, zählt aber nicht zur Live-Bilanz.
+
+- backfilled: written 2026-10-28, 28 days after the decision date (limit 7); computed from the view at 2026-09-30 like any forecast, but not counted in the live track record
+
+Nur Trend (beschreibend, kein belegter Prognosevorteil – P5):
+
+| Klasse | Trend |
+|---|---|
+| CPER | auf ▲ (+6.0 % zum 10M-Schnitt) |
+
+Lesart: P(obere Hälfte) = Wahrscheinlichkeit, dass die Klasse über den Horizont zu den besseren zwei der vier gehört (kalibriert auf der Geschichte bis zum Entscheidungsdatum). Die Rangfolge ist der im Backtest geprüfte Teil (`output/forecast/EVALUATION.md`, in-sample 1973–2018); im Pseudo-Holdout 2019–2025 hat sie sich **nicht** repliziert (`output/forecast/HOLDOUT.md`); ob sie live hält, zeigt allein die Bilanz unten. „Mittel des Rangs bisher“ = mittlere relative Rendite, die dieser Rang in den bis dahin bekannten Monaten erzielte, mit dem Block-Bootstrap-Intervall dieses Mittels – kein Vorhersageintervall für den kommenden Monat, dessen Streuung um ein Vielfaches grösser ist.
+
+## 3 Monate (Nebenauswertung) – Status `signal`
+
+| Rang | Klasse | P(obere Hälfte) | Score | Mittel des Rangs bisher [90-%-KI des Mittels] | Trend |
+|---|---|---|---|---|---|
+| 1 | SPY | 57 % | +0.62 | +0.56 % [-0.75, +2.14] | auf ▲ (+6.3 % zum 10M-Schnitt) |
+| 2 | IEF | 41 % | +0.03 | -0.35 % [-1.02, +0.36] | ab ▼ (-4.0 % zum 10M-Schnitt) |
+| 3 | GLD | 53 % | -0.16 | -0.65 % [-1.62, +0.20] | ab ▼ (-7.7 % zum 10M-Schnitt) |
+| 4 | SLV | 50 % | -0.49 | +0.43 % [-0.79, +1.60] | ab ▼ (-15.9 % zum 10M-Schnitt) |
+
+## 6 Monate (Nebenauswertung) – Status `signal`
+
+| Rang | Klasse | P(obere Hälfte) | Score | Mittel des Rangs bisher [90-%-KI des Mittels] | Trend |
+|---|---|---|---|---|---|
+| 1 | SPY | 60 % | +0.62 | +0.54 % [-1.90, +2.81] | auf ▲ (+6.3 % zum 10M-Schnitt) |
+| 2 | IEF | 40 % | +0.03 | +0.54 % [-0.92, +2.19] | ab ▼ (-4.0 % zum 10M-Schnitt) |
+| 3 | GLD | 54 % | -0.16 | -0.25 % [-1.83, +1.51] | ab ▼ (-7.7 % zum 10M-Schnitt) |
+| 4 | SLV | 46 % | -0.49 | -0.83 % [-2.87, +1.08] | ab ▼ (-15.9 % zum 10M-Schnitt) |
+
+## Bilanz bisher (abgerechnete Prognosen)
+
+| Horizont | abgerechnet | Rang-IC (Mittel) | IC > 0 | Rang 1 schlägt letzten | Brier (Modell / 0.5) | Vormonatsrang-IC |
+|---|---|---|---|---|---|---|
+| 1 M | 0 | – | – | – | – | – |
+| 3 M | 0 | – | – | – | – | – |
+| 6 M | 0 | – | – | – | – | – |
+
+## Letztes Ergebnis
+
+Noch keine Prognose abgerechnet.
+
+Journal: `journal/forecast/forecasts.jsonl` und `outcomes.jsonl` (append-only, Hash-Kette; `rotationlab forecast verify`; die Kette erkennt Änderungen im Innern der Datei, eine Kürzung am Ende nur gegen den Anker aus dem Actions-Log).
