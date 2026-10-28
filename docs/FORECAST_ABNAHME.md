@@ -745,13 +745,13 @@ Der Walk-forward lief 31 Minuten. Nach dem Lauf wurde nichts geändert (ADR 057 
   0.024 **belegt**; FX 1.1 % p.a. (394 Monate), t = 1.74, p Holm 0.041 **belegt**; EQ_US t = 2.28 (Replikation Runde 3).
 - Berichtet: Teilperioden Δ Sharpe +0.41 [+0.11, +0.72] (1977–89), +0.38 [+0.17, +0.60] (1990–2007), **+0.08 [−0.18,
   +0.28] (2008–2025)**; ohne 2013 +0.26 [+0.11, +0.40]. Vol-Kalibrierung 1.26 / 1.01 / 0.95. Kappen bindend: Zinsen 91 %
-  (B1 gleich), Overlay 67 %, physisch 13 %. Deflated Sharpe (N = 70): +0.65 p.a. gegen Hürde +0.46, **p = 0.895** (< 0.95).
+  (B1 gleich), Overlay 67 %, physisch 13 %. Deflated Sharpe (N = 70): +0.65 p.a. gegen Hürde +0.46, Wahrscheinlichkeit **0.895** (< 0.95; kein p-Wert).
 - Varianten: ohne Zeitreihenfilter 0.552; **ohne Querschnitt (B1 + Filter) 0.792**; ohne FX 0.788; Kosten ×2 0.735;
   Entscheidungskurs 0.803; Vol monatlich 0.778; einzelne Sleeves 0.58 / 0.55 / 0.42 / 0.22 / 0.48.
 - Reproduktion: `rotationlab golden --strategy sleeve_allocator_v2` 0.7911 / 0.1083 / −0.1309 exakt;
   `test_sleeve_allocator_v2_golden` (587 Monate, Long-Buch ≤ 1.5, Overlay ≤ 0.5). Register: 12 Läufe gespeichert,
-  N = 70 unverändert; DSR aus den gespeicherten Reihen nachgerechnet (Hürde +0.460, p 0.895 identisch; ohne den Schutz
-  gegen Doppelzählung wäre p 0.925 gewesen). Tests: 367 Haupttests, 28 Golden, ruff, mypy grün.
+  N = 70 unverändert; DSR aus den gespeicherten Reihen nachgerechnet (Hürde +0.460, Wahrscheinlichkeit 0.895 identisch; ohne den
+  Schutz gegen Doppelzählung wäre sie 0.925 gewesen). Tests: 367 Haupttests, 28 Golden, ruff, mypy grün.
 
 **Deutung (ADR 060).** Das vorab festgelegte Kriterium ist erfüllt; es misst den Allokator gegen die passive
 Risikoparität. Die vorab benannte Ablation sagt, woher der Vorteil kommt: Risikoparität + Trendfilter ohne jede
@@ -759,7 +759,7 @@ Querschnittsauswahl erreicht denselben Sharpe (0.792 gegen 0.791). Die Querschni
 sich messbar (2.3 % bzw. 1.1 % p.a. vor Kosten), tragen aber im Buch nach Vol-Ziel, Kappen und Kosten nichts Messbares bei.
 Der Filtervorteil stammt aus 1977–2007 und ist seit 2008 nicht belegt – genau das Muster, das der Trockenlauf (Nullwelt)
 als Risiko benannt hatte (Filter verdient, wenn Cash hoch gegenüber den Anlagerenditen ist). Deflated Sharpe unter der
-Hürde. Entscheid: kein Live-Betrieb von v2; die Live-Prognose von Runde 1 bleibt der einzige Live-Track. Ein Trendfilter auf
+Hürde. B1 ist allerdings die schwächste der vier Baselines (Sharpe 0.506 gegen Buy-and-Hold 0.524, 60/40 0.563, Equal Weight 0.614); gegen B2–B4 enthält das Intervall die Null oder streift sie, und seit 2008 liegt der Allokator (0.594) unter Equal Weight (0.719) und 60/40 (0.720) – Punktschätzer, nachgerechnet in der Projekt-Rückschau vom 28.10. Entscheid: kein Live-Betrieb von v2; die Live-Prognose von Runde 1 bleibt der einzige Live-Track. Ein Trendfilter auf
 Risikoparität ist ein bekanntes Ergebnis der Literatur, kein neues dieses Projekts.
 
 **Zweitprüfung (frischer Prüfer, `docs/REVIEW_ALLOKATOR.md` Teil F):** kein Blocker, kein Leck, alle Zahlen bis 1e-14 reproduziert, Rang-Portfolios aus Rohdaten bit-genau nachgebaut. Gewichtig: das JA ist ein Trendfilter-Ergebnis (Allokator − „ohne Querschnitt“ −0.001 [−0.069, +0.060], präziser Nullbefund), die neuen Signale sind seit 2008 flach, Regimekonzentration auf Zinswende-Jahre. Umgesetzt: SE/MDE immer im Bericht (0.088 / 0.22), Abschnitt „Nach der Zweitprüfung ergänzt“ mit beiden Differenzen und den Rang-Portfolios je Teilperiode (nicht vorregistriert, ändert kein Urteil), Register nach `round/name`, Zeitzone in ADR 059, Wortlaut ADR 057 (c) in ADR 060 klargestellt. Der Walk-forward wurde dafür ein zweites Mal gerechnet; alle Ergebnisdateien sind Byte für Byte gleich, im Bericht kamen nur die neuen Zeilen dazu.

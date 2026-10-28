@@ -185,7 +185,7 @@ Seeds 1–5 und Block 24 geben [+0.13, +0.43]. Datenplausibilität: Cash 4.5 % p
 | F5 | klein | SE und MDE wurden nur bei NEIN gedruckt (ADR 057 f verlangt sie immer): SE 0.088, MDE 0.22. | Skript gibt sie jetzt immer aus. |
 | F6 | klein | ADR 057 (c) „Rang − (N+1)/2“ zweideutig; Code und Docstring (die Spezifikation) eindeutig: Rang 1 = höchster Score, Offset (N+1)/2 − Rang. | Klargestellt in ADR 060. |
 | F7 | klein | Zeitangabe in ADR 059 ohne Zone. | „17:10 MEZ (16:10 UTC)“ nachgetragen; Lauf 1 16:04 UTC, Lauf 2 16:34 UTC. |
-| F8 | klein | `register()` schlüsselte nach Namen, Runde 3 und 4 teilen Namen – im genutzten Pfad folgenlos. | Schlüssel jetzt `round/name`; DSR unverändert (26 Reihen, p 0.895). |
+| F8 | klein | `register()` schlüsselte nach Namen, Runde 3 und 4 teilen Namen – im genutzten Pfad folgenlos. | Schlüssel jetzt `round/name`; DSR unverändert (26 Reihen, Wahrscheinlichkeit 0.895). |
 | F9 | klein | Fensterende 2025-11 durch die Darstellungs-Baselines B3/B4 (US-Markt) gesetzt. | So in ADR 058 (e) vorgesehen; keine Änderung. |
 | F10 | klein | Länderindizes mit Lag 0D, gehandelt zum Entscheidungskurs; French publiziert Wochen später. | Als Einschränkung benannt (ein Länder-ETF-Schlusskurs wäre am Monatsende verfügbar). |
 | F11 | klein | Einlagenindex verzinst mit dem zuletzt *publizierten* Monatszins (um einen Monat verschobener Carry). | Gewollte Konvention (ADR 057 a), vernachlässigbar. |
