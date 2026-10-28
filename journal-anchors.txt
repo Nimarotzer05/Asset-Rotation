@@ -1,0 +1,1 @@
+2026-10-28T16:05:44Z journal head: forecasts.jsonl seq 2 hash 152e6e3fc24c3bb461bd4e7ead99d8b412d8527674c04a2e94928b294335e26f; outcomes.jsonl empty
