@@ -368,6 +368,58 @@ static:french:ff5:SMB,static,ff5:SMB,return,M,0D,none,False,,French FF5+Mom SMB,
 static:ice:HY_OAS,static,hyoas:BAMLH0A0HYM2,yield,D,1D,none,False,pct,ICE BofA US HY OAS,1996-12-31,2021-03-19,6322,6322
 static:lbma:GOLD,static,lbma:GOLD,price,D,0D,none,False,USD/oz,LBMA gold PM fix USD,1968-04-01,2026-02-25,14544,14544
 static:lbma:SILVER,static,lbma:SILVER,price,D,0D,none,False,USD/oz,LBMA silver fix USD,1968-01-02,2026-02-25,14688,14688
+static:r4:CTRY_AUSTRALIA,static,r4_countries:CTRY_AUSTRALIA,total_return,M,0D,none,False,,"French country AUSTRALIA: market return with dividends in USD, total-return index",1974-12-31,2025-12-31,613,613
+static:r4:CTRY_AUSTRIA,static,r4_countries:CTRY_AUSTRIA,total_return,M,0D,none,False,,"French country AUSTRIA: market return with dividends in USD, total-return index",1986-12-31,2025-12-31,469,469
+static:r4:CTRY_BELGIUM,static,r4_countries:CTRY_BELGIUM,total_return,M,0D,none,False,,"French country BELGIUM: market return with dividends in USD, total-return index",1974-12-31,2025-12-31,613,613
+static:r4:CTRY_CANADA,static,r4_countries:CTRY_CANADA,total_return,M,0D,none,False,,"French country CANADA: market return with dividends in USD, total-return index",1976-12-31,2025-12-31,589,589
+static:r4:CTRY_DENMARK,static,r4_countries:CTRY_DENMARK,total_return,M,0D,none,False,,"French country DENMARK: market return with dividends in USD, total-return index",1988-12-31,2025-12-31,445,445
+static:r4:CTRY_FINLAND,static,r4_countries:CTRY_FINLAND,total_return,M,0D,none,False,,"French country FINLAND: market return with dividends in USD, total-return index",1987-12-31,2025-12-31,457,457
+static:r4:CTRY_FRANCE,static,r4_countries:CTRY_FRANCE,total_return,M,0D,none,False,,"French country FRANCE: market return with dividends in USD, total-return index",1974-12-31,2025-12-31,613,613
+static:r4:CTRY_GERMANY,static,r4_countries:CTRY_GERMANY,total_return,M,0D,none,False,,"French country GERMANY: market return with dividends in USD, total-return index",1974-12-31,2025-12-31,613,613
+static:r4:CTRY_HONGKONG,static,r4_countries:CTRY_HONGKONG,total_return,M,0D,none,False,,"French country HONGKONG: market return with dividends in USD, total-return index",1974-12-31,2025-12-31,613,613
+static:r4:CTRY_IRELAND,static,r4_countries:CTRY_IRELAND,total_return,M,0D,none,False,,"French country IRELAND: market return with dividends in USD, total-return index",1990-12-31,2025-12-31,421,421
+static:r4:CTRY_ITALY,static,r4_countries:CTRY_ITALY,total_return,M,0D,none,False,,"French country ITALY: market return with dividends in USD, total-return index",1974-12-31,2025-12-31,613,613
+static:r4:CTRY_JAPAN,static,r4_countries:CTRY_JAPAN,total_return,M,0D,none,False,,"French country JAPAN: market return with dividends in USD, total-return index",1974-12-31,2025-12-31,613,613
+static:r4:CTRY_MALAYSIA,static,r4_countries:CTRY_MALAYSIA,total_return,M,0D,none,False,,"French country MALAYSIA: market return with dividends in USD, total-return index",1993-12-31,2001-10-31,95,95
+static:r4:CTRY_NETHERLANDS,static,r4_countries:CTRY_NETHERLANDS,total_return,M,0D,none,False,,"French country NETHERLANDS: market return with dividends in USD, total-return index",1974-12-31,2025-12-31,613,613
+static:r4:CTRY_NEWZEALAND,static,r4_countries:CTRY_NEWZEALAND,total_return,M,0D,none,False,,"French country NEWZEALAND: market return with dividends in USD, total-return index",1987-12-31,2025-12-31,457,457
+static:r4:CTRY_NORWAY,static,r4_countries:CTRY_NORWAY,total_return,M,0D,none,False,,"French country NORWAY: market return with dividends in USD, total-return index",1974-12-31,2025-12-31,613,613
+static:r4:CTRY_SINGAPORE,static,r4_countries:CTRY_SINGAPORE,total_return,M,0D,none,False,,"French country SINGAPORE: market return with dividends in USD, total-return index",1974-12-31,2025-12-31,613,613
+static:r4:CTRY_SPAIN,static,r4_countries:CTRY_SPAIN,total_return,M,0D,none,False,,"French country SPAIN: market return with dividends in USD, total-return index",1974-12-31,2025-12-31,613,613
+static:r4:CTRY_SWEDEN,static,r4_countries:CTRY_SWEDEN,total_return,M,0D,none,False,,"French country SWEDEN: market return with dividends in USD, total-return index",1974-12-31,2025-12-31,613,613
+static:r4:CTRY_SWITZERLAND,static,r4_countries:CTRY_SWITZERLAND,total_return,M,0D,none,False,,"French country SWITZERLAND: market return with dividends in USD, total-return index",1974-12-31,2025-12-31,613,613
+static:r4:CTRY_UK,static,r4_countries:CTRY_UK,total_return,M,0D,none,False,,"French country UK: market return with dividends in USD, total-return index",1974-12-31,2025-12-31,613,613
+static:r4:FX_AUD,static,r4_daily:FX_AUD,total_return,D,0D,none,False,,AUD deposit in USD: H.10 spot and OECD short rate published a month later,1991-01-02,2026-10-23,8987,8987
+static:r4:FX_CAD,static,r4_daily:FX_CAD,total_return,D,0D,none,False,,CAD deposit in USD: H.10 spot and OECD short rate published a month later,1991-01-02,2026-10-23,8987,8987
+static:r4:FX_CHF,static,r4_daily:FX_CHF,total_return,D,0D,none,False,,CHF deposit in USD: H.10 spot and OECD short rate published a month later,1991-01-02,2026-10-23,8987,8987
+static:r4:FX_EUR,static,r4_daily:FX_EUR,total_return,D,0D,none,False,,EUR deposit in USD: H.10 spot and OECD short rate published a month later,1999-01-04,2026-04-30,6853,6853
+static:r4:FX_GBP,static,r4_daily:FX_GBP,total_return,D,0D,none,False,,GBP deposit in USD: H.10 spot and OECD short rate published a month later,1991-01-02,2026-04-30,8866,8866
+static:r4:FX_JPY,static,r4_daily:FX_JPY,total_return,D,0D,none,False,,JPY deposit in USD: H.10 spot and OECD short rate published a month later,1991-01-02,2026-10-23,8987,8987
+static:r4:FX_NOK,static,r4_daily:FX_NOK,total_return,D,0D,none,False,,NOK deposit in USD: H.10 spot and OECD short rate published a month later,1991-01-02,2026-10-23,8987,8987
+static:r4:FX_NZD,static,r4_daily:FX_NZD,total_return,D,0D,none,False,,NZD deposit in USD: H.10 spot and OECD short rate published a month later,1991-01-02,2026-10-23,8987,8987
+static:r4:FX_SEK,static,r4_daily:FX_SEK,total_return,D,0D,none,False,,SEK deposit in USD: H.10 spot and OECD short rate published a month later,1991-01-02,2026-10-23,8987,8987
+static:r4:IND_DURBL,static,r4_daily:IND_DURBL,total_return,D,0D,none,False,,"French industry Durbl, daily total return (value-weighted)",1926-07-01,2026-09-30,26338,26338
+static:r4:IND_ENRGY,static,r4_daily:IND_ENRGY,total_return,D,0D,none,False,,"French industry Enrgy, daily total return (value-weighted)",1926-07-01,2026-09-30,26338,26338
+static:r4:IND_HITEC,static,r4_daily:IND_HITEC,total_return,D,0D,none,False,,"French industry HiTec, daily total return (value-weighted)",1926-07-01,2026-09-30,26338,26338
+static:r4:IND_HLTH,static,r4_daily:IND_HLTH,total_return,D,0D,none,False,,"French industry Hlth, daily total return (value-weighted)",1926-07-01,2026-09-30,26338,26338
+static:r4:IND_MANUF,static,r4_daily:IND_MANUF,total_return,D,0D,none,False,,"French industry Manuf, daily total return (value-weighted)",1926-07-01,2026-09-30,26338,26338
+static:r4:IND_NODUR,static,r4_daily:IND_NODUR,total_return,D,0D,none,False,,"French industry NoDur, daily total return (value-weighted)",1926-07-01,2026-09-30,26338,26338
+static:r4:IND_OTHER,static,r4_daily:IND_OTHER,total_return,D,0D,none,False,,"French industry Other, daily total return (value-weighted)",1926-07-01,2026-09-30,26338,26338
+static:r4:IND_SHOPS,static,r4_daily:IND_SHOPS,total_return,D,0D,none,False,,"French industry Shops, daily total return (value-weighted)",1926-07-01,2026-09-30,26338,26338
+static:r4:IND_TELCM,static,r4_daily:IND_TELCM,total_return,D,0D,none,False,,"French industry Telcm, daily total return (value-weighted)",1926-07-01,2026-09-30,26338,26338
+static:r4:IND_UTILS,static,r4_daily:IND_UTILS,total_return,D,0D,none,False,,"French industry Utils, daily total return (value-weighted)",1926-07-01,2026-09-30,26338,26338
+static:r4:RATE_AUD,static,r4_rates:RATE_AUD,yield,M,1M,none,False,pct,"AUD short rate (OECD 3M interbank, call money before its first value)",1968-01-31,2026-08-31,704,704
+static:r4:RATE_CAD,static,r4_rates:RATE_CAD,yield,M,1M,none,False,pct,"CAD short rate (OECD 3M interbank, call money before its first value)",1956-01-31,2026-09-30,849,849
+static:r4:RATE_CHF,static,r4_rates:RATE_CHF,yield,M,1M,none,False,pct,"CHF short rate (OECD 3M interbank, call money before its first value)",1972-01-31,2026-09-30,657,657
+static:r4:RATE_EUR,static,r4_rates:RATE_EUR,yield,M,1M,none,False,pct,"EUR short rate (OECD 3M interbank, call money before its first value)",1960-01-31,2026-01-31,793,793
+static:r4:RATE_GBP,static,r4_rates:RATE_GBP,yield,M,1M,none,False,pct,"GBP short rate (OECD 3M interbank, call money before its first value)",1957-01-31,2026-01-31,829,829
+static:r4:RATE_JPY,static,r4_rates:RATE_JPY,yield,M,1M,none,False,pct,"JPY short rate (OECD 3M interbank, call money before its first value)",1985-07-31,2026-08-31,494,494
+static:r4:RATE_NOK,static,r4_rates:RATE_NOK,yield,M,1M,none,False,pct,"NOK short rate (OECD 3M interbank, call money before its first value)",1979-01-31,2026-09-30,573,573
+static:r4:RATE_NZD,static,r4_rates:RATE_NZD,yield,M,1M,none,False,pct,"NZD short rate (OECD 3M interbank, call money before its first value)",1973-12-31,2026-09-30,634,634
+static:r4:RATE_SEK,static,r4_rates:RATE_SEK,yield,M,1M,none,False,pct,"SEK short rate (OECD 3M interbank, call money before its first value)",1955-01-31,2026-09-30,861,861
+static:r4:UST10_D,static,r4_daily:UST10_D,total_return,D,0D,none,False,,"10y Treasury par bond, daily total return on DGS10",1962-01-02,2026-10-26,16189,16189
+static:r4:UST2_D,static,r4_daily:UST2_D,total_return,D,0D,none,False,,"2y Treasury par bond, daily total return on DGS2",1976-06-01,2026-10-26,12597,12597
+static:r4:UST5_D,static,r4_daily:UST5_D,total_return,D,0D,none,False,,"5y Treasury par bond, daily total return on DGS5",1962-01-02,2026-10-26,16189,16189
 static:shiller:Consumer_Price_Index,static,shiller:Consumer Price Index,macro,M,1M,none,False,,Shiller Consumer Price Index,1871-01-31,2023-09-30,1833,1833
 static:shiller:Dividend,static,shiller:Dividend,macro,M,6M,none,False,,Shiller Dividend,1871-01-31,2023-06-30,1830,1830
 static:shiller:Earnings,static,shiller:Earnings,macro,M,6M,none,False,,Shiller Earnings,1871-01-31,2023-06-30,1830,1830
