@@ -1,0 +1,45 @@
+# Implementability check of research round 4 (ADR 061), fixed BEFORE it runs on real data: the round's ablation
+# "without cross-section" (risk parity across the long sleeves + 12-month trend filter, ADR 060) rebuilt with
+# exchange-traded funds instead of research indices. Same module and every parameter of round 4; only the instruments
+# differ, mapped by rule (ADR 061 a). Not a new signal search: one run, entered in docs/TRIALS.yaml before it runs.
+id: trend_rp_etf
+version: 1
+role: paper                        # research only: outside the risk budgets, no capital
+cadence: monthly
+universe: [XLB, XLE, XLF, XLI, XLK, XLP, XLU, XLV, XLY, XLC, XLRE, EFA, SHY, IEF, GLD, SLV, BIL]
+long_history_universe: [XLB, XLE, XLF, XLI, XLK, XLP, XLU, XLV, XLY, XLC, XLRE, EFA, SHY, IEF, GLD, SLV, BIL]
+warmup_months: 30
+params:
+  cash: BIL                        # tradable T-bill ETF (the forecast's live cash asset)
+  sleeves:                         # budgets and groups of round 4 (ADR 057 b); the currency overlay has no ETF here
+    EQ_US:   { instruments: [XLB, XLE, XLF, XLI, XLK, XLP, XLU, XLV, XLY, XLC, XLRE], mode: long_xs, families: { mom_12_1: 1.0 }, vol: daily, budget: 0.125, group: physical }
+    EQ_INTL: { instruments: [EFA], mode: long_ts, vol: daily, budget: 0.125, group: physical }
+    FI:      { instruments: [SHY, IEF], mode: long_ts, vol: daily, budget: 0.25, group: rates }
+    PM:      { instruments: [GLD, SLV], mode: long_ts, vol: daily, budget: 0.25, group: physical }
+  min_instruments: { long_xs: 6, long_ts: 1, long_short_xs: 6 }
+  zscore_clip: 3.0
+  xs_select: false                 # the ablation of ADR 060: no cross-sectional selection, inverse vol within a sleeve
+  ts_filter: true                  # 12-month excess return over cash > 0 (ADR 057 c)
+  vol_daily: { com: 60, min_obs: 120, floor: 0.02, stale_days: 10 }
+  vol_monthly: { half_life: 12, min_obs: 24, floor: 0.02 }
+  correlation: { half_life: 24, min_obs: 24, floor: 0.02 }
+  vol_target: 0.10
+  caps: { physical: 1.0, physical_plus_rates: 1.5, overlay_gross: 0.5 }
+  band: 0.0
+confidence:
+  kind: score_dispersion
+  floor: 0.5
+  params: { scale: 1.0 }
+golden_run:
+  universe: live                   # the live store (branch data): Yahoo closes with dividends and splits
+  data_from: 1998-12-31            # first full month of the sector SPDRs
+  start: 1998-12-31
+  end: 2026-09-30
+  sample: [1900-01-31, 1900-01-31]   # set by the window rule of ADR 058 (e) after the first run, like round 4
+  count_warmup: false
+  execution: next_tradable
+  costs:
+    default_bps: null              # the universe's cost_bps per ETF (ADR 061 c)
+    cash_bps: 0.0
+    borrow_bps: { CASH: 30.0 }     # negative cash financed at the cash asset + 30 bp p.a. (ADR 057 d)
+    per_asset: {}
