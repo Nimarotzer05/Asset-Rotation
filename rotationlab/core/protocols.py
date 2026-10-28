@@ -186,23 +186,3 @@ class Recorder(Protocol):
     ) -> None: ...
     def risk_event(self, d: date, action: RiskAction) -> None: ...
     def finish(self, status: str) -> None: ...
-
-
-# ---------------------------------------------------------------------------
-# Scenarios
-# ---------------------------------------------------------------------------
-@runtime_checkable
-class ScenarioMethod(Protocol):
-    name: str
-
-    def evaluate(
-        self, scenario: Mapping[str, Any], targets: Targets, view: MarketView
-    ) -> Mapping[str, Any]: ...
-
-
-# ---------------------------------------------------------------------------
-# Execution (reserved, not built in v1)
-# ---------------------------------------------------------------------------
-@runtime_checkable
-class Executor(Protocol):
-    def submit(self, targets: Targets) -> Mapping[str, Any]: ...

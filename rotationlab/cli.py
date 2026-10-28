@@ -21,14 +21,6 @@ from rotationlab import __version__
 from rotationlab.config.models import load_bundle
 from rotationlab.core.errors import ConfigError, DataError, QualityError, RiskHalt, RotationLabError
 
-PHASE = {
-    "live": 4,
-    "scenarios": 3,
-    "relationships": 3,
-    "report": 4,
-    "dashboard": 4,
-}
-
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="rotationlab", description="Cross-asset rotation system")
@@ -79,16 +71,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     _add_engine_commands(sub)
 
-    live = sub.add_parser("live", help="run the engine for the latest decision date and update the journal")
-    live.add_argument("--force", action="store_true", help="treat today as a decision date")
-
     _add_forecast_commands(sub)
 
-    sub.add_parser("scenarios", help="evaluate the scenario library against current targets")
-    sub.add_parser("relationships", help="recompute correlations, betas, regimes, ICs, drift")
-    rep = sub.add_parser("report", help="render the daily markdown report")
-    rep.add_argument("--date", default=None)
-    sub.add_parser("dashboard", help="start the Streamlit dashboard")
     return p
 
 
@@ -172,7 +156,7 @@ def cmd_validate(args: argparse.Namespace) -> int:
         raise ConfigError("; ".join(problems))
     print(
         f"config ok · {len(bundle.universe.assets)} assets · {len(catalog)} series · {len(bundle.strategies)} strategies · "
-        f"{len(bundle.scenarios)} scenarios · hash {bundle.hash()}"
+        f"hash {bundle.hash()}"
     )
     return 0
 
@@ -499,12 +483,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     logging.basicConfig(level=logging.WARNING, format="%(levelname)s %(name)s: %(message)s")
     try:
-        if args.command in COMMANDS:
-            return int(globals()[COMMANDS[args.command]](args))
-        load_bundle(args.configs)  # every command validates config first
-        raise NotImplementedError(
-            f"'{args.command}' arrives in phase {PHASE[args.command]} (see docs/ARCHITECTURE.md §12)"
-        )
+        return int(globals()[COMMANDS[args.command]](args))
     except ConfigError as e:
         print(f"config error: {e}", file=sys.stderr)
         return 2

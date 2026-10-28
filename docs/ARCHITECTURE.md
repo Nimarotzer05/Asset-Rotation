@@ -2,7 +2,7 @@
 
 Ein System, das laufend Marktdaten verarbeitet, Szenarien bewertet, Handelssignale erzeugt und Zusammenhänge quantifiziert – mit einem einzigen Code-Pfad für Backtest und Live-Betrieb.
 
-Stand 2026-10-25 (Phase 1 und Phase 2 gebaut; Neuausrichtung auf die Monatsprognose, ADR 043). Entscheidungen mit Begründung: `docs/ADR.md`. Betrieb: `docs/RUNBOOK.md`. Datenherkunft: `data/DATA_SOURCES.md`. Abnahme Phase 1: `docs/PHASE1_ABNAHME.md`.
+Stand 2026-10-25 (Phase 1 und Phase 2 gebaut; Neuausrichtung auf die Monatsprognose, ADR 043). **Nachtrag 2026-10-28 (ADR 062):** Die Phasen 3/4 – Szenarien (§8), Zusammenhänge (§9), Live-Portfolio, Report und Dashboard (§10) – wurden nie gebaut und als Platzhalter entfernt; diese Abschnitte beschreiben den ursprünglichen Plan. Der erste Forschungscode (`src/`, `run.py`, `scripts/run_*.py`) liegt auf Branch `archive/legacy-research`. Gebaut und in Betrieb: Daten (§3–4), Features, Strategiemodule und Engine (Phase 2), Monatsprognose mit Journal, Forschungsrunden 1–4 und ETF-Check (Tabelle §12). Englische Kurzfassung: `README.md`. Entscheidungen mit Begründung: `docs/ADR.md`. Betrieb: `docs/RUNBOOK.md`. Datenherkunft: `data/DATA_SOURCES.md`. Abnahme Phase 1: `docs/PHASE1_ABNAHME.md`.
 
 ---
 
@@ -359,7 +359,7 @@ Bei jedem Lauf neu, gespeichert in `relationships` mit Datum (eine Zeitreihe der
 
 ## 10. Reporting, Journal, Betrieb
 
-**Täglicher Lauf** (`.github/workflows/daily.yml`, 06:30 UTC Mo–Fr): `validate → ingest → live → scenarios → relationships → report`; Commit von `data/store`, `journal`, `reports` in Branch `data`; Telegram bei Ereignissen; Heartbeat-Job meldet Fehlschlag.
+**Täglicher Lauf** (`.github/workflows/daily.yml`, 06:30 UTC Mo–Fr; gebaut ist `validate → store verify → ingest → forecast run → forecast verify`, ursprünglich geplant war `validate → ingest → live → scenarios → relationships → report`); Commit von `data/store`, `journal`, `reports` in Branch `data`; Telegram bei Ereignissen; Heartbeat-Job meldet Fehlschlag.
 
 **Report** (`reports/YYYY-MM-DD.md`): Status · Änderungen seit gestern · Lage (Regime, Risikoappetit, Ratio-z, Trends) · Module · Portfolio · Szenarien · Zusammenhänge · Journal.
 
@@ -386,13 +386,12 @@ rotationlab/
   strategies/    base.py · us_equity_exposure.py · us_sector_rotation.py · multi_asset_rotation.py · commodity_trend.py · precious_metals.py · walkforward.py
   portfolio/     combine.py · costs.py · book.py (Phase 3: risk.py)
   engine/        core.py · modes.py · recorder.py · metrics.py
-  scenarios/     library.py · analog.py · factor.py · bootstrap.py
-  relationships/ metrics.py · health.py · drift.py
-  reporting/     report.py · journal.py · notify.py · dashboard.py
+  forecast/      model.py · live.py · journal.py · report.py · evaluation.py · types.py   (gebaut ab ADR 043)
+  (geplant, nie gebaut, ADR 062 entfernt: scenarios/ · relationships/ · reporting/)
   cli.py
-configs/         system.yaml · universe.yaml · portfolio.yaml · live.yaml · strategies/*.yaml · scenarios/*.yaml
+configs/         system.yaml · universe.yaml · portfolio.yaml · live.yaml · forecast*.yaml · strategies/*.yaml
 tests/           unit/ (inkl. Hypothesis-Eigenschaften) · lookahead/ · golden/ · integration/ (network, recorded) · fixtures/ · test_contracts.py
-research/        bisherige scripts/, src/, output/ (eingefroren)
+output/          Berichte je Studie (output/README.md); der erste Forschungscode liegt auf Branch archive/legacy-research
 docs/            ARCHITECTURE.md · ADR.md · RUNBOOK.md
 .github/workflows/ ci.yml · daily.yml
 ```
@@ -467,6 +466,7 @@ einfache Baselines schlägt. Nicht: eine möglichst hohe historische Sharpe.
 | 15 (2026-10-27) | Runde 4 (Stufe 2) | Breite erhöhen wie ein professioneller Allokator, Schwachstellen beheben (Auftrag 21:07) | ADR 057; Daten über den Workflow `research-data` |
 | 16 (2026-10-28) | Runde 4 vor dem Download härten | Profi-Standard, Ausrollen möglichst gebündelt (Auftrag 23:08) | ADR 058: zwei Fehler und vier Designschwächen vor den Daten behoben; ein Upload jetzt (Vorregistrierung mit Zeitstempel, Live-Start, Daten), einer am Schluss |
 | 17 (2026-10-28) | Runde 4 rechnen und abschliessen | Auftrag 17:05 („mache Runde 4, danach die letzten Schritte“); Upload über die Claude-GitHub-App per Pull Request statt Zip | ADR 059 (D-Mark fehlt bei FRED → Euro ab 1999, vor dem Datenblick entschieden), ADR 060 (Ergebnis, Deutung, kein Live-Betrieb); Golden gepinnt; Zweitprüfung |
+| 18 (2026-10-28) | Projekt-Rückschau: nichts soll mehr angreifbar sein | Auftrag 19:27; unabhängiges Audit (Ziel, Schwächen, Interviewsicht) | ADR 061 (ETF-Check vorregistriert, ADR 062 Ergebnis NEIN, ρ 0.96 zur Index-Studie), Legacy archiviert, Phasen 3/4 entfernt, englisches README, Write-up, Methoden- und Interviewnotizen, unabhängiger pandas-Nachbau von Runde 4 |
 
 **Migration:** `scripts/run_equity.py` → `strategies/us_equity_exposure.py`, `strategies/us_sector_rotation.py`, `features/equity.py` + Goldens · `src/data.py`, `scripts/build_dataset.py` → `data/providers/static.py` + `ingest.py` · `src/features.py`, `commodity_model.py` (Signale) → `features/` · `src/signals.py`, `commodity_model.py` (Gewichte) → `strategies/` · `run_gold_silver.py`, `run_derisk.py` → `strategies/precious_metals.py` + Goldens · `src/analysis.py` → `stats/`, `relationships/` · `src/backtest.py`, `metrics.py` → `engine/`, `portfolio/book.py` · `scripts/run_*.py`, `output/` → `research/` · `config.py` → `configs/*.yaml`. Modulweise; ein Modul ist migriert, wenn sein Golden grün ist.
 
