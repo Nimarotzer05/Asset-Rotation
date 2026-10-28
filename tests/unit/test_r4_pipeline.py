@@ -229,3 +229,31 @@ def test_the_round4_series_enter_the_catalog_with_the_frozen_countries(tmp_path)
     assert {e.column for e in cat.values() if e.group == "r4_daily"} <= set(daily.columns)
     assert {e.column for e in cat.values() if e.group == "r4_rates"} == set(rates.columns)
     assert sorted(ctry.columns) == ["CTRY_GERMANY", "CTRY_JAPAN", "CTRY_UK"]
+
+
+def test_the_etf_check_is_round_four_ablation_with_etfs() -> None:
+    """ADR 061: the ETF configuration is the round-4 ablation "without cross-section" – every parameter of
+    `sleeve_allocator_v2` except the instruments, the cash asset and the dropped currency overlay (no ETF)."""
+    from rotationlab.config.models import load_bundle
+
+    b = load_bundle(Path(__file__).resolve().parents[2] / "configs")
+    r4p, etf = b.strategies["sleeve_allocator_v2"].params, b.strategies["trend_rp_etf"].params
+    same = (
+        "min_instruments",
+        "zscore_clip",
+        "vol_daily",
+        "vol_monthly",
+        "correlation",
+        "vol_target",
+        "caps",
+        "band",
+    )
+    assert {k: etf[k] for k in same} == {k: r4p[k] for k in same}
+    assert etf["xs_select"] is False and etf["ts_filter"] is True and etf["cash"] == "BIL"
+    for name, sl in etf["sleeves"].items():
+        ref = r4p["sleeves"][name]
+        assert (sl["budget"], sl["group"]) == (ref["budget"], ref["group"]), name
+    assert set(etf["sleeves"]) == {"EQ_US", "EQ_INTL", "FI", "PM"}  # FX: no currency ETF in the store
+    gr = b.strategies["trend_rp_etf"].golden_run
+    assert gr is not None and gr.universe == "live" and gr.execution == "next_tradable"
+    assert gr.costs.default_bps is None and gr.costs.borrow_bps == {"CASH": 30.0}

@@ -475,4 +475,19 @@ class SleeveAllocatorV2(BaseStrategy):
         return out
 
 
-__all__ = ["SleeveAllocatorV2", "inverse_vol", "long_leg_weights", "long_short_weights", "rank_offsets"]
+@registry.strategy
+class TrendRiskParityEtf(SleeveAllocatorV2):
+    """The same rules under a second configuration id: the round-4 ablation rebuilt with ETFs (ADR 061,
+    configs/strategies/trend_rp_etf.yaml). No code differs; only instruments, cash and switches come from its YAML."""
+
+    strategy_id = "trend_rp_etf"
+
+
+__all__ = [
+    "SleeveAllocatorV2",
+    "TrendRiskParityEtf",
+    "inverse_vol",
+    "long_leg_weights",
+    "long_short_weights",
+    "rank_offsets",
+]
