@@ -185,3 +185,59 @@ def test_freeze_refuses_a_branch_with_a_missing_required_source(tmp_path) -> Non
     fetch.fetch_all(http, src / "research_data", "K", now=lambda: NOW)
     with pytest.raises(DataError, match="required sources missing"):
         freeze.freeze(src, "abc", tmp_path / "raw", countries=False)
+
+
+def _country_member(first: str, months: list[tuple[str, str]]) -> str:
+    """One `<Country>.Dat` in the layout seen on 2026-10-28: dollar block (broader group) first, then local."""
+    head = (
+        "\n     Value-Weight Dollar Returns      All 4 Data Items Not Reqd\n"
+        "                -- BE/ME --   --- E/P ---   --- CE/P --   ------  Yld  -----\n"
+        "          Mkt   High    Low   High    Low   High    Low   High    Low   Zero\n"
+    )
+    body = "".join(
+        f"   {ym} {mkt:>6}  1.00   1.00   1.00   1.00   1.00   1.00   1.00   1.00 -99.99\n"
+        for ym, mkt in months
+    )
+    local = head.replace("Dollar", "Local ") + body.replace("  1.00", "  9.99")
+    annual = "\n1975 111.57  1.0\n\nAverage of Annual Value-Weight Averages\n     Firms    B/M\n1975   179 219.86\n"
+    return first + head + body + "\n" + local + annual
+
+
+def _country_zip(members: dict[str, str]) -> bytes:
+    import io
+    import zipfile
+
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        for n, t in members.items():
+            z.writestr(n, t)
+    return buf.getvalue()
+
+
+def test_country_parser_takes_the_dollar_market_column_of_every_member() -> None:
+    months = [
+        (f"{y}{m:02d}", "54.90" if (y, m) == (1975, 1) else "-99.99" if (y, m) == (1975, 3) else "1.50")
+        for y in (1975, 1976, 1977)
+        for m in range(1, 13)
+    ]
+    raw = _country_zip(
+        {
+            "UK.Dat": _country_member("", months),
+            "Swtzrlnd.Dat": _country_member("", months[12:]),
+            "US.Dat": _country_member("", months),  # a United States member is left out (EQ_US is its sleeve)
+        }
+    )
+    df = freeze.parse_international_countries(raw)
+    assert list(df.columns) == ["UK", "Switzerland"]  # zip order, abbreviations expanded, no US
+    assert df.index[0] == pd.Timestamp("1975-01-31") and len(df) == 36
+    assert df["UK"].iloc[0] == pytest.approx(0.549) and pd.isna(
+        df["UK"].iloc[2]
+    )  # percent → decimal, -99.99 → NaN
+    assert df["UK"].iloc[1] == pytest.approx(0.015) and pd.isna(df["Switzerland"].iloc[0])  # entry by data
+    assert df["Switzerland"].iloc[12] == pytest.approx(0.015)
+    with pytest.raises(DataError, match="Mkt"):
+        freeze.parse_international_countries(
+            _country_zip({"X.Dat": _country_member("", months).replace("Mkt ", "Mky ")})
+        )
+    with pytest.raises(DataError, match="block"):
+        freeze.parse_international_countries(_country_zip({"X.Dat": "no header\n"}))

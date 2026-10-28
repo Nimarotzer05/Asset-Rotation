@@ -322,13 +322,37 @@ def main() -> None:
     pd.DataFrame(ls_series).to_csv(os.path.join(OUT, "walkforward_rank_portfolios.csv"))
 
     # ---- reported, not deciding ------------------------------------------------------------------------------------
-    n_trials, _ = register(include_planned=True)
+    n_trials, _ = register(
+        include_planned=True
+    )  # N: the round counted once, planned before the run, stored after
     own = {}
     for label in [RULE, *variants]:
         a = appraisal_residual(series[label][0], r_b1, cash)
         own[label] = float(a.mean() / a.std(ddof=1) * np.sqrt(12))
     resid = appraisal_residual(r_main, r_b1, cash)
-    sr_a, sr0_a, psr_a = deflated_sharpe(resid, n_trials, trials_variance(pd.Series(own)))
+    sr_a, sr0_a, psr_a = deflated_sharpe(
+        resid,
+        n_trials,
+        trials_variance(pd.Series(own), own_file="output/allocator_v2/walkforward_monthly.csv"),
+    )
+    # ---- added after the second review (2026-10-28, docs/REVIEW_ALLOKATOR.md part F): reported, not pre-registered,
+    # changes no verdict – where the advantage comes from, and the signals per sub-period
+    no_xs = "ohne Querschnitt"
+    review_lines: list[str] = []
+    if no_xs in series:
+        r_nx = series[no_xs][0]
+        for a_lab, ra, b_lab, rb in ((RULE, r_main, no_xs, r_nx), (no_xs, r_nx, B1, r_b1)):
+            d = paired_sharpe_diff(ra, rb, cash, BOOT, CONF)
+            review_lines.append(f"- Δ Sharpe {a_lab} − {b_lab}: {d.value:+.3f} [{d.low:+.3f}, {d.high:+.3f}]")
+    for k, ls in ls_series.items():
+        parts = []
+        for n, a, e in PERIODS:
+            x = ls[(ls.index.year >= a) & (ls.index.year <= e)].dropna()
+            if len(x) < 24:
+                continue
+            m_x, t_x = newey_west_t(x, NW_LAGS)
+            parts.append(f"{n} {m_x * 12:+.1%} p.a. (t {t_x:+.2f}, {len(x)} M)")
+        review_lines.append(f"- Rang-Portfolio {k} je Teilperiode: " + "; ".join(parts))
     fx_live = pd.Series(False, index=index)
     if "nur Sleeve FX" in variants:
         g_fx = signal_frame(variants["nur Sleeve FX"].result, ["gross_overlay"], decided)["gross_overlay"]
@@ -476,11 +500,12 @@ def main() -> None:
         f"1. Sharpe ex Cash des Allokators ({sh_rule:+.3f}) über B1 ({sh_b1:+.3f}): **{'ja' if c1 else 'nein'}**",
         f"2. Gepaarte Sharpe-Differenz zu B1 positiv und Intervall ohne Null: **{'ja' if c2 else 'nein'}** ({dv:+.3f} [{lo:+.3f}, {hi:+.3f}])",
         f"→ Vorteil des Allokators belegt: **{'JA' if verdict else 'NEIN'}**"
+        + f" – Standardfehler {se:.3f}, MDE (80 % Power) {mde:.2f}"  # always reported (ADR 057 f; review F5)
         + (
             ""
             if verdict
             else (
-                f" – Standardfehler {se:.3f}, MDE (80 % Power) {mde:.2f}: "
+                ": "
                 + (
                     "nicht belegt – Test zu schwach für Effekte unter der MDE"
                     if mde > MDE_READING
@@ -489,6 +514,18 @@ def main() -> None:
             )
         ),
         "",
+        *(
+            [
+                "## Nach der Zweitprüfung ergänzt (nicht vorregistriert, ändert kein Urteil)",
+                "",
+                "Woher der Vorteil kommt und wie die Signale über die Zeit tragen (`docs/REVIEW_ALLOKATOR.md` Teil F):",
+                "",
+                *review_lines,
+                "",
+            ]
+            if review_lines
+            else []
+        ),
         f"Laufzeit {time.perf_counter() - t0:.0f} s.",
     ]
     with open(os.path.join(OUT, "WALKFORWARD.md"), "w", encoding="utf-8") as fh:

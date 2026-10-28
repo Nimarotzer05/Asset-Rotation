@@ -207,6 +207,23 @@ def test_sleeve_allocator_golden(bundle, obs, cal) -> None:
     assert all(rep.result.proposals[-1].signals[k] <= 1.0 + 1e-9 for k in sleeves)
 
 
+def test_sleeve_allocator_v2_golden(bundle, obs, cal) -> None:
+    """Round 4 (ADR 057/058/059): the allocator v2 reproduces its pre-registered walk-forward run of 2026-10-28
+    (regression pin; the primary criterion of ADR 057 f WAS met: Δ Sharpe to B1 +0.285 [+0.140, +0.430]):
+    Sharpe 0.791, 10.8 % p.a., drawdown −13.1 % over 1977-01 … 2025-11 (587 months, window by rule), the long
+    book never above 1.5 gross, the currency overlay never above 0.5 gross (ADR 057 c)."""
+    rep = golden(bundle, obs, "sleeve_allocator_v2", cal)
+    assert rep.execution == "next_tradable"
+    assert rep.failures() == []
+    assert rep.measured["sharpe_ex_cash"] == pytest.approx(0.7911, abs=5e-4)
+    assert rep.measured["months"] == 587
+    props = [p for p in rep.result.proposals if not p.warmup]
+    long_gross = [sum(w for a, w in p.weights.items() if not a.startswith("FX_")) for p in props]
+    fx_gross = [sum(abs(w) for a, w in p.weights.items() if a.startswith("FX_")) for p in props]
+    assert max(long_gross) <= 1.5 + 1e-9 and min(long_gross) >= 0.0
+    assert max(fx_gross) <= 0.5 + 1e-9
+
+
 def test_walk_forward_golden(bundle, obs, cal) -> None:
     rep = walkforward_golden(bundle, obs, "multi_asset_rotation", cal)
     assert rep.failures() == []

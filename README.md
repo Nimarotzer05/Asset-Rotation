@@ -58,7 +58,7 @@ Download gehärtet (ADR 058):** Trockenlauf der ganzen Kette auf zwei synthetisc
 Designs – zwei Fehler behoben (FX-Carry mit Monatslag wäre nie verfügbar gewesen; Kappen wirkten nach dem Trendfilter),
 Vol-Ziel auf dem Long-Buch mit dem Währungs-Overlay ausserhalb (sonst mass der Vergleich mit B1 eine mechanische
 Anleihe-Übergewichtung), Fenster an beiden Enden nach Regel, Währungen erst ab 1991 (Kapitalverkehrskontrollen), Cash
-mit Investitionsrendite, Datenprüfung mit Schwellen vor dem Download, Registrierung aus einer Vorlage.
+mit Investitionsrendite, Datenprüfung mit Schwellen vor dem Download, Registrierung aus einer Vorlage. **Gerechnet am 28.10. (ADR 059/060):** FRED liefert die D-Mark-Reihe nicht mehr, der Euro tritt ohne Verkettung 1999 ein (Notfallregel, vor dem Datenblick entschieden); Datenprüfung G1–G6 bestanden; Fenster nach Regel 1977-01 bis 2025-11 (587 Monate). Ergebnis (`output/allocator_v2/WALKFORWARD.md`): Allokator Sharpe 0.79 gegen passive Risikoparität 0.51, Δ +0.285 [+0.14, +0.43] → **Primärkriterium erfüllt**; Länder-Momentum und Währungs-Carry/Momentum als Rang-Portfolios je belegt (Holm 10 %). Nüchterne Deutung, die im Bericht steht: Die Variante „Risikoparität + Trendfilter ohne Querschnitt“ erreicht denselben Sharpe (0.792) – der Mehrwert ist der Zeitreihen-Trendfilter, nicht die Auswahl innerhalb der Sleeves; seit 2008 Δ +0.08 [−0.18, +0.28], Deflated Sharpe p = 0.895 (unter 0.95). Deshalb kein Live-Betrieb von v2 (ADR 060); die Live-Prognose von Runde 1 bleibt der einzige Live-Track.
 
 ```bash
 python -m rotationlab.cli forecast run                    # Prognose am letzten Monatsende, fällige abrechnen, Report (täglich in Actions)

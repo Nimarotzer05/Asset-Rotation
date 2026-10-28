@@ -43,7 +43,9 @@ def static_store(bundle, catalog, cal) -> PointInTimeStore:
         catalog,
         {"static": StaticProvider(ROOT / "data" / "raw")},
         cal,
-        run_date=date(2026, 10, 24),
+        run_date=date(
+            2026, 10, 28
+        ),  # ≥ the newest observation of the frozen panel (round 4 FRED daily: 2026-10-26)
         full=True,
     )
     assert not rep.blocking, rep.blocking

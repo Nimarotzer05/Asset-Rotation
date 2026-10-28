@@ -28,6 +28,17 @@ stored:
   - { round: "3 (ADR 054)", name: "nur Sleeve EQ", file: output/allocator/walkforward_monthly.csv, column: "nur Sleeve EQ", baseline: "B1 Risikoparität ohne Signale" }
   - { round: "3 (ADR 054)", name: "nur Sleeve FI", file: output/allocator/walkforward_monthly.csv, column: "nur Sleeve FI", baseline: "B1 Risikoparität ohne Signale" }
   - { round: "3 (ADR 054)", name: "nur Sleeve PM", file: output/allocator/walkforward_monthly.csv, column: "nur Sleeve PM", baseline: "B1 Risikoparität ohne Signale" }
-# Runde 4 (ADR 057) – entered before its first run; the stored series appear with output/allocator_v2/
-planned:
-  - { round: "4 (ADR 057)", name: "Allokator v2 und 11 vorab benannte Varianten", count: 12 }
+# Runde 4 (ADR 057) – entered before its first run as `planned` (count 12); run 2026-10-28 on the frozen data, the
+# twelve stored series below replace that entry (same N; ADR 059 changed no variant)
+  - { round: "4 (ADR 057)", name: "Allokator v2 Runde 4", file: output/allocator_v2/walkforward_monthly.csv, column: "Allokator v2 (ADR 057/058)", baseline: "B1 passive Risikoparität" }
+  - { round: "4 (ADR 057)", name: "ohne Zeitreihenfilter", file: output/allocator_v2/walkforward_monthly.csv, column: "ohne Zeitreihenfilter", baseline: "B1 passive Risikoparität" }
+  - { round: "4 (ADR 057)", name: "ohne Querschnitt", file: output/allocator_v2/walkforward_monthly.csv, column: "ohne Querschnitt", baseline: "B1 passive Risikoparität" }
+  - { round: "4 (ADR 057)", name: "ohne FX-Sleeve", file: output/allocator_v2/walkforward_monthly.csv, column: "ohne FX-Sleeve", baseline: "B1 passive Risikoparität" }
+  - { round: "4 (ADR 057)", name: "Kosten und Finanzierung ×2", file: output/allocator_v2/walkforward_monthly.csv, column: "Kosten und Finanzierung ×2", baseline: "B1 passive Risikoparität" }
+  - { round: "4 (ADR 057)", name: "Ausführung zum Entscheidungskurs", file: output/allocator_v2/walkforward_monthly.csv, column: "Ausführung zum Entscheidungskurs", baseline: "B1 passive Risikoparität" }
+  - { round: "4 (ADR 057)", name: "Vol überall monatlich", file: output/allocator_v2/walkforward_monthly.csv, column: "Vol überall monatlich", baseline: "B1 passive Risikoparität" }
+  - { round: "4 (ADR 057)", name: "nur Sleeve EQ_US", file: output/allocator_v2/walkforward_monthly.csv, column: "nur Sleeve EQ_US", baseline: "B1 passive Risikoparität" }
+  - { round: "4 (ADR 057)", name: "nur Sleeve EQ_INTL", file: output/allocator_v2/walkforward_monthly.csv, column: "nur Sleeve EQ_INTL", baseline: "B1 passive Risikoparität" }
+  - { round: "4 (ADR 057)", name: "nur Sleeve FI", file: output/allocator_v2/walkforward_monthly.csv, column: "nur Sleeve FI", baseline: "B1 passive Risikoparität" }
+  - { round: "4 (ADR 057)", name: "nur Sleeve FX", file: output/allocator_v2/walkforward_monthly.csv, column: "nur Sleeve FX", baseline: "B1 passive Risikoparität" }
+  - { round: "4 (ADR 057)", name: "nur Sleeve PM", file: output/allocator_v2/walkforward_monthly.csv, column: "nur Sleeve PM", baseline: "B1 passive Risikoparität" }

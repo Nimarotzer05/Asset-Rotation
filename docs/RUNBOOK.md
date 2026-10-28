@@ -140,9 +140,12 @@ Equal Weight **nicht** erfüllt (`output/forecast/PORTFOLIO.md`); die Spur ist B
 5. `python scripts/r4_register.py --sample 1900-01-31,1900-01-31 --write`, `rotationlab ingest --full --provider static`,
    `python scripts/allocator_v2_walkforward.py` – bricht nach dem ersten Lauf mit dem Fenster nach Regel ab; dann
    `python scripts/r4_register.py --sample <Beginn>,<Ende> --write` und das Skript erneut (Laufzeit gut eine Stunde).
-   Danach `python scripts/r4_register.py --sample <Beginn>,<Ende>` (prüft: Registrierung = Vorlage), Golden pinnen,
+   Danach `python scripts/r4_register.py --sample <Beginn>,<Ende> --golden <sharpe>,<rendite>,<drawdown> --write`
+   (pinnt die gemessenen Werte in der Registrierung; ohne `--write` prüft der Aufruf: Registrierung = Vorlage),
    Versuchsregister von „planned“ auf „stored“, `tests/test_contracts.py` um die Paper-Rolle `sleeve_allocator_v2`
-   ergänzen, Zweitprüfung.
+   ergänzen, Zweitprüfung. **Erledigt am 28.10.2026** (ADR 059/060): Fenster 1977-01-31,2025-11-30, Golden
+   0.7911,0.1083,-0.1309; `rotationlab golden --strategy sleeve_allocator_v2` reproduziert. Ein neuer Lauf des
+   Walk-forward liest das Register ohne die eigenen zwölf Reihen doppelt zu zählen (`register(own_file=…)`).
 
 ## Wenn Telegram meldet …
 | Meldung | Bedeutung | Was tun |
