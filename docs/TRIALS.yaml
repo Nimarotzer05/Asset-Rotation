@@ -51,3 +51,6 @@ stored:
   - { round: "Long-Short (ADR 063 a)", name: "LS 1.5× Runde 1, monatlich neu gewichtet", file: output/long_short/monthly.csv, column: "LS 1.5× Runde 1, monatlich neu gewichtet", baseline: "Equal Weight (4 Klassen)" }
   - { round: "Long-Short (ADR 063 a)", name: "LS 1.5× Runde 1, ohne Reibung", file: output/long_short/monthly.csv, column: "LS 1.5× Runde 1, ohne Reibung", baseline: "Equal Weight (4 Klassen)" }
   - { round: "Long-Short (ADR 063 a)", name: "LS 1.5× Runde 5 (Fed-Modell)", file: output/long_short/monthly.csv, column: "LS 1.5× Runde 5 (Fed-Modell)", baseline: "Equal Weight (4 Klassen)" }
+# ADR 065 – entered before the first run (2026-10-29); stored after it
+planned:
+  - { round: "Long-Short Stop (ADR 065)", name: "monatlich neu mit Stop 20 %, ohne Stop", count: 2 }

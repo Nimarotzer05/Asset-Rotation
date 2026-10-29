@@ -840,3 +840,17 @@ Beide Skripte liefen auf `main@a4b2fed`, nach dem Merge der Vorregistrierung (PR
 
 **Entscheid Nima (29.10., 06:57):** `forecast_fed` ersetzt Runde 1 nicht; die zweite Liveprognose läuft ab der
 Entscheidung 2026-10-31 mit.
+
+## Long-Short mit monatlichem Neuaufbau und 20-%-Stop vorab fixiert (2026-10-29, ADR 065)
+
+| Prüfpunkt | Ergebnis |
+|---|---|
+| Tagesreihen gegen Monatsreihen (1974–2025, Monatsrenditen) | Aktien, Gold, Silber identisch; Treasury `UST10_D` gegen `UST10_ME` im Mittel 0.02 %, höchstens 0.14 % |
+| Monat ohne Stop = L·r_l − S·r_s + Cash | grün |
+| Stop auf dem Long-Bein: beide raus zum Schlusskurs, späterer Kursverlauf nicht verdient, Zins anteilig | grün, von Hand |
+| Sprung über den Stop (Short +10 % → +40 %): Ausführung bei +40 % | grün |
+| Kosten wörtlich: 3 Einheiten öffnen + beide Beine zum Ausstiegswert schliessen; Finanzierung und Leihe anteilig | grün, von Hand |
+| Schwelle genau bei −20 % löst aus (Gleitkomma-Toleranz 1e-12) | grün |
+| Monat ohne Rangfolge = Cash | grün |
+
+Nicht gelaufen: `scripts/long_short_stop.py` (erst nach dem Merge). Register: 2 Versuche `planned` (N 79 → 81).
