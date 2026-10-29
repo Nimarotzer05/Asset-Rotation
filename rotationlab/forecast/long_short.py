@@ -138,3 +138,122 @@ def run_long_short(
         sw = sw * (1.0 + rs) / (1.0 + r)
     df = pd.DataFrame(rows).set_index("month") if rows else pd.DataFrame()
     return LongShortResult(df, ruin)
+
+
+# ---------------------------------------------------------------------------
+# ADR 065: close and reopen every month, 20 % stop on daily closes
+# ---------------------------------------------------------------------------
+def _last_at(s: pd.Series, t: pd.Timestamp) -> float:
+    """The last value of `s` on or before t (NaN if none)."""
+    x = s.loc[:t].dropna()
+    return float(x.iloc[-1]) if len(x) else float("nan")
+
+
+def run_long_short_stop(
+    choice: pd.DataFrame,
+    daily: pd.DataFrame,
+    cash: pd.Series,
+    leverage: float = 1.5,
+    stop: float | None = 0.20,
+    frictions: Frictions | None = None,
+) -> LongShortResult:
+    """ADR 065 (Nima, 2026-10-29): at every month-end close both legs and open them again – rank 1 long and the
+    last rank short, each `leverage` × equity – paying costs on the full sale and the full purchase, also when the
+    class stays the same. During the month every daily close is checked: if the long has fallen `stop` (20 %) below
+    its entry close, or the short has risen `stop` above its entry close, **both** legs are closed at that close
+    and the book stays in cash until the month-end. A gap through the stop is filled at the close that shows it
+    (worse than −20 %); intraday prices are not modelled. `stop=None` = the same rule without stop.
+
+    Per month, in fractions of the equity at the decision (L = S = leverage, r_l / r_s = return of each leg from
+    the entry close to the exit close, f = share of the month's trading days held):
+
+        R = L·r_l − S·r_s + r_cash·(f + (1 − f)·(1 + L·r_l − S·r_s)) − spread/12·max(L − 1, 0)·f − borrow/12·S·f
+            − cost·(L + S)  − cost·(L·(1 + r_l) + S·(1 + r_s))
+
+    `daily`: total-return or price levels of the traded classes on trading days; `cash`: monthly cash returns
+    labelled with the month-end. A month without a complete ranking holds cash."""
+    fr = frictions or Frictions()
+    rows = []
+    equity, peak = 1.0, 1.0
+    ruin: pd.Timestamp | None = None
+    thr = stop if stop is not None else float("inf")
+    for t0 in choice.index:
+        t = pd.Timestamp(t0)
+        nxt = t + pd.offsets.MonthEnd(1)
+        if nxt not in cash.index:
+            continue
+        rc = float(cash.reindex([nxt]).to_numpy(dtype=float)[0])
+        la, sa = choice.at[t, "long"], choice.at[t, "short"]
+        row: dict[str, object] = {"month": nxt, "cash": rc, "long": la, "short": sa}
+        if not (isinstance(la, str) and isinstance(sa, str)):
+            r = rc
+            row.update(
+                ret=r,
+                stopped=False,
+                stop_leg=None,
+                exit_day=None,
+                held=0.0,
+                cost=0.0,
+                r_long=0.0,
+                r_short=0.0,
+            )
+        else:
+            row.update(_stop_month(daily, t, nxt, la, sa, rc, leverage, thr, fr))
+        if float(row["ret"]) <= -1.0:  # type: ignore[arg-type]
+            row["ret"] = -1.0
+            ruin = nxt
+        equity *= 1.0 + float(row["ret"])  # type: ignore[arg-type]
+        peak = max(peak, equity)
+        row["drawdown"] = equity / peak - 1.0
+        rows.append(row)
+        if ruin is not None:
+            break
+    df = pd.DataFrame(rows).set_index("month") if rows else pd.DataFrame()
+    return LongShortResult(df, ruin)
+
+
+def _stop_month(
+    daily: pd.DataFrame,
+    t: pd.Timestamp,
+    nxt: pd.Timestamp,
+    la: str,
+    sa: str,
+    rc: float,
+    leverage: float,
+    thr: float,
+    fr: Frictions,
+) -> dict[str, object]:
+    """One month of `run_long_short_stop`: entry at the close on or before t, daily closes in (t, nxt]."""
+    p_l0, p_s0 = _last_at(daily[la], t), _last_at(daily[sa], t)
+    window = daily.loc[(daily.index > t) & (daily.index <= nxt), [la, sa]]
+    path = pd.concat([daily[[la, sa]].loc[:t].ffill().iloc[[-1]], window]).ffill().iloc[1:]
+    if np.isnan(p_l0) or np.isnan(p_s0) or path.empty or path.isna().any().any():
+        raise ValueError(f"long_short_stop: missing daily price in {nxt:%Y-%m} for {la}/{sa}")
+    rl_path = path[la].to_numpy(dtype=float) / p_l0 - 1.0
+    rs_path = path[sa].to_numpy(dtype=float) / p_s0 - 1.0
+    eps = 1e-12  # a close exactly at the stop triggers it (80/100 − 1 is −0.19999999999999996)
+    long_hit, short_hit = rl_path <= -thr + eps, rs_path >= thr - eps
+    hit = np.flatnonzero(long_hit | short_hit)
+    k = int(hit[0]) if len(hit) else len(path) - 1
+    rl, rs = float(rl_path[k]), float(rs_path[k])
+    f = (k + 1) / len(path)
+    pnl = leverage * rl - leverage * rs
+    c = fr.cost_bps / 1e4
+    fin = fr.financing_spread / 12 * max(leverage - 1.0, 0.0) * f
+    bor = fr.borrow.get(sa, 0.0) / 12 * leverage * f
+    cost = c * 2 * leverage + c * (leverage * (1 + rl) + leverage * (1 + rs))
+    leg = None
+    if len(hit):
+        leg = "both" if long_hit[k] and short_hit[k] else "long" if long_hit[k] else "short"
+    return {
+        "ret": pnl + rc * (f + (1 - f) * (1 + pnl)) - fin - bor - cost,
+        "stopped": bool(len(hit)),
+        "stop_leg": leg,
+        "exit_day": path.index[k],
+        "held": f,
+        "cost": cost,
+        "financing": fin,
+        "borrow": bor,
+        "r_long": rl,
+        "r_short": rs,
+    }

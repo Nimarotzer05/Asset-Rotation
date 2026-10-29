@@ -104,3 +104,66 @@ def test_missing_return_of_a_held_class_is_an_error() -> None:
     r = _returns([[np.nan, 0.0, 0.0]])
     with pytest.raises(ValueError, match="missing return"):
         run_long_short(_choice([("A", "B")]), r, pd.Series(0.0, index=IDX), 1.5, "per_leg", NONE)
+
+
+# ---------------------------------------------------------------- ADR 065: monthly close/reopen, 20 % stop on closes
+def _daily(long_path: list[float], short_path: list[float]) -> pd.DataFrame:
+    """Entry close on 2000-01-31, then one month of trading days in February."""
+    days = pd.DatetimeIndex(
+        [pd.Timestamp("2000-01-31"), *pd.bdate_range("2000-02-01", periods=len(long_path))]
+    )
+    return pd.DataFrame({"A": [100.0, *long_path], "B": [50.0, *short_path], "C": 10.0}, index=days)
+
+
+def _one(daily: pd.DataFrame, stop: float | None = 0.20, fr: Frictions = NONE, rc: float = 0.0) -> pd.Series:
+    from rotationlab.forecast.long_short import run_long_short_stop
+
+    ch = pd.DataFrame({"long": ["A"], "short": ["B"]}, index=[pd.Timestamp("2000-01-31")])
+    cash = pd.Series(rc, index=pd.date_range("2000-01-31", periods=3, freq="ME"))
+    return run_long_short_stop(ch, daily, cash, 1.5, stop, fr).monthly.iloc[0]
+
+
+def test_stop_no_trigger_is_the_plain_month() -> None:
+    row = _one(_daily([99.0, 95.0, 104.0], [51.0, 52.0, 49.0]), rc=0.004)
+    assert not row["stopped"] and row["held"] == 1.0
+    assert row["ret"] == pytest.approx(1.5 * 0.04 - 1.5 * (-0.02) + 0.004)
+
+
+def test_long_stop_closes_both_legs_at_that_close() -> None:
+    # day 2: long at −20 % exactly; the later recovery is not earned
+    row = _one(_daily([90.0, 80.0, 120.0, 130.0], [51.0, 51.0, 40.0, 40.0]), rc=0.008)
+    assert row["stopped"] and row["stop_leg"] == "long" and row["exit_day"] == pd.Timestamp("2000-02-02")
+    pnl = 1.5 * (-0.20) - 1.5 * 0.02
+    f = 2 / 4
+    assert row["held"] == f
+    assert row["ret"] == pytest.approx(pnl + 0.008 * (f + (1 - f) * (1 + pnl)))
+
+
+def test_short_stop_and_gap_through_the_stop() -> None:
+    # the short jumps from +10 % to +40 % overnight: filled at +40 %, not at +20 %
+    row = _one(_daily([100.0, 100.0, 100.0], [55.0, 70.0, 45.0]))
+    assert row["stop_leg"] == "short" and row["r_short"] == pytest.approx(0.40)
+    assert row["ret"] == pytest.approx(-1.5 * 0.40)
+
+
+def test_without_stop_the_same_path_runs_to_month_end() -> None:
+    row = _one(_daily([90.0, 80.0, 120.0, 130.0], [51.0, 51.0, 40.0, 40.0]), stop=None)
+    assert not row["stopped"] and row["ret"] == pytest.approx(1.5 * 0.30 - 1.5 * (-0.20))
+
+
+def test_literal_close_and_reopen_costs_and_prorated_carry() -> None:
+    fr = Frictions(cost_bps=10.0, financing_spread=0.012, borrow={"B": 0.024})
+    row = _one(_daily([90.0, 80.0, 120.0, 130.0], [51.0, 51.0, 40.0, 40.0]), fr=fr)
+    rl, rs, f = -0.20, 0.02, 0.5
+    cost = 0.001 * 3.0 + 0.001 * (1.5 * (1 + rl) + 1.5 * (1 + rs))  # open 3 units, close both at the stop
+    expect = 1.5 * rl - 1.5 * rs - 0.012 / 12 * 0.5 * f - 0.024 / 12 * 1.5 * f - cost
+    assert row["cost"] == pytest.approx(cost) and row["ret"] == pytest.approx(expect)
+
+
+def test_month_without_ranking_holds_cash() -> None:
+    from rotationlab.forecast.long_short import run_long_short_stop
+
+    ch = pd.DataFrame({"long": [np.nan], "short": [np.nan]}, index=[pd.Timestamp("2000-01-31")])
+    cash = pd.Series(0.005, index=pd.date_range("2000-01-31", periods=3, freq="ME"))
+    out = run_long_short_stop(ch, _daily([1.0], [1.0]), cash, 1.5, 0.2, NONE).monthly
+    assert out["ret"].iloc[0] == 0.005 and not out["stopped"].iloc[0]
