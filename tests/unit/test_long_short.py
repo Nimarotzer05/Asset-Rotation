@@ -167,3 +167,38 @@ def test_month_without_ranking_holds_cash() -> None:
     cash = pd.Series(0.005, index=pd.date_range("2000-01-31", periods=3, freq="ME"))
     out = run_long_short_stop(ch, _daily([1.0], [1.0]), cash, 1.5, 0.2, NONE).monthly
     assert out["ret"].iloc[0] == 0.005 and not out["stopped"].iloc[0]
+
+
+# ---------------------------------------------------------------- ADR 067: $1500 legs, no fees, stop at a $200 leg loss
+def _dollar(long_path: list[float], short_path: list[float], stop: float | None = 200.0) -> pd.Series:
+    from rotationlab.forecast.long_short import run_dollar_long_short
+
+    ch = pd.DataFrame({"long": ["A"], "short": ["B"]}, index=[pd.Timestamp("2000-01-31")])
+    return run_dollar_long_short(ch, _daily(long_path, short_path), 1500.0, stop).iloc[0]
+
+
+def test_dollar_month_without_stop() -> None:
+    row = _dollar([101.0, 104.0], [50.0, 49.0])
+    assert (
+        not row["stopped"]
+        and row["pnl_long"] == pytest.approx(60.0)
+        and row["pnl_short"] == pytest.approx(30.0)
+    )
+    assert row["pnl"] == pytest.approx(90.0)
+
+
+def test_dollar_stop_at_200_closes_both() -> None:
+    # long −13.33 % on day 2 = −$200; the short's gain until then is kept, later moves are not earned
+    row = _dollar([95.0, 100.0 * (1 - 200 / 1500), 120.0], [49.0, 48.0, 60.0])
+    assert row["stopped"] and row["stop_leg"] == "long" and row["exit_day"] == pd.Timestamp("2000-02-02")
+    assert row["pnl_long"] == pytest.approx(-200.0) and row["pnl_short"] == pytest.approx(1500 * 2 / 50)
+
+
+def test_dollar_short_stop_with_gap() -> None:
+    row = _dollar([100.0, 100.0], [52.0, 65.0])  # short +30 % overnight: −$450, not −$200
+    assert row["stop_leg"] == "short" and row["pnl_short"] == pytest.approx(-450.0)
+
+
+def test_dollar_without_stop_runs_to_month_end() -> None:
+    row = _dollar([95.0, 80.0, 120.0], [49.0, 48.0, 60.0], stop=None)
+    assert not row["stopped"] and row["pnl"] == pytest.approx(300.0 - 300.0)

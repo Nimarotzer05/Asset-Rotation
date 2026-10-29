@@ -257,3 +257,64 @@ def _stop_month(
         "r_long": rl,
         "r_short": rs,
     }
+
+
+# ---------------------------------------------------------------------------
+# ADR 067: fixed dollar legs, no fees, stop on the dollar loss of a leg
+# ---------------------------------------------------------------------------
+def run_dollar_long_short(
+    choice: pd.DataFrame,
+    daily: pd.DataFrame,
+    notional: float = 1500.0,
+    stop_loss: float | None = 200.0,
+) -> pd.DataFrame:
+    """ADR 067 (Nima, 2026-10-29 09:15): every month $1000 per leg at 1.5× – `notional` $1500 long rank 1 and
+    $1500 short the last rank – opened at the decision close. If one leg's loss reaches `stop_loss` ($200, i.e. a
+    13.3 % price move against it) at a daily close, both legs are closed at that close until the month-end. Next
+    month again $1000 per leg: no compounding, no fees, no borrow, no financing, no interest – the dollar P&L of
+    each month is simply added. A gap through the stop is filled at the close that shows it. `stop_loss=None` =
+    the same rule without stop. A month without a complete ranking has no position (P&L 0)."""
+    rows = []
+    thr = stop_loss if stop_loss is not None else float("inf")
+    eps = 1e-9  # a loss of exactly $200 triggers the stop
+    for t0 in choice.index:
+        t = pd.Timestamp(t0)
+        nxt = t + pd.offsets.MonthEnd(1)
+        la, sa = choice.at[t0, "long"], choice.at[t0, "short"]
+        if not (isinstance(la, str) and isinstance(sa, str)):
+            rows.append({"month": nxt, "pnl": 0.0, "pnl_long": 0.0, "pnl_short": 0.0, "stopped": False})
+            continue
+        window = daily.loc[(daily.index > t) & (daily.index <= nxt), [la, sa]]
+        if window.empty:
+            continue  # the month after the last decision is not in the data
+        p_l0, p_s0 = _last_at(daily[la], t), _last_at(daily[sa], t)
+        path = pd.concat([daily[[la, sa]].loc[:t].ffill().iloc[[-1]], window]).ffill().iloc[1:]
+        if np.isnan(p_l0) or np.isnan(p_s0) or path.isna().any().any():
+            raise ValueError(f"dollar_long_short: missing daily price in {nxt:%Y-%m} for {la}/{sa}")
+        pl = notional * (path[la].to_numpy(dtype=float) / p_l0 - 1.0)
+        ps = -notional * (path[sa].to_numpy(dtype=float) / p_s0 - 1.0)
+        hit = np.flatnonzero((pl <= -thr + eps) | (ps <= -thr + eps))
+        k = int(hit[0]) if len(hit) else len(path) - 1
+        leg = None
+        if len(hit):
+            leg = (
+                "both"
+                if pl[k] <= -thr + eps and ps[k] <= -thr + eps
+                else "long"
+                if pl[k] <= -thr + eps
+                else "short"
+            )
+        rows.append(
+            {
+                "month": nxt,
+                "long": la,
+                "short": sa,
+                "pnl": float(pl[k] + ps[k]),
+                "pnl_long": float(pl[k]),
+                "pnl_short": float(ps[k]),
+                "stopped": bool(len(hit)),
+                "stop_leg": leg,
+                "exit_day": path.index[k],
+            }
+        )
+    return pd.DataFrame(rows).set_index("month")

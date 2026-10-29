@@ -871,3 +871,14 @@ Lauf auf `main@c1397a7` nach dem Merge der Vorregistrierung (PR #11, CI grün).
 | Register | 3 Reihen `stored`, N = 82 |
 
 **Offen:** Einfluss der Silber-Samstagszeile auf Runde 4 (tägliche EWMA-Volatilität des Silbers) – nicht geprüft.
+
+## Long-Short in Dollar ohne Gebühren vorab fixiert (2026-10-29, ADR 067)
+
+| Prüfpunkt | Ergebnis |
+|---|---|
+| Monat ohne Stop: $1500·r_long − $1500·r_short | grün, von Hand |
+| Stop bei genau −$200 auf dem Long-Bein: beide raus, späterer Verlauf nicht verdient | grün |
+| Sprung über den Stop (Short +30 % über Nacht → −$450) | grün |
+| ohne Stop bis Monatsende | grün |
+
+Nicht gelaufen: `scripts/long_short_dollar.py` (erst nach dem Merge). Register: 2 Versuche `planned` (N 82 → 84).
