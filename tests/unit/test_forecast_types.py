@@ -165,7 +165,7 @@ def test_second_forecast_config_is_loaded_and_tied_to_its_paper_rule(tmp_path, b
     must carry the same weights, clip and feature parameters (ADR 048 b), and `bundle.forecast` stays round 1."""
     import shutil
 
-    assert set(bundle.forecasts) == {"forecast", "forecast_v2"}
+    assert set(bundle.forecasts) == {"forecast", "forecast_v2", "forecast_fed"}  # round 5: ADR 063
     assert bundle.forecast is bundle.forecasts["forecast"]
     v2 = bundle.forecasts["forecast_v2"]
     assert v2.model.id == "mcv" and v2.paper_rule == "forecast_portfolio_v2"
