@@ -77,7 +77,10 @@ Runde 1 (Entscheid Nima 29.10.: nicht ersetzen). **Long-Short:** 1974–2018 9.3
 20-%-Stop (ADR 065/066):** 1974–2018 −2.1 % p.a., Sharpe +0.109 [−0.195, +0.323], Drawdown −99 % → **nicht belegt**; der
 Stop hilft nicht (Δ −0.06), Reibung 6.8 % p.a. Dabei gefunden: eine Samstags-Notierung im LBMA-Silber (1983-02-05),
 offen berichtet; ohne sie +0.145 [−0.146, +0.353], Lesart unverändert (`output/long_short_stop/STOP.md`). Offen: Einfluss
-dieser Zeile auf Runde 4 (tägliche Silber-Volatilität). Register N = 82; Runde 4 jetzt Deflated Sharpe 0.82.
+dieser Zeile auf Runde 4 (tägliche Silber-Volatilität). **Long-Short in Dollar ohne Gebühren (ADR 067/068):**
+$1500 long / $1500 short je Monat, Stop bei $200 Verlust eines Beins: 1974–2018 +$5,297 (Sharpe +0.247 [−0.021, +0.470]),
+davon 1979 allein +$2,867; 2019–2025 −$484 → **nicht belegt**; ohne Stop mehr Gewinn (+$6,880), also schadet der Stop
+auch ohne Kosten (`output/long_short_dollar/DOLLAR.md`). Register N = 84; Runde 4 jetzt Deflated Sharpe 0.83.
 
 ```bash
 python -m rotationlab.cli forecast run                    # Prognose am letzten Monatsende, fällige abrechnen, Report (täglich in Actions)
@@ -95,6 +98,7 @@ python scripts/allocator_v2_walkforward.py                 # Runde 4: Walk-forwa
 python scripts/round5_fed.py                               # Runde 5: Fed-Kategorie, punktweise (≈ 2 min)
 python scripts/long_short_check.py                         # Long-Short 1.5/1.5 mit offener Buchhaltung (≈ 5 s)
 python scripts/long_short_stop.py                          # Long-Short monatlich neu mit 20-%-Stop auf Tagesschlusskursen
+python scripts/long_short_dollar.py                        # Long-Short in Dollar, Stop $200, ohne Gebühren
 python -m rotationlab.cli forecast run --config forecast_fed   # zweite Liveprognose (täglich in Actions)
 ```
 
