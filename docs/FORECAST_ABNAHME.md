@@ -854,3 +854,20 @@ Entscheidung 2026-10-31 mit.
 | Monat ohne Rangfolge = Cash | grün |
 
 Nicht gelaufen: `scripts/long_short_stop.py` (erst nach dem Merge). Register: 2 Versuche `planned` (N 79 → 81).
+
+## Long-Short mit monatlichem Neuaufbau und 20-%-Stop gerechnet (2026-10-29, ADR 066)
+
+Lauf auf `main@c1397a7` nach dem Merge der Vorregistrierung (PR #11, CI grün).
+
+| Prüfpunkt | Ergebnis |
+|---|---|
+| Kriterium 1974–2018 (Sharpe, Intervall > 0) | **nein**: +0.109 [−0.195, +0.323]; −2.1 % p.a., Max-Drawdown −99.2 % |
+| Kriterium 2019–2025 (Sharpe > 0) | **nein**: −0.324; kein Stop ausgelöst |
+| Stop gegen ohne Stop | Δ Sharpe −0.063 [−0.188, +0.032] – der Stop hilft nicht |
+| auffälliger Monat 1983-02 (−68 %) | auf Tagesdaten zurückverfolgt: Samstags-Notierung 1983-02-05 im LBMA-Silber (Datenfehler) |
+| Suche nach weiteren Fehlern in allen Tagesreihen | keine weiteren falschen Wochenendzeilen; zwei echte Silber-Sprünge (1979, 1987) belassen |
+| Lauf ohne Wochenend-Notierungen (zusätzlich, eigener Versuch) | +0.145 [−0.146, +0.353], +0.5 % p.a., Drawdown −97.7 % → Lesart unverändert |
+| vorregistrierte Reihen nach dem Zusatzlauf | bytegleich (Abweichung < 1e-12) |
+| Register | 3 Reihen `stored`, N = 82 |
+
+**Offen:** Einfluss der Silber-Samstagszeile auf Runde 4 (tägliche EWMA-Volatilität des Silbers) – nicht geprüft.

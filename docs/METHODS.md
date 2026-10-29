@@ -66,9 +66,9 @@ were tested in round 4, so the p-values are adjusted with Holm's method (multipl
 **Idea.** If you try N variants, the best one looks good by luck. The deflated Sharpe (Bailey & López de Prado 2014)
 asks: what is the probability that the observed Sharpe exceeds the maximum expected from N unskilled tries, given
 how much the tries vary? It is a probability (≥ 0.95 = survives), not a p-value. **Here.** N = every variant ever
-run on this history (`docs/TRIALS.yaml`; 70 when round 4 ran, 79 today); the statistic is the Sharpe of the return net of the baseline
-(beta-adjusted residual), so a strategy cannot win by simply taking more risk. Round 4: 0.895 at N = 70, 0.87 with
-today's register.
+run on this history (`docs/TRIALS.yaml`; 70 when round 4 ran, 82 today); the statistic is the Sharpe of the return net of the baseline
+(beta-adjusted residual), so a strategy cannot win by simply taking more risk. Round 4: 0.895 at N = 70, 0.82 with
+today's register (N = 82).
 
 ## 9. Pre-registration and the trial register
 Before a round touches its data, its rules, criterion, baselines and variants are written into the decision log and
