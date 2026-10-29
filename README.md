@@ -71,9 +71,9 @@ power. The live track demonstrates an honest, tamper-evident process; it will no
    Sharpe make that visible instead of hiding it.
 4. **Check the research data against tradable instruments.** The ETF rebuild tracks the index study closely
    (ρ = 0.96); the post-2008 period is where both lose the edge.
-5. **Economic sense is not forecasting power.** The Fed model's slopes are textbook (a higher real policy rate favours
-   Treasuries over silver; rising inflation favours gold over equities), yet they predict next month's ranking no
-   better than chance – and diluting momentum with them cost IC.
+5. **A convincing story is not forecasting power.** Some of the Fed model's slopes read like a textbook (a higher real
+   policy rate favours Treasuries over silver), others flip sign between fits; together they rank next month no better
+   than chance – and diluting momentum with them cost IC.
 6. **Leverage does not create return.** The long-short rule earns 9.3 % a year at 1.5× and at 1.0× alike: the higher
    volatility eats the extra exposure, and the 1.5× book loses 82 % at its worst.
 7. **Rebuild the headline independently.** A short pandas version (`examples/trend_filter_from_scratch.py`)
@@ -92,7 +92,7 @@ power. The live track demonstrates an honest, tamper-evident process; it will no
 - **Execution and costs:** trades at the next session after the decision, per-instrument costs, financing of leverage.
 - **Statistics:** paired block bootstrap for Sharpe differences, Newey-West t-tests for signal portfolios, Holm
   correction across signals, minimum detectable effect, deflated Sharpe against the full trial register.
-- **Engineering:** one engine for backtest and live, golden tests that pin every published number, 369 unit and
+- **Engineering:** one engine for backtest and live, golden tests that pin every published number, 392 unit and
   integration tests plus 28 golden tests, ruff, mypy strict, CI on every pull request.
 
 Notes on each method in plain language: `docs/METHODS.md`. Two-page summary: `docs/WRITEUP.md`.
@@ -108,7 +108,7 @@ python examples/trend_filter_from_scratch.py               # independent rebuild
 python scripts/round5_fed.py                               # round 5, Fed category, pointwise (≈ 2 min) → output/forecast_fed/
 python scripts/long_short_check.py                         # leveraged long-short on the ranking (≈ 5 s) → output/long_short/
 python -m rotationlab.cli golden --strategy sleeve_allocator_v2   # reproduces 0.7911 / 10.83 % / −13.09 %
-pytest                                                     # 397 tests, about 15 min (golden tests included)
+pytest                                                     # 420 tests, about 12 min (golden tests included)
 ```
 
 Each output folder names its script (`output/README.md`); the reports inside are written in German. The ETF check needs the live store of branch `data`

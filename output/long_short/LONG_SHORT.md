@@ -2,7 +2,7 @@
 
 Stand 2026-10-29. Skript `scripts/long_short_check.py`, Buchhaltung `rotationlab/forecast/long_short.py`. Regel: Rang 1 long mit 1.5 × Eigenkapital, letzter Rang short mit 1.5 × Eigenkapital, Entscheid am Monatsende, Halten für einen Monat; ein Bein, dessen Klasse sich nicht ändert, wird nicht gehandelt (es driftet). Handel zum Schlusskurs des Entscheidungstags (Monatsdaten).
 Reibung (Annahmen für eine ETF-Umsetzung, vorab fixiert): 7.5 bp je gehandelter Einheit, Finanzierung T-Bill + 30 bp auf den fremdfinanzierten Teil des Long-Beins, Leihgebühr p.a. Aktien 0.30 %, Treasury 0.30 %, Gold 0.50 %, Silber 1.50 %; Short-Erlöse verzinst zum T-Bill-Satz.
-90-%-Moving-Block-Bootstrap (Block 12, 2000 Ziehungen, Seed 20261025). Laufzeit 5 s.
+90-%-Moving-Block-Bootstrap (Block 12, 2000 Ziehungen, Seed 20261025). Laufzeit 6 s.
 
 **Vorwissen, offen gesagt:** Der unverschuldete Top-minus-Bottom-Spread von Runde 1 ist bekannt (`output/forecast/EVALUATION.md`: +11 % p.a. [+2.7 %, +19 %] 1973–2018; `HOLDOUT.md`: −3.8 % p.a. 2019–2025). Neu sind hier Hebel, Halteregel, Reibung, Monatsend-Treasury, Drawdown und Ruinrisiko.
 
@@ -44,6 +44,7 @@ Reibung (Annahmen für eine ETF-Umsetzung, vorab fixiert): 7.5 bp je gehandelter
 - 1974–2018: Sharpe ex Cash +0.313 [+0.051, +0.518] → Intervall über null: **ja**
 - 2019–2025: Sharpe ex Cash -0.237 → über null: **nein**
 - Ruin (Eigenkapital ≤ 0 in einem Monat): LS 1.5× Runde 1 (Regel): nein; LS 1.0× Runde 1: nein; LS 1.5× Runde 1, monatlich neu gewichtet: nein; LS 1.5× Runde 1, ohne Reibung: nein; LS 1.5× Runde 5 (Fed-Modell): nein
+- Drift der Beine (Hauptregel, 1974–2018): Beingrösse bis 3.04, Netto-Exposure long − short zwischen -1.08 und +1.21, |netto| > 0.5 in 16% der Monate – die Regel ist kein sauberer 1.5/1.5-Spread; monatlich zurückgesetzt schliesst das Intervall null ein (Tabelle oben)
 - Deflationierte Sharpe der Hauptregel (Appraisal-Residuum gegen Equal Weight, 1974–2018, N = 79): 0.075
 
 Lesart: **nur in-sample profitabel** (2019–2025 nicht).

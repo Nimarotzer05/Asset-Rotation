@@ -107,8 +107,9 @@ Tested, pre-registered (ADR 063/064). Five Fed variables – 3-month change of F
 the inflation rate, Sahm indicator, change of the curve – are the same for every class, so a ridge regression per class
 learns, on the expanding past only, how each variable moved that class's next-month relative return; its prediction is
 blended 50/50 with the momentum composite. Result 1978–2018: rank IC falls from 0.092 to 0.034, paired difference
-−0.058 [−0.108, −0.006]; the Fed part alone has IC −0.005. The slopes make economic sense; they just do not forecast
-the next month. Monthly-average macro data and month-end prices were kept apart on purpose (an averaged Treasury
+−0.058 [−0.108, −0.006]; the Fed part alone has IC −0.005. Some slopes read like a textbook, others flip sign between fits; none of
+it forecasts the next month. Caveat: the macro history is the revised FRED-MD release with a one-month lag, not the
+first-print data – which could only have helped the Fed model. Monthly-average macro data and month-end prices were kept apart on purpose (an averaged Treasury
 series would have handed the Fed variables a spurious edge). *File:* `output/forecast_fed/ROUND5.md`.
 
 **15. "So just lever it up and go long-short."**

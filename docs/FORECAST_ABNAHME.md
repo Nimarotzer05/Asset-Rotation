@@ -834,6 +834,9 @@ Beide Skripte liefen auf `main@a4b2fed`, nach dem Merge der Vorregistrierung (PR
 | Wiederholung | zweiter Lauf mit geändertem Tabellenformat: `monthly.csv` bytegleich |
 | Absturz nach dem Merge | `picks` auf leerer Rangzeile (Panelanfang) – behoben vor jeder Zahl, Test ergänzt (ADR 063 d) |
 | Register | 3 Prognose-Versuche `unstored`, 5 Long-Short-Reihen `stored`; N = 79 |
+| Unabhängige Prüfung (frischer Prüfer, eigener Code) | IC je Zeitraum und Long-Short-Kennzahlen aller Läufe nachgerechnet (≤ 5e-9), eigene Rangfolge = gespeicherte Beine (0 Abweichungen), kein Look-ahead an 7 Stichtagen (abgeschnittener und verrauschter Store); Hinweise: Makrodaten sind revidierte FRED-MD-Werte (ADR 063 b „punktgenau“ korrigiert in ADR 064), Beindrift und Netto-Exposure jetzt im Bericht, „signifikant schlechter“ und „plausible Steigungen“ abgeschwächt |
+
+**Verifiziert:** 420 Tests grün (392 + 28 Golden), ruff, mypy; beide Läufe reproduzierbar.
 
 **Offen bleibt:** ob Nima `forecast_fed` als veröffentlichte Prognose wählt (Empfehlung: nein, die vorab gesetzte Schwelle
 ist nicht erreicht). Die zweite Liveprognose läuft ab der Entscheidung 2026-10-31 so oder so mit.
