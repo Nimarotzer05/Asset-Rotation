@@ -44,3 +44,7 @@ stored:
   - { round: "4 (ADR 057)", name: "nur Sleeve PM", file: output/allocator_v2/walkforward_monthly.csv, column: "nur Sleeve PM", baseline: "B1 passive Risikoparität" }
   # ADR 061 – entered as `planned` before its run (2026-10-28), stored after it (ADR 062)
   - { round: "ETF-Check (ADR 061)", name: "Risikoparität + Trendfilter mit ETFs", file: output/etf_check/monthly.csv, column: "R Risikoparität + Trendfilter (ETF)", baseline: "B1 Risikoparität ohne Filter (ETF)" }
+# ADR 063 – entered before the first run on real data (2026-10-29); moved to `unstored` / `stored` after it
+planned:
+  - { round: "5 (ADR 063 b)", name: "Komposit auf Monatsendklassen, Komposit + Fed, nur Fed (Prognose, nicht Portfolio)", count: 3 }
+  - { round: "Long-Short (ADR 063 a)", name: "Regel 1.5×, 1.0×, monatlich neu, ohne Reibung, Rangfolge Runde 5", count: 5 }

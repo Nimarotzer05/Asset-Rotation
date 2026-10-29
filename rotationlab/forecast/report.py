@@ -23,6 +23,16 @@ STATUS_TEXT = {
 }
 
 
+EVIDENCE_R1 = (
+    "Die Rangfolge ist der im Backtest geprüfte Teil (`output/forecast/EVALUATION.md`, in-sample 1973–2018); im "
+    "Pseudo-Holdout 2019–2025 hat sie sich **nicht** repliziert (`output/forecast/HOLDOUT.md`); "
+)
+EVIDENCE_FED = (
+    "Rangfolge = Komposit von Runde 1 plus Fed-Kategorie (Zinsentscheide, realer Leitzins, Inflation, Arbeitsmarkt, "
+    "Zinskurve; ADR 063); geprüft in Runde 5 (`output/forecast_fed/ROUND5.md`); zweite Liveprognose neben Runde 1; "
+)
+
+
 def _pct(x: float | None, digits: int = 0) -> str:
     return "–" if x is None else f"{x * 100:.{digits}f} %"
 
@@ -193,9 +203,9 @@ def render_month(
         lines.append("")
         lines.append(
             "Lesart: P(obere Hälfte) = Wahrscheinlichkeit, dass die Klasse über den Horizont zu den besseren zwei der vier gehört "
-            "(kalibriert auf der Geschichte bis zum Entscheidungsdatum). Die Rangfolge ist der im Backtest geprüfte Teil "
-            "(`output/forecast/EVALUATION.md`, in-sample 1973–2018); im Pseudo-Holdout 2019–2025 hat sie sich **nicht** "
-            "repliziert (`output/forecast/HOLDOUT.md`); ob sie live hält, zeigt allein die Bilanz unten. "
+            "(kalibriert auf der Geschichte bis zum Entscheidungsdatum). "
+            + (EVIDENCE_FED if getattr(model, "macro", None) is not None else EVIDENCE_R1)
+            + "ob sie live hält, zeigt allein die Bilanz unten. "
             "„Mittel des Rangs bisher“ = mittlere relative Rendite, die dieser Rang in den bis dahin bekannten Monaten erzielte, "
             "mit dem Block-Bootstrap-Intervall dieses Mittels – kein Vorhersageintervall für den kommenden Monat, dessen Streuung um ein Vielfaches grösser ist."
         )
