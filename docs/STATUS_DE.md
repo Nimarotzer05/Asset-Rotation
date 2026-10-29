@@ -71,7 +71,7 @@ Sahm-Indikator, Δ Zinskurve), je Klasse per Ridge-Regression auf der expandiere
 dem Komposit von Runde 1, jeder Score punktweise: 1978–2018 Rang-IC 0.092 → 0.034, Δ −0.058 [−0.108, −0.006] →
 **nicht belegt, in-sample schlechter**; 2019–2025 (gesehen) +0.070 (`output/forecast_fed/ROUND5.md`). `forecast_fed`
 läuft trotzdem wie vorab entschieden als zweite Liveprognose mit eigenem Journal und Anker; veröffentlicht bleibt
-Runde 1 (Entscheid über einen Wechsel: Nima; Empfehlung nein). **Long-Short:** 1974–2018 9.3 % p.a., Sharpe +0.313
+Runde 1 (Entscheid Nima 29.10.: nicht ersetzen). **Long-Short:** 1974–2018 9.3 % p.a., Sharpe +0.313
 [+0.051, +0.518], aber Vol 43 %, Max-Drawdown −82.5 %, schlechtester Monat −60 % (März 1980); 2019–2025 −12.1 % p.a. →
 **nur in-sample profitabel**, nicht investierbar (`output/long_short/LONG_SHORT.md`). Register N = 79; Runde 4 jetzt
 Deflated Sharpe 0.87.
