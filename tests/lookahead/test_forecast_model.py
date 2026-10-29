@@ -214,3 +214,46 @@ def test_complete_months_drops_only_the_partial_running_month() -> None:
     assert b.index[-1] == pd.Timestamp("2000-03-31")  # the partial April row (labelled 04-05) is dropped
     end = f.at(date(2000, 3, 31))
     assert complete_months(end, end.total_return(["B"], "ME")).index[-1] == pd.Timestamp("2000-03-31")
+
+
+# ---------------------------------------------------------------------------- round 5 (ADR 063): the Fed model
+FED_DATES = [date(1985, 6, 30), date(2008, 10, 31), date(2021, 6, 30)]
+
+
+@pytest.fixture(scope="module")
+def fed_obs(static_store, bundle):
+    o = static_store.observations()
+    fc = bundle.forecasts["forecast_fed"]
+    u = fc.universe["long_history"]
+    ids: set[str] = set()
+    for a in [*u.ranked, *u.trend_only, u.cash]:
+        for v in bundle.universe.assets[a].series.values():
+            ids |= {v} if isinstance(v, str) else set(v)
+    keep = o["series_id"].isin(ids) | o["series_id"].str.startswith("static:fredmd")
+    return o[keep].reset_index(drop=True)
+
+
+def test_fed_forecast_is_invariant_to_the_future(bundle, fed_obs, cal) -> None:
+    """The macro component reads revised macro vintages (fredmd_rt from 2019) and refits its ridge at every D:
+    noise in, or removal of, everything after D must not change the forecast at D."""
+    fc = bundle.forecasts["forecast_fed"]
+    model = ForecastModel(fc, averaged=averaged_assets(bundle))
+    start = fc.evaluation.data_from
+    clean = research_factory(bundle, fed_obs, cal, start)
+    for i, d in enumerate(FED_DATES):
+        a = [f.to_json() for f in model.forecast(clean.at(d), "s", [1])]
+        noisy = research_factory(bundle, mutate_future(fed_obs, d, seed=10 + i), cal, start)
+        cut = research_factory(bundle, truncate(fed_obs, d), cal, start)
+        assert a == [f.to_json() for f in model.forecast(noisy.at(d), "s", [1])], d
+        assert a == [f.to_json() for f in model.forecast(cut.at(d), "s", [1])], d
+        assert model.score_history(clean.at(d)).iloc[-1].notna().all(), d  # the Fed score exists at D
+
+
+def test_fed_score_blends_the_round1_composite(bundle, fed_obs, cal) -> None:
+    """Without its macro component the round-5 model is exactly the round-1 composite on its classes."""
+    fc = bundle.forecasts["forecast_fed"]
+    base = ForecastModel(fc.model_copy(update={"model": fc.model.model_copy(update={"macro": None})}))
+    v = research_factory(bundle, fed_obs, cal, fc.evaluation.data_from).at(date(2008, 10, 31))
+    feats = {k: feature_panel(v, k, base.ranked) for k in base.weights}
+    ours = composite(feats, base.weights, base.clip).reindex(columns=base.ranked).iloc[-1]
+    assert np.allclose(base.score_history(v).iloc[-1].to_numpy(float), ours.to_numpy(float), atol=1e-12)

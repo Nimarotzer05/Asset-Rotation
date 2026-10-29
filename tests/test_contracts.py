@@ -53,9 +53,13 @@ def test_configs_load_and_cross_check() -> None:
         "sleeve_allocator_v2",  # ADR 057/058, registered 2026-10-28 with the window by rule
         "trend_rp_etf",  # ADR 061: implementability check of round 4 with ETFs
     }
-    # every forecast config names a paper rule that exists and is registered (ADR 048/052)
-    assert set(b.forecasts) == {"forecast", "forecast_v2"}
-    for fc in b.forecasts.values():
+    # every forecast config names a paper rule that exists and is registered (ADR 048/052); round 5 has none:
+    # its rule test is the separate long-short study (ADR 063 a)
+    assert set(b.forecasts) == {"forecast", "forecast_v2", "forecast_fed"}
+    for name, fc in b.forecasts.items():
+        if name == "forecast_fed":
+            assert fc.paper_rule is None
+            continue
         assert fc.paper_rule in b.strategies and fc.paper_rule in registry.strategies()
     assert (
         abs(

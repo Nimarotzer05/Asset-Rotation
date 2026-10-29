@@ -39,6 +39,16 @@ jobs:
             curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d chat_id="${TELEGRAM_CHAT_ID}" \
               --data-urlencode text="rotationlab $(grep '^forecast run' "$RUNNER_TEMP/forecast.log") | $HEAD" > /dev/null || true
           fi
+      - name: second forecast with the Fed category (ADR 063, round 5) - own journal, report and anchor
+        shell: bash
+        run: |
+          uv run rotationlab forecast run --config forecast_fed | tee "$RUNNER_TEMP/forecast_fed.log"
+          HEAD=$(grep '^journal head:' "$RUNNER_TEMP/forecast_fed.log" || true)
+          { echo "$(date -u +%F) forecast_fed $(grep '^forecast run' "$RUNNER_TEMP/forecast_fed.log" || true)"; echo "forecast_fed $HEAD"; } >> "$GITHUB_STEP_SUMMARY"
+          if grep -qE ' [1-9][0-9]* (forecast|outcome)\(s\)' "$RUNNER_TEMP/forecast_fed.log" && [ -n "$TELEGRAM_BOT_TOKEN" ]; then
+            curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d chat_id="${TELEGRAM_CHAT_ID}" \
+              --data-urlencode text="rotationlab (Fed) $(grep '^forecast run' "$RUNNER_TEMP/forecast_fed.log") | $HEAD" > /dev/null || true
+          fi
       - name: commit state to branch data
         if: always()                              # keep what was ingested even if a later step failed
         run: |
@@ -62,8 +72,8 @@ jobs:
         if: always()                              # the anchor must survive the 90-day log retention
         shell: bash
         run: |
-          HEAD=$(grep '^journal head:' "$RUNNER_TEMP/forecast.log" 2>/dev/null || true)
-          [ -z "$HEAD" ] && { echo "no journal head in this run"; exit 0; }
+          # one anchor file per journal: journal-anchors.txt (round 1, `forecast`), journal-anchors-forecast_fed.txt (ADR 063)
+          ls "$RUNNER_TEMP"/forecast*.log > /dev/null 2>&1 || { echo "no forecast log in this run"; exit 0; }
           W="$RUNNER_TEMP/anchors"
           if git ls-remote --exit-code --heads origin anchors > /dev/null; then
             git fetch --depth=1 origin anchors && git worktree add --detach "$W" FETCH_HEAD
@@ -71,10 +81,17 @@ jobs:
             git worktree add --detach "$W" && git -C "$W" checkout -q --orphan anchors && git -C "$W" rm -rfq --cached . && rm -rf "$W"/* "$W"/.github "$W"/.gitignore
           fi
           cd "$W"
-          LAST=$(tail -n 1 journal-anchors.txt 2>/dev/null | sed 's/^[^ ]* //' || true)
-          if [ "$LAST" = "$HEAD" ]; then echo "head unchanged, no anchor"; exit 0; fi
-          echo "$(date -u +%FT%TZ) $HEAD" >> journal-anchors.txt
-          git add journal-anchors.txt
+          CHANGED=0
+          for PAIR in "forecast:journal-anchors.txt" "forecast_fed:journal-anchors-forecast_fed.txt"; do
+            LOG="$RUNNER_TEMP/${PAIR%%:*}.log"; FILE="${PAIR#*:}"
+            HEAD=$(grep '^journal head:' "$LOG" 2>/dev/null || true)
+            [ -z "$HEAD" ] && { echo "${PAIR%%:*}: no journal head in this run"; continue; }
+            LAST=$(tail -n 1 "$FILE" 2>/dev/null | sed 's/^[^ ]* //' || true)
+            if [ "$LAST" = "$HEAD" ]; then echo "${PAIR%%:*}: head unchanged, no anchor"; continue; fi
+            echo "$(date -u +%FT%TZ) $HEAD" >> "$FILE"
+            git add "$FILE"; CHANGED=1
+          done
+          [ "$CHANGED" = 1 ] || exit 0
           git -c user.name=rotationlab-bot -c user.email=bot@users.noreply.github.com commit -qm "anchor $(date -u +%F)"
           git push origin HEAD:refs/heads/anchors
   heartbeat:

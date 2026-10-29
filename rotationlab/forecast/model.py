@@ -14,7 +14,9 @@
 
 Everything is a function of the view at D. The past scores behind the expectations come from the as-of
 panel at D (the panel formula of every feature, ADR 036), the past outcomes from total-return levels known
-at D. Nothing adapts: the model is fixed by `configs/forecast.yaml`; variants are separate model ids.
+at D. Nothing adapts: the model is fixed by `configs/forecast.yaml`; variants are separate model ids. Round 5
+(`configs/forecast_fed.yaml`, ADR 063) adds an optional macro component whose per-class ridge is refitted on the
+expanding past at every D by a fixed rule (rotationlab/forecast/macro.py).
 """
 
 from __future__ import annotations
@@ -32,6 +34,7 @@ from rotationlab.config.models import ForecastConfig
 from rotationlab.core import registry
 from rotationlab.core.protocols import MarketView
 from rotationlab.features._panel import month_grid
+from rotationlab.forecast.macro import ridge_path, state_panel
 from rotationlab.forecast.types import ClassForecast, Forecast, Status, Trend, thaw
 
 SUPPORTED = (
@@ -332,6 +335,11 @@ class ForecastModel:
         self.prob = cfg.probability
         self.averaged = {a for a in averaged if a in set(self.ranked) | set(self.trend_only)}
         self.boot = BlockBootstrap(self.cal.draws, self.cal.block_months, self.cal.seed)
+        self.macro = cfg.model.macro  # round 5 (ADR 063); None for every earlier model
+        if self.macro is not None:
+            bad = [n for n in self.macro.features if registry.get_feature(n).kind == "cross_section"]
+            if bad:
+                raise ValueError(f"forecast model: macro features must be state variables, not {bad}")
         self.params: dict[str, Any] = {
             "universe": universe,
             "variant": variant,
@@ -346,6 +354,10 @@ class ForecastModel:
             "probability": thaw(dict(self.prob.model_dump())),
             "calibration": thaw(dict(self.cal.model_dump())),
         }
+        if (
+            self.macro is not None
+        ):  # the key exists only for round-5 models: earlier records stay as they were
+            self.params["macro"] = thaw(dict(self.macro.model_dump()))
 
     # -- pieces ------------------------------------------------------------------
     def score_history(self, view: MarketView) -> pd.DataFrame:
@@ -356,7 +368,20 @@ class ForecastModel:
         s = composite(feats, self.weights, self.clip)
         if s.empty:
             return s
-        return s.reindex(month_grid(s.index[0], view.date)).reindex(columns=self.ranked)
+        s = s.reindex(month_grid(s.index[0], view.date)).reindex(columns=self.ranked)
+        if self.macro is None:
+            return s
+        m = self.macro_predictions(view, s.index)
+        w = self.macro.weight
+        return (1.0 - w) * s + w * zscore_rows(m, self.clip)  # NaN until the macro fit has enough months
+
+    def macro_predictions(self, view: MarketView, index: pd.Index) -> pd.DataFrame:
+        """Round 5 (ADR 063): the per-class ridge prediction m[t, a] on the as-of panel at D, for every row of
+        `index` – each row fitted only on months whose next-month outcome was known at that row."""
+        assert self.macro is not None
+        x = state_panel(view, self.macro.features, self.macro.fill_gaps_months).reindex(index)
+        y = self.outcomes(view, 1).reindex(index=index, columns=self.ranked)
+        return ridge_path(x, y, self.macro.ridge_lambda, self.macro.min_train_months, self.macro.ffill_months)
 
     def trends(self, view: MarketView) -> pd.Series:
         assets = self.ranked + self.trend_only

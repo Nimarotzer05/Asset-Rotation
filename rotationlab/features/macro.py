@@ -11,7 +11,8 @@ Aaa, T-bill, Fed funds) are public at month-end (0D). The research dollar index 
 lag in the store either, but the studies lagged the whole commodity state by a month: `usd_lag` keeps that.
 
 Drivers are 3-month changes: real 10y yield (GS10 − CPI rate), log dollar, CPI rate, credit spread
-(Baa − Aaa), curve (GS10 − 3M bill), Fed funds; plus levels used by reports and the risk-appetite index.
+(Baa − Aaa), curve (GS10 − 3M bill), Fed funds; plus levels used by reports and the risk-appetite index, and
+the real policy rate (Fed funds − CPI rate; ADR 063, round 5's Fed category).
 """
 
 from __future__ import annotations
@@ -161,6 +162,12 @@ def _d_ff(panel: pd.DataFrame, **_: Any) -> pd.Series:
     return panel["fedfunds"].diff(3).rename("d_fedfunds_3m")
 
 
+def _real_policy(panel: pd.DataFrame, lag: int = 1, **_: Any) -> pd.Series:
+    """Real policy rate (ADR 063): Fed funds of the month minus the CPI year-on-year rate read one month back
+    (the latest CPI known at the month-end) – the stance of monetary policy, restrictive when high."""
+    return (panel["fedfunds"] - _yoy(panel["cpi"]).shift(lag)).rename("real_policy_rate")
+
+
 def _fred_daily(name: str, series_id: str) -> None:
     def _panel_one(view: Any, _assets: Any, series: str = series_id, **_: Any) -> pd.DataFrame:
         return series_panel(view, [series]).set_axis(["x"], axis=1)
@@ -226,5 +233,15 @@ define("credit_spread", "state", MACRO_INPUTS, Months(0), _panel, _credit, param
 define("d_credit_3m", "state", MACRO_INPUTS, Months(3), _panel, _d_credit, params=SOURCES)
 define("d_curve_3m", "state", MACRO_INPUTS, Months(3), _panel, _d_curve, params=SOURCES)
 define("d_fedfunds_3m", "state", MACRO_INPUTS, Months(3), _panel, _d_ff, params=SOURCES)
+define(
+    "real_policy_rate",
+    "state",
+    MACRO_INPUTS,
+    Months(13),
+    _panel,
+    _real_policy,
+    params={**SOURCES, "lag": 1},
+    macro_lag=Months(1),
+)
 _fred_daily("tips_real_10y", "fred:DFII10")
 _fred_daily("breakeven_10y", "fred:T10YIE")

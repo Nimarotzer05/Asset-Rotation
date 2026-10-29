@@ -801,3 +801,21 @@ README, in den Methoden und in Interviewfrage 8; drei neue Interviewfragen (waru
 Herkunft der langen Historie, Hebelfinanzierung 1977–89); `docs/STATUS_DE.md` auf den Stand nach dem Holdout
 gebracht; tote Verweise auf Szenarien und das archivierte `build_dataset.py` entfernt; `.hypothesis/` ignoriert. Der
 unabhängige Nachbau wurde vom Prüfer ausgeführt und lieferte exakt 0.789 / 0.802 / ρ 0.980 / ohne Filter 0.535.
+
+## Runde 5 und Long-Short-Regel vorab fixiert (2026-10-29, ADR 063) – noch keine Zahl auf echten Daten
+
+Auftrag Nima 04:31 (Fed-Kategorie „unverzichtbar“; „1. Platz long 1.5×, letzter short 1.5×, jeweils 1 Monat, ausser die
+Prognose hat sich nicht verändert“), Entscheide 04:40: letzter Platz short, Runde 5 + zweite Liveprognose.
+
+| Prüfpunkt | Ergebnis |
+|---|---|
+| Ridge-Pfad = direkte Formel auf jeder Trainingsstichprobe (Orakel `ridge_reference`) | grün, Abweichung ≤ 1e-12 |
+| kein Look-ahead im Ridge: spätere Ergebnisse und Zustände ändern m[t] nicht | grün (synthetisch) |
+| Fed-Prognose invariant gegen Rauschen/Abschneiden nach D, inkl. Vintages ab 2019 | grün, 3 Stichtage auf dem Forschungs-Store |
+| ohne Macro-Komponente = Komposit von Runde 1; Mischung = 0.5 · Komposit + 0.5 · z(m) | grün |
+| Buchhaltung Long-Short: Ein-Monats-Formel, Drift ohne Handel, nur das geänderte Bein, Ruin, Hebel 1 ohne Finanzierung | grün, von Hand nachgerechnet |
+| Probelauf `forecast run --config forecast_fed` auf dem Live-Store (`data@1c110a4`, Journal im Scratch) | zuerst `warmup`: der Sahm-Indikator war seit 2025-11 leer, weil der Arbeitsmarktbericht Oktober 2025 nie erschien (Shutdown) → Regel für nie erschienene Werte (Innenlücke ≤ 2 Monate linear, nur zwischen am Stichtag bekannten Nachbarn) ergänzt und in ADR 063 aufgenommen; danach Status `signal` |
+| Vertragstests: drei Prognose-Konfigurationen, `forecast_fed` ohne Paper-Regel | bewusst angepasst |
+
+Nicht gelaufen und erst nach dem Merge erlaubt: `scripts/round5_fed.py`, `scripts/long_short_check.py`. Register:
+8 Versuche als `planned` (N 71 → 79).

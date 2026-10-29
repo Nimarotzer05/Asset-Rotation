@@ -290,6 +290,35 @@ class LiveConfig(_Strict):
 # ---------------------------------------------------------------------------
 # forecast.yaml (ADR 043)
 # ---------------------------------------------------------------------------
+class MacroComponentConfig(_Strict):
+    """Round 5 (ADR 063): a per-class ridge regression of the next month's relative return on standardised
+    macro state variables, fitted on the expanding past only; its prediction (slopes only, no intercept) is
+    z-scored across the classes and blended with the composite: score = (1 − weight)·composite + weight·z."""
+
+    features: list[str]
+    weight: float = 0.5
+    ridge_lambda: float = 1.0  # penalty λ·n on the standardised slopes (n = training months)
+    min_train_months: int = 120
+    ffill_months: int = 2  # a state variable missing at D (a delayed release) is carried forward this far
+    fill_gaps_months: int = (
+        2  # interior gaps of a raw macro series (a release that never came) are interpolated
+    )
+
+    @field_validator("weight")
+    @classmethod
+    def _weight(cls, v: float) -> float:
+        if not 0.0 < v <= 1.0:
+            raise ValueError("macro.weight must lie in (0, 1]")
+        return v
+
+    @field_validator("features")
+    @classmethod
+    def _features(cls, v: list[str]) -> list[str]:
+        if not v or len(set(v)) != len(v):
+            raise ValueError("macro.features: at least one, no duplicates")
+        return v
+
+
 class ForecastModelConfig(_Strict):
     id: str
     version: int
@@ -298,6 +327,7 @@ class ForecastModelConfig(_Strict):
     feature_params: dict[str, dict[str, Any]] = Field(
         default_factory=dict
     )  # per feature, e.g. carry_yield.spec
+    macro: MacroComponentConfig | None = None  # round 5 (ADR 063): Fed state variables mapped per class
 
 
 class ForecastEvaluationConfig(_Strict):

@@ -1,0 +1,55 @@
+# Research round 5 (ADR 063): the round-1 composite plus a Fed category. Fixed before the first run on real
+# data; a change needs a new ADR, a new model version and a note in docs/FORECAST_ABNAHME.md. Journal and
+# reports live under journal/forecast_fed and reports/forecast_fed (second live forecast, decision of Nima
+# 2026-10-29); the round-1 forecast (`forecast`) stays the published one until a decision says otherwise.
+model:
+  id: composite_fed
+  version: 1
+  # the round-1 composite, unchanged (configs/forecast.yaml)
+  feature_weights: { mom_3_1: 0.2, mom_6_1: 0.3, mom_12_1: 0.3, trend_10m: 0.2, inv_vol_12m: 0.1 }
+  zscore_clip: 3.0
+  macro:                           # rotationlab/forecast/macro.py; score = 0.5·composite + 0.5·z(ridge prediction)
+    features:
+      - d_fedfunds_3m              # rate decisions: 3-month change of the effective Fed funds rate (monthly average, 0D)
+      - real_policy_rate           # stance: Fed funds − CPI year-on-year rate of the latest published month
+      - d_cpi_yoy_3m               # inflation: 3-month change of the CPI year-on-year rate (read one month back)
+      - sahm                       # unemployment: 3-month average rate minus its 12-month low (read one month back)
+      - d_curve_3m                 # expected path: 3-month change of GS10 − 3M T-bill
+    weight: 0.5
+    ridge_lambda: 1.0              # penalty λ·n on standardised slopes; one value, not tuned
+    min_train_months: 120
+    ffill_months: 2                # a release not out yet at D: the last value is carried forward up to 2 months
+    fill_gaps_months: 2            # a release that never came (October 2025 CPI and jobs, shutdown): interpolated inside
+universe:
+  long_history:
+    # month-end prices only (ADR 052 a): the averaged-yield series UST10 would hand the Fed variables, which are
+    # monthly averages themselves, an in-sample edge on the second half of the decision month
+    ranked: [US_EQ, UST10_ME, GOLD, SILVER]
+    trend_only: [WB_BASEMETALS]
+    cash: TBILL
+  live:
+    ranked: [SPY, IEF, GLD, SLV]
+    trend_only: [CPER]
+    cash: BIL
+trend_window_months: 10
+horizons: [1, 3, 6]
+probability:
+  target: top_half
+  model: logistic_tophalf
+  prior_months: 60
+  no_signal_margin: 0.05
+calibration:
+  min_months: 60
+  confidence: 0.90
+  block_months: 12
+  draws: 2000
+  seed: 20261025
+holdout:                           # already seen in rounds 1 and 2 – reported, not a clean holdout (ADR 063 e)
+  start: 2019-01-31
+  end: 2025-12-31
+evaluation:
+  data_from: 1959-01-31            # the Fed variables start 1959–60; the ridge trains from 1968 (silver), 120 months
+  start: 1978-01-31                # first decision with 120 complete training months
+  decades: [["1978–1989", 1978, 1989], ["1990s", 1990, 1999], ["2000s", 2000, 2009], ["2010–2018", 2010, 2018]]
+paper_rule: null                   # no paper rule: the long-short test of ADR 063 (a) is a separate study
+backfill_after_days: 7
