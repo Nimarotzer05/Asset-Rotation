@@ -1,0 +1,11 @@
+Fit / Variable (Steigung in %-Punkten relativer Monatsrendite je SD),US_EQ,UST10_ME,GOLD,SILVER
+2018-11: Zinsentscheide (Δ Fed Funds 3 M),-0.02564,0.12435,0.04166,-0.14037
+2018-11: Realer Leitzins (Fed Funds − Inflation),0.10954,0.18794,-0.10181,-0.19567
+2018-11: Inflation (Δ CPI-Jahresrate 3 M),-0.13528,0.00383,0.14602,-0.01458
+2018-11: Arbeitsmarkt (Sahm-Indikator),0.08395,0.04096,-0.09068,-0.03423
+2018-11: Zinskurve (Δ GS10 − T-Bill 3 M),0.04960,0.08689,0.02252,-0.15900
+2025-11: Zinsentscheide (Δ Fed Funds 3 M),-0.02496,0.11726,0.03682,-0.12912
+2025-11: Realer Leitzins (Fed Funds − Inflation),0.07624,0.16543,-0.09012,-0.15154
+2025-11: Inflation (Δ CPI-Jahresrate 3 M),-0.11288,0.05180,0.14588,-0.08480
+2025-11: Arbeitsmarkt (Sahm-Indikator),0.08967,-0.06124,-0.13381,0.10538
+2025-11: Zinskurve (Δ GS10 − T-Bill 3 M),0.03317,0.08144,0.02479,-0.13941

@@ -66,8 +66,8 @@ were tested in round 4, so the p-values are adjusted with Holm's method (multipl
 **Idea.** If you try N variants, the best one looks good by luck. The deflated Sharpe (Bailey & López de Prado 2014)
 asks: what is the probability that the observed Sharpe exceeds the maximum expected from N unskilled tries, given
 how much the tries vary? It is a probability (≥ 0.95 = survives), not a p-value. **Here.** N = every variant ever
-run on this history (`docs/TRIALS.yaml`; 70 when round 4 ran, 71 after the ETF check); the statistic is the Sharpe of the return net of the baseline
-(beta-adjusted residual), so a strategy cannot win by simply taking more risk. Round 4: 0.895 at N = 70, 0.90 with
+run on this history (`docs/TRIALS.yaml`; 70 when round 4 ran, 79 today); the statistic is the Sharpe of the return net of the baseline
+(beta-adjusted residual), so a strategy cannot win by simply taking more risk. Round 4: 0.895 at N = 70, 0.87 with
 today's register.
 
 ## 9. Pre-registration and the trial register
@@ -83,3 +83,21 @@ trade side); negative cash (leverage) costs T-bills + 30 bp p.a.; the ETF check 
 Each forecast record stores the SHA-256 hash of the previous one; changing any past record breaks every later hash.
 The latest hash is written to a separate branch (`anchors`) each day, so even truncating the end is detectable.
 **Where.** `rotationlab/forecast/journal.py`; `rotationlab forecast verify` checks the chain.
+
+## 12. The Fed category – a macro variable that is the same for every class (round 5)
+**Problem.** Fed funds, inflation or unemployment have one value per month, not one per asset class, so they cannot
+rank classes directly. **Method.** For each class a ridge regression of its next-month *relative* return (return minus
+the mean of the four classes) on the five standardised variables, fitted at every decision date on the months whose
+outcome was already known: β = (ZᵀZ + λnI)⁻¹Zᵀy with λ = 1. The prediction uses the slopes only (the intercept would
+just be the class's historical average). The four predictions are z-scored across classes and averaged 50/50 with the
+momentum composite. A release that never came (October 2025, shutdown) is interpolated between known neighbours;
+one not yet out is carried forward. **Result.** In-sample IC 0.092 → 0.034, Δ −0.058 [−0.108, −0.006].
+**Where.** `rotationlab/forecast/macro.py`, `configs/forecast_fed.yaml`, `scripts/round5_fed.py`.
+
+## 13. A leveraged long-short with explicit accounting
+**Why outside the engine.** 1.5 long + 1.5 short is 3.0 gross, above the engine's limit of 2.0. **Accounting per
+month,** in fractions of equity: R = L·r_long − S·r_short + (1 − L + S)·r_cash − spread·max(L − 1, 0)/12 −
+borrow·S/12 − cost·traded. Short-sale proceeds earn the cash rate; a leg whose class does not change is not traded and
+drifts (L ← L(1 + r_long)/(1 + R)); equity ≤ 0 would be ruin. **Volatility drag.** The compound return is roughly the
+mean minus half the variance, so going from 1.0× to 1.5× raises the mean by half and the variance by 125 % – here
+both end at 9.3 % a year. **Where.** `rotationlab/forecast/long_short.py`, `scripts/long_short_check.py`.

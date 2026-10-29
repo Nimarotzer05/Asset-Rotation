@@ -219,6 +219,8 @@ def main() -> None:
         for col in t.columns:
             if col in pct:
                 t[col] = [f"{x:.1%}" if isinstance(x, float) and not np.isnan(x) else "–" for x in t[col]]
+            elif col == "t (NW, Überrendite)":
+                t[col] = [f"{x:+.2f}" for x in t[col]]
             elif col == "max. Bein":
                 t[col] = [f"{x:.2f}" if isinstance(x, float) and not np.isnan(x) else "–" for x in t[col]]
         return md_table(t)

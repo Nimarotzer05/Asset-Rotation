@@ -25,6 +25,10 @@ def test_picks_first_and_last_rank() -> None:
     p = picks(ranks)
     assert p.iloc[0].tolist() == ["A", "C"] and p.iloc[1].tolist() == ["B", "A"]
     assert p.iloc[2].isna().all()  # incomplete ranking: no new information
+    empty = pd.DataFrame(
+        {"A": [np.nan, 1.0], "B": [np.nan, 2.0]}, index=IDX[:2]
+    )  # panel start: no value at all
+    assert picks(empty).iloc[0].isna().all() and picks(empty).iloc[1].tolist() == ["A", "B"]
 
 
 def test_one_month_closed_form_with_frictions() -> None:

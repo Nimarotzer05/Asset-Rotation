@@ -7,7 +7,7 @@ a file. Read the file behind each answer; say the numbers in your own words; nev
 "I built a system that ranks asset classes for the next month and tested it the way a research desk would: every
 round of ideas was written down before it touched the data, every trial was counted, and the results were checked by
 an independent review. The first model looked good in-sample – IC 0.10 over 45 years – and failed in a held-out
-period. Over four rounds exactly one pre-registered test passed: risk parity with a 12-month trend filter beats
+period. Over five rounds exactly one pre-registered test passed: risk parity with a 12-month trend filter beats
 passive risk parity. An ablation showed the cross-sectional signals added nothing – the filter did all of it – and
 that the edge is not significant since 2008, also with tradable ETFs. The ranking now runs live with a tamper-evident
 journal. What I learned is mostly about how easily backtests fool you, and how to stop that."
@@ -25,10 +25,10 @@ README and in ADR 060. The defensible statement is narrow: a trend filter on a l
 
 **2. "Walk me through the deflated Sharpe. What is N, and what does 0.895 mean?"**
 N counts every variant ever computed on this history, including ones whose results I saw and discarded: 70 when
-round 4 ran, 71 today (after the ETF check). The tested
+round 4 ran, 79 today (after the ETF check, round 5 and the long-short study). The tested
 statistic is the Sharpe of the allocator's return net of its beta to the baseline, so extra risk doesn't count as
 skill. Given how much the trials vary, 0.895 is the probability that the observed Sharpe beats the best of 70 unskilled
-tries (0.90 with 71). It's a probability, not a p-value, and it's below the 0.95 I set as the bar – so round 4 does not
+tries (0.87 with today's 79). It's a probability, not a p-value, and it's below the 0.95 I set as the bar – so round 4 does not
 survive the multiple-testing correction. *File:* `docs/METHODS.md` §8, `docs/TRIALS.yaml`.
 
 **3. "Which parts did you write yourself?"**
@@ -38,12 +38,13 @@ missing data series), reviewed the results, and I can explain every number. To c
 result, there is a 120-line pandas rebuild of it that I can walk you through." Then do it:
 `examples/trend_filter_from_scratch.py`. *Only say this once you can actually walk through that file line by line.*
 
-**4. "Isn't this overfit? Four rounds on the same 50 years."**
+**4. "Isn't this overfit? Five rounds on the same 50 years."**
 Yes, that is the main risk, and it is handled, not avoided: each round was fixed before its run (git timestamps), all
-71 trials are counted, the deflated Sharpe uses all of them, and no failed round was re-tested with tweaked
+79 trials are counted, the deflated Sharpe uses all of them, and no failed round was re-tested with tweaked
 parameters. What the register cannot count are the *design* choices between rounds, made knowing earlier results –
-the garden of forking paths. That is why I stopped: a fifth round on this history would lower the evidential value of
-everything before it.
+the garden of forking paths. I ran a fifth round anyway, because the Fed variables were a category I considered
+indispensable and had not tested properly; its cost is visible – every earlier round's deflated Sharpe went down
+(round 4: 0.90 → 0.87) – and it came out negative, which is itself a check that the process does not just confirm.
 
 **5. "Why a moving-block bootstrap, and why block length 12?"**
 Monthly returns are autocorrelated and two strategies on the same months are correlated. Resampling single months
@@ -101,7 +102,24 @@ Optimistic for that period; it is an assumption, stated as such. The sensitivity
 financing costs about 0.017 Sharpe (`docs/REVIEW_ALLOKATOR.md` F4), and the passive baseline is leveraged as well,
 so the comparison is not driven by it.
 
+**14. "You ignore the Fed. Rates, inflation, unemployment drive everything."**
+Tested, pre-registered (ADR 063/064). Five Fed variables – 3-month change of Fed funds, real policy rate, change of
+the inflation rate, Sahm indicator, change of the curve – are the same for every class, so a ridge regression per class
+learns, on the expanding past only, how each variable moved that class's next-month relative return; its prediction is
+blended 50/50 with the momentum composite. Result 1978–2018: rank IC falls from 0.092 to 0.034, paired difference
+−0.058 [−0.108, −0.006]; the Fed part alone has IC −0.005. The slopes make economic sense; they just do not forecast
+the next month. Monthly-average macro data and month-end prices were kept apart on purpose (an averaged Treasury
+series would have handed the Fed variables a spurious edge). *File:* `output/forecast_fed/ROUND5.md`.
+
+**15. "So just lever it up and go long-short."**
+Pre-registered too: rank 1 long 1.5×, last rank short 1.5×, held while the ranking stands, with borrow fees,
+financing and costs. 1974–2018: Sharpe 0.31 [+0.05, +0.52] – the same Sharpe as equal weight at three times the
+volatility, a −82 % drawdown and a −60 % month (March 1980, silver held long). 2019–2025: −12 % a year. At 1.0× the
+annual return is the same 9.3 %: volatility drag eats the leverage. *File:* `output/long_short/LONG_SHORT.md`.
+
 ## Likely follow-ups to prepare
+- Volatility drag: geometric ≈ arithmetic return − σ²/2 – why 1.5× and 1.0× end at the same 9.3 % (σ 43 % vs. 31 %).
+- Ridge regression: why a fixed λ and standardised variables, and why the intercept is left out.
 - Fundamental law of active management: IC × √breadth – why 4 classes give little breadth (round 4 widened it to ~45).
 - Why risk parity leverages bonds, and what that did in 1977–81 (the passive baseline held leveraged bonds through rising rates; the filter stepped out).
 - What a Holm correction does with two tests (`docs/METHODS.md` §7).

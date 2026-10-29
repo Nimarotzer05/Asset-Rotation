@@ -52,9 +52,12 @@ class LongShortResult:
 def picks(ranks: pd.DataFrame) -> pd.DataFrame:
     """First and last class per decision month (NaN where a month has no complete ranking)."""
     complete = ranks.notna().all(axis=1)
-    first = ranks.idxmin(axis=1).where(complete)
-    last = ranks.idxmax(axis=1).where(complete)
-    return pd.DataFrame({"long": first, "short": last}, index=ranks.index)
+    out = pd.DataFrame({"long": np.nan, "short": np.nan}, index=ranks.index, dtype=object)
+    full = ranks[complete]  # idxmin/idxmax fail on rows without any value (the start of the panel)
+    if len(full):
+        out.loc[full.index, "long"] = full.idxmin(axis=1)
+        out.loc[full.index, "short"] = full.idxmax(axis=1)
+    return out
 
 
 def _leg(held: str | None, size: float, want: str, leverage: float, hold: Hold) -> tuple[str, float, float]:
