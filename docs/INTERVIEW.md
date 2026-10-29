@@ -25,10 +25,10 @@ README and in ADR 060. The defensible statement is narrow: a trend filter on a l
 
 **2. "Walk me through the deflated Sharpe. What is N, and what does 0.895 mean?"**
 N counts every variant ever computed on this history, including ones whose results I saw and discarded: 70 when
-round 4 ran, 79 today (after the ETF check, round 5 and the long-short study). The tested
+round 4 ran, 82 today (after the ETF check, round 5 and the long-short studies). The tested
 statistic is the Sharpe of the allocator's return net of its beta to the baseline, so extra risk doesn't count as
 skill. Given how much the trials vary, 0.895 is the probability that the observed Sharpe beats the best of 70 unskilled
-tries (0.87 with today's 79). It's a probability, not a p-value, and it's below the 0.95 I set as the bar – so round 4 does not
+tries (0.82 with today's 82 – the wild long-short trials raise the variance of the trials, which raises the bar). It's a probability, not a p-value, and it's below the 0.95 I set as the bar – so round 4 does not
 survive the multiple-testing correction. *File:* `docs/METHODS.md` §8, `docs/TRIALS.yaml`.
 
 **3. "Which parts did you write yourself?"**
@@ -40,11 +40,11 @@ result, there is a 120-line pandas rebuild of it that I can walk you through." T
 
 **4. "Isn't this overfit? Five rounds on the same 50 years."**
 Yes, that is the main risk, and it is handled, not avoided: each round was fixed before its run (git timestamps), all
-79 trials are counted, the deflated Sharpe uses all of them, and no failed round was re-tested with tweaked
+82 trials are counted, the deflated Sharpe uses all of them, and no failed round was re-tested with tweaked
 parameters. What the register cannot count are the *design* choices between rounds, made knowing earlier results –
 the garden of forking paths. I ran a fifth round anyway, because the Fed variables were a category I considered
 indispensable and had not tested properly; its cost is visible – every earlier round's deflated Sharpe went down
-(round 4: 0.90 → 0.87) – and it came out negative, which is itself a check that the process does not just confirm.
+(round 4: 0.90 → 0.82) – and it came out negative, which is itself a check that the process does not just confirm.
 
 **5. "Why a moving-block bootstrap, and why block length 12?"**
 Monthly returns are autocorrelated and two strategies on the same months are correlated. Resampling single months
@@ -116,7 +116,17 @@ series would have handed the Fed variables a spurious edge). *File:* `output/for
 Pre-registered too: rank 1 long 1.5×, last rank short 1.5×, held while the ranking stands, with borrow fees,
 financing and costs. 1974–2018: Sharpe 0.31 [+0.05, +0.52] – the same Sharpe as equal weight at three times the
 volatility, a −82 % drawdown and a −60 % month (March 1980, silver held long). 2019–2025: −12 % a year. At 1.0× the
-annual return is the same 9.3 %: volatility drag eats the leverage. *File:* `output/long_short/LONG_SHORT.md`.
+annual return is the same 9.3 %: volatility drag eats the leverage. A version closed and reopened every month with a
+20 % stop on daily closes did worse (Sharpe 0.11, drawdown −99 %): most stops fired on silver spikes against the
+short, and full monthly turnover costs 6.8 % a year. *Files:* `output/long_short/LONG_SHORT.md`,
+`output/long_short_stop/STOP.md`.
+
+**16. "How do you know your data are clean?"**
+Gates before each round (`output/allocator_v2/DATA.md`), cross-checks against independent sources – and suspicion
+of any extreme number. The stop-loss test showed a −68 % month in February 1983; it traced to a Saturday silver
+fixing in the frozen LBMA file (403.6 between 757.6 and 732.9). The pre-registered result stays as computed; the run
+without that row is reported next to it and counted as an extra trial; the conclusion did not change. Monthly
+studies never touch that day; whether round 4's daily silver volatility is affected is listed as open.
 
 ## Likely follow-ups to prepare
 - Volatility drag: geometric ≈ arithmetic return − σ²/2 – why 1.5× and 1.0× end at the same 9.3 % (σ 43 % vs. 31 %).

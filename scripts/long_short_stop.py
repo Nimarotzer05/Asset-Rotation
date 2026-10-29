@@ -48,6 +48,10 @@ DAILY = {"US_EQ": "US_EQ", "UST10_D": "UST10_ME", "GOLD_D": "GOLD", "SILVER": "S
 STOP = 0.20
 MAIN = "LS 1.5× monatlich neu, Stop 20 % (Regel)"
 NO_STOP = "LS 1.5× monatlich neu, ohne Stop"
+CLEAN = "LS 1.5× monatlich neu, Stop 20 %, ohne Wochenend-Fixing (ADR 066)"
+# found after the first run (ADR 066): LBMA silver carries one Saturday print, 1983-02-05 (403.6 between 757.6 and
+# 732.9) – LBMA does not fix on weekends. The pre-registered run keeps the data as frozen; this run uses the same rule
+# on the daily path Monday–Friday only, and is counted as an extra trial.
 
 
 def main() -> None:
@@ -66,9 +70,12 @@ def main() -> None:
     boot = BlockBootstrap(2000, 12, 20261025)
 
     choice = round1_choice(b, f).loc[pd.Timestamp("1973-12-31") : pd.Timestamp("2025-11-30")]
+    weekday = daily[daily.index.dayofweek < 5]
+    dropped = daily.index[daily.index.dayofweek >= 5]
     res = {
         MAIN: run_long_short_stop(choice, daily, cash, 1.5, STOP, FRICTIONS),
         NO_STOP: run_long_short_stop(choice, daily, cash, 1.5, None, FRICTIONS),
+        CLEAN: run_long_short_stop(choice, weekday, cash, 1.5, STOP, FRICTIONS),
     }
     ew = equal_weight(ret[TRADED].loc[pd.Timestamp(IN[0]) :], 7.5)
     ref = pd.read_csv(
@@ -120,6 +127,10 @@ def main() -> None:
     )
     ins = monthly.loc[pd.Timestamp(IN[0]) : pd.Timestamp(IN[1])]
     pair = paired_sharpe_diff(ins[MAIN], ins[NO_STOP], ins["cash"], boot, CONF)
+    pair_c = paired_sharpe_diff(ins[CLEAN], ins[NO_STOP], ins["cash"], boot, CONF)
+    s_clean_in = sharpe_ci(ins[CLEAN], ins["cash"], boot, CONF)
+    seen = monthly.loc[pd.Timestamp(SEEN[0]) : pd.Timestamp(SEEN[1])]
+    s_clean_seen = sharpe_ci(seen[CLEAN], seen["cash"], boot, CONF)
     n_trials, _ = register(include_planned=True, own_file=OUT_FILE)
     own = pd.Series(
         {
@@ -197,6 +208,9 @@ def main() -> None:
         f"- 1974–2018: Sharpe ex Cash {s_in.value:+.3f} [{s_in.low:+.3f}, {s_in.high:+.3f}] → Intervall über null: **{'ja' if k1 else 'nein'}**",
         f"- 2019–2025: Sharpe ex Cash {s_seen.value:+.3f} → über null: **{'ja' if k2 else 'nein'}**",
         f"- Stop gegen ohne Stop (gepaart, 1974–2018): Δ Sharpe {pair.value:+.3f} [{pair.low:+.3f}, {pair.high:+.3f}]",
+        f"- Datenkorrektur (ADR 066, nach dem ersten Lauf gefunden; entfernt: {', '.join(str(d.date()) for d in dropped) or 'nichts'}): "
+        f"Regel 1974–2018 Sharpe {s_clean_in.value:+.3f} [{s_clean_in.low:+.3f}, {s_clean_in.high:+.3f}], 2019–2025 {s_clean_seen.value:+.3f}; "
+        f"gegen ohne Stop Δ {pair_c.value:+.3f} [{pair_c.low:+.3f}, {pair_c.high:+.3f}]",
         f"- Ruin: Regel {'ja, ' + res[MAIN].ruin.strftime('%Y-%m') if res[MAIN].ruin is not None else 'nein'}; ohne Stop "
         f"{'ja, ' + res[NO_STOP].ruin.strftime('%Y-%m') if res[NO_STOP].ruin is not None else 'nein'}",
         f"- Deflationierte Sharpe der Regel (Appraisal-Residuum gegen Equal Weight, 1974–2018, N = {n_trials}): {dsr:.3f}",

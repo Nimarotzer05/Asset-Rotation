@@ -35,11 +35,12 @@ rate, inflation, unemployment, curve) made the ranking *worse* in-sample; and a 
 | ETF | Round 4's ablation with tradable ETFs (sector SPDRs, EFA, SHY/IEF, GLD/SLV) | 2008–2026 | filter vs. no filter, interval > 0 | +0.06 [−0.21, +0.20] – not met; tracks the index study (ρ = 0.96) |
 | 5 | Round-1 composite + Fed category (rate decisions, real policy rate, inflation, Sahm indicator, curve), per-class ridge on the expanding past | 1978–2018 + 2019–25 (seen) | rank-IC gain > 0 in-sample **and** > 0 in 2019–25 | **−0.058 [−0.108, −0.006]** – worse in-sample; +0.07 in 2019–25 – not established |
 | L/S | Rank 1 long 1.5×, last rank short 1.5×, held unless the ranking changes, with borrow, financing and costs | 1974–2018 + 2019–25 (seen) | Sharpe > 0 in-sample (interval) **and** in 2019–25 | +0.31 [+0.05, +0.52], drawdown −82 %; 2019–25 −0.24 – in-sample only |
+| L/S stop | The same, closed and reopened every month, 20 % stop on daily closes (both legs out) | 1974–2018 + 2019–25 (seen) | as L/S | +0.11 [−0.20, +0.32], drawdown −99 % – not established; the stop does not help (Δ −0.06) |
 
 Intervals are 90 % moving-block bootstrap (block 12) of paired monthly differences. Every trial ever run on this
-history is counted in a register (`docs/TRIALS.yaml`, N = 79); the deflated Sharpe probability (Bailey & López de
+history is counted in a register (`docs/TRIALS.yaml`, N = 82); the deflated Sharpe probability (Bailey & López de
 Prado) is 0.56 / 0.84 / 0.22 for rounds 1–3 (computed when the register held 58 trials) and 0.895 for round 4 (70);
-with today's register of 79 round 4 stands at 0.87, the long-short rule at 0.08 – none reaches 0.95. Round 4's passive risk parity is the
+with today's register of 82 round 4 stands at 0.82, the long-short rules at 0.03 or less – none reaches 0.95. Round 4's passive risk parity is the
 weakest of its four baselines (Sharpe 0.51 vs. equal weight 0.61, 60/40 0.56); against equal weight and 60/40 the
 allocator's interval includes zero, and since 2008 it trails both (0.59 vs. 0.72).
 
@@ -74,8 +75,10 @@ power. The live track demonstrates an honest, tamper-evident process; it will no
 5. **A convincing story is not forecasting power.** Some of the Fed model's slopes read like a textbook (a higher real
    policy rate favours Treasuries over silver), others flip sign between fits; together they rank next month no better
    than chance – and diluting momentum with them cost IC.
-6. **Leverage does not create return.** The long-short rule earns 9.3 % a year at 1.5× and at 1.0× alike: the higher
-   volatility eats the extra exposure, and the 1.5× book loses 82 % at its worst.
+6. **Leverage does not create return, and a stop does not tame it.** The long-short rule earns 9.3 % a year at 1.5×
+   and at 1.0× alike, and loses 82 % at its worst; closing it every month with a 20 % stop made it worse (costs of
+   6.8 % a year, stops that sell silver spikes at the top). The stop test also surfaced a data error – a Saturday
+   silver print in 1983 – reported next to the pre-registered run rather than quietly fixed.
 7. **Rebuild the headline independently.** A short pandas version (`examples/trend_filter_from_scratch.py`)
    reproduces the engine (Sharpe 0.79 vs. 0.80, ρ = 0.98) – after finding a pandas alignment bug in the rebuild itself.
 
@@ -107,6 +110,7 @@ python scripts/allocator_v2_walkforward.py                 # round 4 (≈ 30 min
 python examples/trend_filter_from_scratch.py               # independent rebuild of round 4's headline (≈ 10 s)
 python scripts/round5_fed.py                               # round 5, Fed category, pointwise (≈ 2 min) → output/forecast_fed/
 python scripts/long_short_check.py                         # leveraged long-short on the ranking (≈ 5 s) → output/long_short/
+python scripts/long_short_stop.py                          # the same, monthly reopen + 20 % stop on daily closes → output/long_short_stop/
 python -m rotationlab.cli golden --strategy sleeve_allocator_v2   # reproduces 0.7911 / 10.83 % / −13.09 %
 pytest                                                     # 420 tests, about 12 min (golden tests included)
 ```

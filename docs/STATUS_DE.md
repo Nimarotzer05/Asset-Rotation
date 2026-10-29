@@ -73,8 +73,11 @@ dem Komposit von Runde 1, jeder Score punktweise: 1978–2018 Rang-IC 0.092 → 
 läuft trotzdem wie vorab entschieden als zweite Liveprognose mit eigenem Journal und Anker; veröffentlicht bleibt
 Runde 1 (Entscheid Nima 29.10.: nicht ersetzen). **Long-Short:** 1974–2018 9.3 % p.a., Sharpe +0.313
 [+0.051, +0.518], aber Vol 43 %, Max-Drawdown −82.5 %, schlechtester Monat −60 % (März 1980); 2019–2025 −12.1 % p.a. →
-**nur in-sample profitabel**, nicht investierbar (`output/long_short/LONG_SHORT.md`). Register N = 79; Runde 4 jetzt
-Deflated Sharpe 0.87.
+**nur in-sample profitabel**, nicht investierbar (`output/long_short/LONG_SHORT.md`). **Long-Short monatlich neu mit
+20-%-Stop (ADR 065/066):** 1974–2018 −2.1 % p.a., Sharpe +0.109 [−0.195, +0.323], Drawdown −99 % → **nicht belegt**; der
+Stop hilft nicht (Δ −0.06), Reibung 6.8 % p.a. Dabei gefunden: eine Samstags-Notierung im LBMA-Silber (1983-02-05),
+offen berichtet; ohne sie +0.145 [−0.146, +0.353], Lesart unverändert (`output/long_short_stop/STOP.md`). Offen: Einfluss
+dieser Zeile auf Runde 4 (tägliche Silber-Volatilität). Register N = 82; Runde 4 jetzt Deflated Sharpe 0.82.
 
 ```bash
 python -m rotationlab.cli forecast run                    # Prognose am letzten Monatsende, fällige abrechnen, Report (täglich in Actions)
@@ -91,6 +94,7 @@ python scripts/r4_register.py --sample <Beginn>,<Ende> --write   # Runde 4: Univ
 python scripts/allocator_v2_walkforward.py                 # Runde 4: Walk-forward nach ADR 057/058 (≈ 1 h; prüft zuerst das Fenster)
 python scripts/round5_fed.py                               # Runde 5: Fed-Kategorie, punktweise (≈ 2 min)
 python scripts/long_short_check.py                         # Long-Short 1.5/1.5 mit offener Buchhaltung (≈ 5 s)
+python scripts/long_short_stop.py                          # Long-Short monatlich neu mit 20-%-Stop auf Tagesschlusskursen
 python -m rotationlab.cli forecast run --config forecast_fed   # zweite Liveprognose (täglich in Actions)
 ```
 
