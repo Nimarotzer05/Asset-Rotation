@@ -16,22 +16,22 @@ fred:BAMLC0A0CM,fred,BAMLC0A0CM,yield,D,1D,none,False,pct,ICE BofA US IG OAS,202
 fred:BAMLH0A0HYM2,fred,BAMLH0A0HYM2,yield,D,1D,none,False,pct,ICE BofA US HY OAS,2023-10-24,2026-10-27,789,789
 fred:CPIAUCSL,fred,CPIAUCSL,macro,M,1M,alfred,False,index,CPI-U SA,1947-01-31,2026-09-30,3121,687
 fred:CPILFESL,fred,CPILFESL,macro,M,1M,alfred,False,index,Core CPI SA,1957-01-31,2026-09-30,2737,854
-fred:DFII10,fred,DFII10,yield,D,1D,none,False,pct,10Y TIPS real yield,2003-01-02,2026-10-26,5958,5958
-fred:DGS10,fred,DGS10,yield,D,1D,none,False,pct,10Y Treasury CMT,1962-01-02,2026-10-26,16189,16189
-fred:DGS2,fred,DGS2,yield,D,1D,none,False,pct,2Y Treasury CMT,1976-06-01,2026-10-26,12597,12597
-fred:DGS3MO,fred,DGS3MO,yield,D,1D,none,False,pct,3M Treasury CMT,1981-09-01,2026-10-26,11287,11287
+fred:DFII10,fred,DFII10,yield,D,1D,none,False,pct,10Y TIPS real yield,2003-01-02,2026-10-27,5959,5959
+fred:DGS10,fred,DGS10,yield,D,1D,none,False,pct,10Y Treasury CMT,1962-01-02,2026-10-27,16190,16190
+fred:DGS2,fred,DGS2,yield,D,1D,none,False,pct,2Y Treasury CMT,1976-06-01,2026-10-27,12598,12598
+fred:DGS3MO,fred,DGS3MO,yield,D,1D,none,False,pct,3M Treasury CMT,1981-09-01,2026-10-27,11288,11288
 fred:DTWEXBGS,fred,DTWEXBGS,index,D,7D,none,False,,"Broad trade-weighted dollar (H.10, weekly release)",2006-01-02,2026-10-23,5217,5217
 fred:FEDFUNDS,fred,FEDFUNDS,yield,M,0D,none,False,pct,"Fed funds, monthly average",1954-07-31,2026-09-30,867,867
 fred:GS10,fred,GS10,yield,M,0D,none,False,pct,"10Y Treasury CMT, monthly average",1953-04-30,2026-09-30,882,882
 fred:HOUST,fred,HOUST,macro,M,1M,alfred,False,thousands,Housing starts,1959-01-31,2026-09-30,4621,807
-fred:ICSA,fred,ICSA,macro,W,6D,alfred,False,claims,"Initial claims (week ending Saturday, released Thursday)",1967-01-07,2026-10-17,10008,3110
+fred:ICSA,fred,ICSA,macro,W,6D,alfred,False,claims,"Initial claims (week ending Saturday, released Thursday)",1967-01-07,2026-10-24,10010,3111
 fred:INDPRO,fred,INDPRO,macro,M,1M,alfred,False,index,Industrial production,1919-01-31,2026-09-30,38862,1318
 fred:M2SL,fred,M2SL,macro,M,1M,alfred,False,bn USD,M2 money stock,1959-01-31,2026-09-30,28908,2183
 fred:MICH,fred,MICH,macro,M,1M,alfred,False,pct,Michigan 1Y inflation expectations,1978-01-31,2026-09-30,840,585
 fred:NFCI,fred,NFCI,macro,W,6D,alfred,False,index,"Chicago Fed financial conditions (Friday, released Wednesday)",1971-01-08,2026-10-23,934156,2800
 fred:PAYEMS,fred,PAYEMS,macro,M,1M,alfred,False,thousands,Nonfarm payrolls,1939-01-31,2026-09-30,13741,911
-fred:PCEPILFE,fred,PCEPILFE,macro,M,2M,alfred,False,index,Core PCE price index,1959-01-31,2026-08-31,8700,812
-fred:T10YIE,fred,T10YIE,yield,D,1D,none,False,pct,10Y breakeven inflation,2003-01-02,2026-10-27,5959,5959
+fred:PCEPILFE,fred,PCEPILFE,macro,M,2M,alfred,False,index,Core PCE price index,1959-01-31,2026-09-30,8703,813
+fred:T10YIE,fred,T10YIE,yield,D,1D,none,False,pct,10Y breakeven inflation,2003-01-02,2026-10-28,5960,5960
 fred:TB3MS,fred,TB3MS,yield,M,0D,none,False,pct,"3M T-bill, monthly average",1934-01-31,2026-09-30,1113,1113
 fred:UMCSENT,fred,UMCSENT,macro,M,1M,alfred,False,index,Michigan sentiment,1952-11-30,2026-09-30,1118,681
 fred:UNRATE,fred,UNRATE,macro,M,1M,alfred,False,pct,Unemployment rate,1948-01-31,2026-09-30,2342,944
@@ -456,86 +456,86 @@ stooq:XLRE:close,stooq,XLRE:close,price,D,0D,none,False,,Real estate sector SPDR
 stooq:XLU:close,stooq,XLU:close,price,D,0D,none,False,,Utilities sector SPDR close,,,0,0
 stooq:XLV:close,stooq,XLV:close,price,D,0D,none,False,,Health care sector SPDR close,,,0,0
 stooq:XLY:close,stooq,XLY:close,price,D,0D,none,False,,Consumer discretionary sector SPDR close,,,0,0
-yahoo:BIL:close,yahoo,BIL:close,price,D,0D,none,True,,1-3M T-Bill ETF close,2007-05-30,2026-10-27,4885,4885
+yahoo:BIL:close,yahoo,BIL:close,price,D,0D,none,True,,1-3M T-Bill ETF close,2007-05-30,2026-10-28,4886,4886
 yahoo:BIL:dividend,yahoo,BIL:dividend,dividend,D,0D,none,False,,1-3M T-Bill ETF dividend,2007-07-02,2026-10-01,128,128
 yahoo:BIL:split,yahoo,BIL:split,split,D,0D,none,False,,1-3M T-Bill ETF split,2017-11-30,2017-11-30,1,1
-yahoo:CL=F:close,yahoo,CL=F:close,price,D,0D,none,False,,WTI crude futures (front),2000-08-23,2026-10-27,6572,6572
-yahoo:CPER:close,yahoo,CPER:close,price,D,0D,none,True,,Copper ETF close,2011-11-15,2026-10-27,3758,3758
+yahoo:CL=F:close,yahoo,CL=F:close,price,D,0D,none,False,,WTI crude futures (front),2000-08-23,2026-10-28,6573,6573
+yahoo:CPER:close,yahoo,CPER:close,price,D,0D,none,True,,Copper ETF close,2011-11-15,2026-10-28,3759,3759
 yahoo:CPER:split,yahoo,CPER:split,split,D,0D,none,False,,Copper ETF split,,,0,0
-yahoo:DBA:close,yahoo,DBA:close,price,D,0D,none,True,,Agriculture ETF close,2007-01-05,2026-10-27,4984,4984
+yahoo:DBA:close,yahoo,DBA:close,price,D,0D,none,True,,Agriculture ETF close,2007-01-05,2026-10-28,4985,4985
 yahoo:DBA:split,yahoo,DBA:split,split,D,0D,none,False,,Agriculture ETF split,,,0,0
-yahoo:DBC:close,yahoo,DBC:close,price,D,0D,none,True,,Commodity basket ETF close,2006-02-06,2026-10-27,5214,5214
+yahoo:DBC:close,yahoo,DBC:close,price,D,0D,none,True,,Commodity basket ETF close,2006-02-06,2026-10-28,5215,5215
 yahoo:DBC:split,yahoo,DBC:split,split,D,0D,none,False,,Commodity basket ETF split,,,0,0
-yahoo:DX-Y.NYB:close,yahoo,DX-Y.NYB:close,index,D,0D,none,False,,ICE US dollar index,1971-01-04,2026-10-27,14173,14173
-yahoo:EEM:close,yahoo,EEM:close,price,D,0D,none,True,,MSCI EM ETF close,2003-04-14,2026-10-27,5923,5923
+yahoo:DX-Y.NYB:close,yahoo,DX-Y.NYB:close,index,D,0D,none,False,,ICE US dollar index,1971-01-04,2026-10-28,14174,14174
+yahoo:EEM:close,yahoo,EEM:close,price,D,0D,none,True,,MSCI EM ETF close,2003-04-14,2026-10-28,5924,5924
 yahoo:EEM:dividend,yahoo,EEM:dividend,dividend,D,0D,none,False,,MSCI EM ETF dividend,2003-12-22,2026-06-15,47,47
 yahoo:EEM:split,yahoo,EEM:split,split,D,0D,none,False,,MSCI EM ETF split,2005-06-09,2008-07-24,2,2
-yahoo:EFA:close,yahoo,EFA:close,price,D,0D,none,True,,MSCI EAFE ETF close,2001-08-27,2026-10-27,6329,6329
+yahoo:EFA:close,yahoo,EFA:close,price,D,0D,none,True,,MSCI EAFE ETF close,2001-08-27,2026-10-28,6330,6330
 yahoo:EFA:dividend,yahoo,EFA:dividend,dividend,D,0D,none,False,,MSCI EAFE ETF dividend,2001-10-02,2026-06-15,47,47
 yahoo:EFA:split,yahoo,EFA:split,split,D,0D,none,False,,MSCI EAFE ETF split,2005-06-09,2005-06-09,1,1
-yahoo:GC=F:close,yahoo,GC=F:close,price,D,0D,none,False,,Gold futures (front),2000-08-30,2026-10-27,6565,6565
-yahoo:GLD:close,yahoo,GLD:close,price,D,0D,none,True,,Gold ETF close,2004-11-18,2026-10-27,5519,5519
+yahoo:GC=F:close,yahoo,GC=F:close,price,D,0D,none,False,,Gold futures (front),2000-08-30,2026-10-28,6566,6566
+yahoo:GLD:close,yahoo,GLD:close,price,D,0D,none,True,,Gold ETF close,2004-11-18,2026-10-28,5520,5520
 yahoo:GLD:split,yahoo,GLD:split,split,D,0D,none,False,,Gold ETF split,,,0,0
-yahoo:HG=F:close,yahoo,HG=F:close,price,D,0D,none,False,,Copper futures (front),2000-08-30,2026-10-27,6570,6569
-yahoo:IEF:close,yahoo,IEF:close,price,D,0D,none,True,,7-10y Treasury ETF close,2002-07-30,2026-10-27,6101,6101
+yahoo:HG=F:close,yahoo,HG=F:close,price,D,0D,none,False,,Copper futures (front),2000-08-30,2026-10-28,6571,6570
+yahoo:IEF:close,yahoo,IEF:close,price,D,0D,none,True,,7-10y Treasury ETF close,2002-07-30,2026-10-28,6102,6102
 yahoo:IEF:dividend,yahoo,IEF:dividend,dividend,D,0D,none,False,,7-10y Treasury ETF dividend,2002-09-03,2026-10-01,291,291
 yahoo:IEF:split,yahoo,IEF:split,split,D,0D,none,False,,7-10y Treasury ETF split,,,0,0
-yahoo:PPLT:close,yahoo,PPLT:close,price,D,0D,none,True,,Platinum ETF close,2010-01-08,2026-10-27,4226,4226
+yahoo:PPLT:close,yahoo,PPLT:close,price,D,0D,none,True,,Platinum ETF close,2010-01-08,2026-10-28,4227,4227
 yahoo:PPLT:split,yahoo,PPLT:split,split,D,0D,none,False,,Platinum ETF split,2026-05-18,2026-05-18,1,1
-yahoo:SHY:close,yahoo,SHY:close,price,D,0D,none,True,,1-3y Treasury ETF close,2002-07-30,2026-10-27,6101,6101
+yahoo:SHY:close,yahoo,SHY:close,price,D,0D,none,True,,1-3y Treasury ETF close,2002-07-30,2026-10-28,6102,6102
 yahoo:SHY:dividend,yahoo,SHY:dividend,dividend,D,0D,none,False,,1-3y Treasury ETF dividend,2002-09-03,2026-10-01,290,290
 yahoo:SHY:split,yahoo,SHY:split,split,D,0D,none,False,,1-3y Treasury ETF split,,,0,0
-yahoo:SI=F:close,yahoo,SI=F:close,price,D,0D,none,False,,Silver futures (front),2000-08-30,2026-10-27,6567,6566
-yahoo:SLV:close,yahoo,SLV:close,price,D,0D,none,True,,Silver ETF close,2006-04-28,2026-10-27,5157,5157
+yahoo:SI=F:close,yahoo,SI=F:close,price,D,0D,none,False,,Silver futures (front),2000-08-30,2026-10-28,6568,6567
+yahoo:SLV:close,yahoo,SLV:close,price,D,0D,none,True,,Silver ETF close,2006-04-28,2026-10-28,5158,5158
 yahoo:SLV:split,yahoo,SLV:split,split,D,0D,none,False,,Silver ETF split,2008-07-24,2008-07-24,1,1
-yahoo:SPY:close,yahoo,SPY:close,price,D,0D,none,True,,S&P 500 ETF close,1993-01-29,2026-10-27,8494,8494
+yahoo:SPY:close,yahoo,SPY:close,price,D,0D,none,True,,S&P 500 ETF close,1993-01-29,2026-10-28,8495,8495
 yahoo:SPY:dividend,yahoo,SPY:dividend,dividend,D,0D,none,False,,S&P 500 ETF dividend,1993-03-19,2026-09-18,136,136
 yahoo:SPY:split,yahoo,SPY:split,split,D,0D,none,False,,S&P 500 ETF split,,,0,0
-yahoo:TIP:close,yahoo,TIP:close,price,D,0D,none,True,,TIPS ETF close,2003-12-05,2026-10-27,5759,5759
+yahoo:TIP:close,yahoo,TIP:close,price,D,0D,none,True,,TIPS ETF close,2003-12-05,2026-10-28,5760,5760
 yahoo:TIP:dividend,yahoo,TIP:dividend,dividend,D,0D,none,False,,TIPS ETF dividend,2003-12-31,2026-08-03,202,202
 yahoo:TIP:split,yahoo,TIP:split,split,D,0D,none,False,,TIPS ETF split,,,0,0
-yahoo:TLT:close,yahoo,TLT:close,price,D,0D,none,True,,20y+ Treasury ETF close,2002-07-30,2026-10-27,6101,6101
+yahoo:TLT:close,yahoo,TLT:close,price,D,0D,none,True,,20y+ Treasury ETF close,2002-07-30,2026-10-28,6102,6102
 yahoo:TLT:dividend,yahoo,TLT:dividend,dividend,D,0D,none,False,,20y+ Treasury ETF dividend,2002-09-03,2026-10-01,289,289
 yahoo:TLT:split,yahoo,TLT:split,split,D,0D,none,False,,20y+ Treasury ETF split,,,0,0
-yahoo:UNG:close,yahoo,UNG:close,price,D,0D,none,True,,Natural gas ETF close,2007-04-18,2026-10-27,4914,4914
+yahoo:UNG:close,yahoo,UNG:close,price,D,0D,none,True,,Natural gas ETF close,2007-04-18,2026-10-28,4915,4915
 yahoo:UNG:split,yahoo,UNG:split,split,D,0D,none,False,,Natural gas ETF split,2011-03-09,2024-01-24,4,4
-yahoo:USO:close,yahoo,USO:close,price,D,0D,none,True,,Crude oil ETF close,2006-04-10,2026-10-27,5170,5170
+yahoo:USO:close,yahoo,USO:close,price,D,0D,none,True,,Crude oil ETF close,2006-04-10,2026-10-28,5171,5171
 yahoo:USO:split,yahoo,USO:split,split,D,0D,none,False,,Crude oil ETF split,2020-04-29,2020-04-29,1,1
-yahoo:VNQ:close,yahoo,VNQ:close,price,D,0D,none,True,,US REIT ETF close,2004-09-29,2026-10-27,5555,5555
+yahoo:VNQ:close,yahoo,VNQ:close,price,D,0D,none,True,,US REIT ETF close,2004-09-29,2026-10-28,5556,5556
 yahoo:VNQ:dividend,yahoo,VNQ:dividend,dividend,D,0D,none,False,,US REIT ETF dividend,2004-12-22,2026-09-23,88,88
 yahoo:VNQ:split,yahoo,VNQ:split,split,D,0D,none,False,,US REIT ETF split,,,0,0
-yahoo:XLB:close,yahoo,XLB:close,price,D,0D,none,True,,Materials sector SPDR close,1998-12-22,2026-10-27,7004,7004
+yahoo:XLB:close,yahoo,XLB:close,price,D,0D,none,True,,Materials sector SPDR close,1998-12-22,2026-10-28,7005,7005
 yahoo:XLB:dividend,yahoo,XLB:dividend,dividend,D,0D,none,False,,Materials sector SPDR dividend,1999-03-19,2026-09-21,111,111
 yahoo:XLB:split,yahoo,XLB:split,split,D,0D,none,False,,Materials sector SPDR split,2025-12-05,2025-12-05,1,1
-yahoo:XLC:close,yahoo,XLC:close,price,D,0D,none,True,,Communication services sector SPDR close,2018-06-19,2026-10-27,2101,2101
+yahoo:XLC:close,yahoo,XLC:close,price,D,0D,none,True,,Communication services sector SPDR close,2018-06-19,2026-10-28,2102,2102
 yahoo:XLC:dividend,yahoo,XLC:dividend,dividend,D,0D,none,False,,Communication services sector SPDR dividend,2018-09-21,2026-09-21,33,33
 yahoo:XLC:split,yahoo,XLC:split,split,D,0D,none,False,,Communication services sector SPDR split,,,0,0
-yahoo:XLE:close,yahoo,XLE:close,price,D,0D,none,True,,Energy sector SPDR close,1998-12-22,2026-10-27,7004,7004
+yahoo:XLE:close,yahoo,XLE:close,price,D,0D,none,True,,Energy sector SPDR close,1998-12-22,2026-10-28,7005,7005
 yahoo:XLE:dividend,yahoo,XLE:dividend,dividend,D,0D,none,False,,Energy sector SPDR dividend,1999-03-19,2026-09-21,112,112
 yahoo:XLE:split,yahoo,XLE:split,split,D,0D,none,False,,Energy sector SPDR split,2025-12-05,2025-12-05,1,1
-yahoo:XLF:close,yahoo,XLF:close,price,D,0D,none,True,,Financials sector SPDR close,1998-12-22,2026-10-27,7004,7004
+yahoo:XLF:close,yahoo,XLF:close,price,D,0D,none,True,,Financials sector SPDR close,1998-12-22,2026-10-28,7005,7005
 yahoo:XLF:dividend,yahoo,XLF:dividend,dividend,D,0D,none,False,,Financials sector SPDR dividend,1999-03-19,2026-09-21,111,111
 yahoo:XLF:split,yahoo,XLF:split,split,D,0D,none,False,,Financials sector SPDR split,2016-09-19,2016-09-19,1,1
-yahoo:XLI:close,yahoo,XLI:close,price,D,0D,none,True,,Industrials sector SPDR close,1998-12-22,2026-10-27,7004,7004
+yahoo:XLI:close,yahoo,XLI:close,price,D,0D,none,True,,Industrials sector SPDR close,1998-12-22,2026-10-28,7005,7005
 yahoo:XLI:dividend,yahoo,XLI:dividend,dividend,D,0D,none,False,,Industrials sector SPDR dividend,1999-03-19,2026-09-21,110,110
 yahoo:XLI:split,yahoo,XLI:split,split,D,0D,none,False,,Industrials sector SPDR split,,,0,0
-yahoo:XLK:close,yahoo,XLK:close,price,D,0D,none,True,,Technology sector SPDR close,1998-12-22,2026-10-27,7004,7004
+yahoo:XLK:close,yahoo,XLK:close,price,D,0D,none,True,,Technology sector SPDR close,1998-12-22,2026-10-28,7005,7005
 yahoo:XLK:dividend,yahoo,XLK:dividend,dividend,D,0D,none,False,,Technology sector SPDR dividend,1999-12-17,2026-09-21,85,85
 yahoo:XLK:split,yahoo,XLK:split,split,D,0D,none,False,,Technology sector SPDR split,2025-12-05,2025-12-05,1,1
-yahoo:XLP:close,yahoo,XLP:close,price,D,0D,none,True,,Consumer staples sector SPDR close,1998-12-22,2026-10-27,7004,7004
+yahoo:XLP:close,yahoo,XLP:close,price,D,0D,none,True,,Consumer staples sector SPDR close,1998-12-22,2026-10-28,7005,7005
 yahoo:XLP:dividend,yahoo,XLP:dividend,dividend,D,0D,none,False,,Consumer staples sector SPDR dividend,1999-03-19,2026-09-21,111,111
 yahoo:XLP:split,yahoo,XLP:split,split,D,0D,none,False,,Consumer staples sector SPDR split,,,0,0
-yahoo:XLRE:close,yahoo,XLRE:close,price,D,0D,none,True,,Real estate sector SPDR close,2015-10-08,2026-10-27,2779,2779
+yahoo:XLRE:close,yahoo,XLRE:close,price,D,0D,none,True,,Real estate sector SPDR close,2015-10-08,2026-10-28,2780,2780
 yahoo:XLRE:dividend,yahoo,XLRE:dividend,dividend,D,0D,none,False,,Real estate sector SPDR dividend,2015-12-18,2026-09-21,44,44
 yahoo:XLRE:split,yahoo,XLRE:split,split,D,0D,none,False,,Real estate sector SPDR split,,,0,0
-yahoo:XLU:close,yahoo,XLU:close,price,D,0D,none,True,,Utilities sector SPDR close,1998-12-22,2026-10-27,7004,7004
+yahoo:XLU:close,yahoo,XLU:close,price,D,0D,none,True,,Utilities sector SPDR close,1998-12-22,2026-10-28,7005,7005
 yahoo:XLU:dividend,yahoo,XLU:dividend,dividend,D,0D,none,False,,Utilities sector SPDR dividend,1999-03-19,2026-09-21,112,112
 yahoo:XLU:split,yahoo,XLU:split,split,D,0D,none,False,,Utilities sector SPDR split,2025-12-05,2025-12-05,1,1
-yahoo:XLV:close,yahoo,XLV:close,price,D,0D,none,True,,Health care sector SPDR close,1998-12-22,2026-10-27,7004,7004
+yahoo:XLV:close,yahoo,XLV:close,price,D,0D,none,True,,Health care sector SPDR close,1998-12-22,2026-10-28,7005,7005
 yahoo:XLV:dividend,yahoo,XLV:dividend,dividend,D,0D,none,False,,Health care sector SPDR dividend,1999-12-20,2026-09-21,106,106
 yahoo:XLV:split,yahoo,XLV:split,split,D,0D,none,False,,Health care sector SPDR split,,,0,0
-yahoo:XLY:close,yahoo,XLY:close,price,D,0D,none,True,,Consumer discretionary sector SPDR close,1998-12-22,2026-10-27,7004,7004
+yahoo:XLY:close,yahoo,XLY:close,price,D,0D,none,True,,Consumer discretionary sector SPDR close,1998-12-22,2026-10-28,7005,7005
 yahoo:XLY:dividend,yahoo,XLY:dividend,dividend,D,0D,none,False,,Consumer discretionary sector SPDR dividend,1999-03-19,2026-09-21,111,111
 yahoo:XLY:split,yahoo,XLY:split,split,D,0D,none,False,,Consumer discretionary sector SPDR split,2025-12-05,2025-12-05,1,1
-yahoo:^GSPC:close,yahoo,^GSPC:close,index,D,0D,none,False,,S&P 500 price index,1927-12-30,2026-10-27,24823,24823
-yahoo:^VIX:close,yahoo,^VIX:close,index,D,0D,none,False,,CBOE VIX,1990-01-02,2026-10-27,9275,9275
+yahoo:^GSPC:close,yahoo,^GSPC:close,index,D,0D,none,False,,S&P 500 price index,1927-12-30,2026-10-28,24824,24824
+yahoo:^VIX:close,yahoo,^VIX:close,index,D,0D,none,False,,CBOE VIX,1990-01-02,2026-10-28,9276,9276
