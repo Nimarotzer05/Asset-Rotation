@@ -219,6 +219,8 @@ def main() -> None:
         for col in t.columns:
             if col in pct:
                 t[col] = [f"{x:.1%}" if isinstance(x, float) and not np.isnan(x) else "–" for x in t[col]]
+            elif col == "t (NW, Überrendite)":
+                t[col] = [f"{x:+.2f}" for x in t[col]]
             elif col == "max. Bein":
                 t[col] = [f"{x:.2f}" if isinstance(x, float) and not np.isnan(x) else "–" for x in t[col]]
         return md_table(t)
@@ -252,6 +254,11 @@ def main() -> None:
         + "; ".join(
             f"{n}: {'ja, ' + r.strftime('%Y-%m') if r is not None else 'nein'}" for n, r in ruins.items()
         ),
+        f"- Drift der Beine (Hauptregel, 1974–2018): Beingrösse bis {details[MAIN].loc[: pd.Timestamp(IN[1]), ['long_size', 'short_size']].max().max():.2f}, "
+        f"Netto-Exposure long − short zwischen {(details[MAIN]['long_size'] - details[MAIN]['short_size']).loc[: pd.Timestamp(IN[1])].min():+.2f} und "
+        f"{(details[MAIN]['long_size'] - details[MAIN]['short_size']).loc[: pd.Timestamp(IN[1])].max():+.2f}, |netto| > 0.5 in "
+        f"{((details[MAIN]['long_size'] - details[MAIN]['short_size']).loc[: pd.Timestamp(IN[1])].abs() > 0.5).mean():.0%} der Monate – "
+        "die Regel ist kein sauberer 1.5/1.5-Spread; monatlich zurückgesetzt schliesst das Intervall null ein (Tabelle oben)",
         f"- Deflationierte Sharpe der Hauptregel (Appraisal-Residuum gegen Equal Weight, 1974–2018, N = {n_trials}): {dsr:.3f}",
         "",
         f"Lesart: {reading}.",

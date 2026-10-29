@@ -1,4 +1,4 @@
-# rotationlab – which asset class next month? Four pre-registered research rounds and a live forecast
+# rotationlab – which asset class next month? Five pre-registered research rounds and a live forecast
 
 *Nima Rotzer · BSc Mathematics, ETH Zürich · built Oct 2026*
 
@@ -9,12 +9,15 @@ next month – and a careful, documented attempt to find out whether such rankin
 that be shown honestly, out of sample, after costs?
 
 **The short answer.** A monthly ranking of US equities, Treasuries, gold and silver runs live since October 2026.
-Its historical edge (rank IC +0.10, 1973–2018) did **not** replicate in a held-out period (2019–2025). Across four
+Its historical edge (rank IC +0.10, 1973–2018) did **not** replicate in a held-out period (2019–2025). Across five
 research rounds, each fixed in writing before its data was evaluated, exactly one pre-registered primary criterion
 passed: risk parity with a 12-month trend filter beats passive risk parity, 1977–2025. Ablations show where that comes from –
 the trend filter, not the cross-sectional signals – and that it is not significant since 2008, neither on research
 indices nor on tradable ETFs. The project's result is a documented negative: careful testing, nothing overstated.
 (That round's two secondary signal tests also passed as stand-alone rank portfolios; they add nothing to the book.)
+Two later questions were pre-registered the same way: adding the Fed's decision variables (rate changes, real policy
+rate, inflation, unemployment, curve) made the ranking *worse* in-sample; and a leveraged long-short on the ranking
+(rank 1 long 1.5×, last rank short 1.5×) was profitable in-sample only, with an −82 % drawdown.
 
 ![Primary tests and key breakdowns](docs/figures/tests.png)
 
@@ -30,11 +33,13 @@ indices nor on tradable ETFs. The project's result is a documented negative: car
 | 4 | … ablation: same book without cross-sectional selection | 1977–2025 | reported | allocator − ablation **−0.001 [−0.07, +0.06]**: the edge is the trend filter |
 | 4 | … since 2008 | 2008–2025 | reported | +0.08 [−0.18, +0.28] |
 | ETF | Round 4's ablation with tradable ETFs (sector SPDRs, EFA, SHY/IEF, GLD/SLV) | 2008–2026 | filter vs. no filter, interval > 0 | +0.06 [−0.21, +0.20] – not met; tracks the index study (ρ = 0.96) |
+| 5 | Round-1 composite + Fed category (rate decisions, real policy rate, inflation, Sahm indicator, curve), per-class ridge on the expanding past | 1978–2018 + 2019–25 (seen) | rank-IC gain > 0 in-sample **and** > 0 in 2019–25 | **−0.058 [−0.108, −0.006]** – worse in-sample; +0.07 in 2019–25 – not established |
+| L/S | Rank 1 long 1.5×, last rank short 1.5×, held unless the ranking changes, with borrow, financing and costs | 1974–2018 + 2019–25 (seen) | Sharpe > 0 in-sample (interval) **and** in 2019–25 | +0.31 [+0.05, +0.52], drawdown −82 %; 2019–25 −0.24 – in-sample only |
 
 Intervals are 90 % moving-block bootstrap (block 12) of paired monthly differences. Every trial ever run on this
-history is counted in a register (`docs/TRIALS.yaml`, N = 71); the deflated Sharpe probability (Bailey & López de
+history is counted in a register (`docs/TRIALS.yaml`, N = 79); the deflated Sharpe probability (Bailey & López de
 Prado) is 0.56 / 0.84 / 0.22 for rounds 1–3 (computed when the register held 58 trials) and 0.895 for round 4 (70);
-with today's register of 71 round 4 stands at 0.90 – none reaches 0.95. Round 4's passive risk parity is the
+with today's register of 79 round 4 stands at 0.87, the long-short rule at 0.08 – none reaches 0.95. Round 4's passive risk parity is the
 weakest of its four baselines (Sharpe 0.51 vs. equal weight 0.61, 60/40 0.56); against equal weight and 60/40 the
 allocator's interval includes zero, and since 2008 it trails both (0.59 vs. 0.72).
 
@@ -48,6 +53,9 @@ class. Forecasts and their outcomes go into an append-only, hash-chained journal
 `journal/forecast/`); its head is anchored outside the repo (branch `anchors`), so a forecast cannot be changed after
 the fact. The report is `reports/forecast/latest.md` on branch `data`. The first counted decision is 2026-10-31,
 written on Monday 2026-11-02.
+Since the same decision a second forecast runs next to it – round 5's model with the Fed category, in its own journal
+and anchor (`journal/forecast_fed/`, `reports/forecast_fed/`). It was put live by decision before its test, and the
+test did not support it; the published forecast stays round 1 (ADR 063/064).
 
 **How much can a live record prove?** Monthly rank ICs scatter with a standard deviation of 0.64. Even if the true IC
 were the in-sample 0.098, about 10 years of live months would be needed for t = 1.65, and about 22 years for 80 %
@@ -63,7 +71,12 @@ power. The live track demonstrates an honest, tamper-evident process; it will no
    Sharpe make that visible instead of hiding it.
 4. **Check the research data against tradable instruments.** The ETF rebuild tracks the index study closely
    (ρ = 0.96); the post-2008 period is where both lose the edge.
-5. **Rebuild the headline independently.** A short pandas version (`examples/trend_filter_from_scratch.py`)
+5. **A convincing story is not forecasting power.** Some of the Fed model's slopes read like a textbook (a higher real
+   policy rate favours Treasuries over silver), others flip sign between fits; together they rank next month no better
+   than chance – and diluting momentum with them cost IC.
+6. **Leverage does not create return.** The long-short rule earns 9.3 % a year at 1.5× and at 1.0× alike: the higher
+   volatility eats the extra exposure, and the 1.5× book loses 82 % at its worst.
+7. **Rebuild the headline independently.** A short pandas version (`examples/trend_filter_from_scratch.py`)
    reproduces the engine (Sharpe 0.79 vs. 0.80, ρ = 0.98) – after finding a pandas alignment bug in the rebuild itself.
 
 ## Method
@@ -79,7 +92,7 @@ power. The live track demonstrates an honest, tamper-evident process; it will no
 - **Execution and costs:** trades at the next session after the decision, per-instrument costs, financing of leverage.
 - **Statistics:** paired block bootstrap for Sharpe differences, Newey-West t-tests for signal portfolios, Holm
   correction across signals, minimum detectable effect, deflated Sharpe against the full trial register.
-- **Engineering:** one engine for backtest and live, golden tests that pin every published number, 369 unit and
+- **Engineering:** one engine for backtest and live, golden tests that pin every published number, 392 unit and
   integration tests plus 28 golden tests, ruff, mypy strict, CI on every pull request.
 
 Notes on each method in plain language: `docs/METHODS.md`. Two-page summary: `docs/WRITEUP.md`.
@@ -92,8 +105,10 @@ uv sync --extra dev                                      # or: pip install -e ".
 python -m rotationlab.cli ingest --full --provider static   # research history into the local store (≈ 20 s)
 python scripts/allocator_v2_walkforward.py                 # round 4 (≈ 30 min) → output/allocator_v2/
 python examples/trend_filter_from_scratch.py               # independent rebuild of round 4's headline (≈ 10 s)
+python scripts/round5_fed.py                               # round 5, Fed category, pointwise (≈ 2 min) → output/forecast_fed/
+python scripts/long_short_check.py                         # leveraged long-short on the ranking (≈ 5 s) → output/long_short/
 python -m rotationlab.cli golden --strategy sleeve_allocator_v2   # reproduces 0.7911 / 10.83 % / −13.09 %
-pytest                                                     # 397 tests, about 15 min (golden tests included)
+pytest                                                     # 420 tests, about 12 min (golden tests included)
 ```
 
 Each output folder names its script (`output/README.md`); the reports inside are written in German. The ETF check needs the live store of branch `data`

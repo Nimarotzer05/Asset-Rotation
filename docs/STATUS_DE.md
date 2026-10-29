@@ -64,6 +64,18 @@ Vol-Ziel auf dem Long-Buch mit dem Währungs-Overlay ausserhalb (sonst mass der 
 Anleihe-Übergewichtung), Fenster an beiden Enden nach Regel, Währungen erst ab 1991 (Kapitalverkehrskontrollen), Cash
 mit Investitionsrendite, Datenprüfung mit Schwellen vor dem Download, Registrierung aus einer Vorlage. **Gerechnet am 28.10. (ADR 059/060):** FRED liefert die D-Mark-Reihe nicht mehr, der Euro tritt ohne Verkettung 1999 ein (Notfallregel, vor dem Datenblick entschieden); Datenprüfung G1–G6 bestanden; Fenster nach Regel 1977-01 bis 2025-11 (587 Monate). Ergebnis (`output/allocator_v2/WALKFORWARD.md`): Allokator Sharpe 0.79 gegen passive Risikoparität 0.51, Δ +0.285 [+0.14, +0.43] → **Primärkriterium erfüllt**; Länder-Momentum und Währungs-Carry/Momentum als Rang-Portfolios je belegt (Holm 10 %). Nüchterne Deutung, die im Bericht steht: Die Variante „Risikoparität + Trendfilter ohne Querschnitt“ erreicht denselben Sharpe (0.792) – der Mehrwert ist der Zeitreihen-Trendfilter, nicht die Auswahl innerhalb der Sleeves; seit 2008 Δ +0.08 [−0.18, +0.28], Deflated-Sharpe-Wahrscheinlichkeit 0.895 (unter 0.95). B1 ist allerdings die schwächste der vier Baselines (Sharpe 0.506 gegen Buy-and-Hold 0.524, 60/40 0.563, Equal Weight 0.614); gegen B2–B4 enthält das Intervall die Null oder streift sie, und seit 2008 liegt der Allokator (0.594) unter Equal Weight (0.719) und 60/40 (0.720) – Punktschätzer, nachgerechnet in der Projekt-Rückschau vom 28.10. Deshalb kein Live-Betrieb von v2 (ADR 060); die Live-Prognose von Runde 1 bleibt der einzige Live-Track. **ETF-Check (ADR 061/062, vorregistriert):** dieselbe Ablation mit handelbaren ETFs 2008–2026: Filter gegen Risikoparität ohne Filter +0.064 [−0.215, +0.199] → nicht belegt; Vol um gut ein Viertel, Drawdown um fast die Hälfte tiefer; Korrelation mit der Index-Studie 0.96 (`output/etf_check/ETF_CHECK.md`).
 
+**Fed-Kategorie und Long-Short-Regel (ADR 063/064, 29.10., vorregistriert):** Auftrag Nima: Zinsentscheide,
+Arbeitslosigkeit und Inflation gehören in die Prognose, und „Rang 1 long 1.5×, letzter Rang short 1.5×“ soll auf
+Profitabilität geprüft werden. **Runde 5:** fünf Fed-Variablen (Δ Fed Funds 3 M, realer Leitzins, Δ CPI-Jahresrate,
+Sahm-Indikator, Δ Zinskurve), je Klasse per Ridge-Regression auf der expandierenden Vergangenheit abgebildet, 50/50 mit
+dem Komposit von Runde 1, jeder Score punktweise: 1978–2018 Rang-IC 0.092 → 0.034, Δ −0.058 [−0.108, −0.006] →
+**nicht belegt, in-sample schlechter**; 2019–2025 (gesehen) +0.070 (`output/forecast_fed/ROUND5.md`). `forecast_fed`
+läuft trotzdem wie vorab entschieden als zweite Liveprognose mit eigenem Journal und Anker; veröffentlicht bleibt
+Runde 1 (Entscheid über einen Wechsel: Nima; Empfehlung nein). **Long-Short:** 1974–2018 9.3 % p.a., Sharpe +0.313
+[+0.051, +0.518], aber Vol 43 %, Max-Drawdown −82.5 %, schlechtester Monat −60 % (März 1980); 2019–2025 −12.1 % p.a. →
+**nur in-sample profitabel**, nicht investierbar (`output/long_short/LONG_SHORT.md`). Register N = 79; Runde 4 jetzt
+Deflated Sharpe 0.87.
+
 ```bash
 python -m rotationlab.cli forecast run                    # Prognose am letzten Monatsende, fällige abrechnen, Report (täglich in Actions)
 python -m rotationlab.cli forecast verify                 # Hash-Ketten des Journals prüfen (mit --anchor gegen den Kopf aus dem Actions-Log)
@@ -77,6 +89,9 @@ python scripts/freeze_research_data.py --src <Checkout> --commit <SHA>   # Runde
 python scripts/r4_data_check.py                            # Runde 4: Datenprüfung G1–G6 (ein NEIN stoppt die Runde)
 python scripts/r4_register.py --sample <Beginn>,<Ende> --write   # Runde 4: Universum und Konfiguration aus der Vorlage
 python scripts/allocator_v2_walkforward.py                 # Runde 4: Walk-forward nach ADR 057/058 (≈ 1 h; prüft zuerst das Fenster)
+python scripts/round5_fed.py                               # Runde 5: Fed-Kategorie, punktweise (≈ 2 min)
+python scripts/long_short_check.py                         # Long-Short 1.5/1.5 mit offener Buchhaltung (≈ 5 s)
+python -m rotationlab.cli forecast run --config forecast_fed   # zweite Liveprognose (täglich in Actions)
 ```
 
 Darunter liegt das unveränderte Fundament: Point-in-time-Store mit Vintages, acht Provider, `MarketView`; 42

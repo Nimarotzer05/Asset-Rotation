@@ -29,7 +29,8 @@ EVIDENCE_R1 = (
 )
 EVIDENCE_FED = (
     "Rangfolge = Komposit von Runde 1 plus Fed-Kategorie (Zinsentscheide, realer Leitzins, Inflation, Arbeitsmarkt, "
-    "Zinskurve; ADR 063); geprüft in Runde 5 (`output/forecast_fed/ROUND5.md`); zweite Liveprognose neben Runde 1; "
+    "Zinskurve; ADR 063); in Runde 5 **nicht belegt** – in-sample 1978–2018 schlechter als das Komposit allein "
+    "(Δ IC −0.058 [−0.108, −0.006], `output/forecast_fed/ROUND5.md`, ADR 064); zweite Liveprognose neben Runde 1; "
 )
 
 

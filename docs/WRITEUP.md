@@ -1,4 +1,4 @@
-# Testing asset-class rotation honestly: four pre-registered rounds, one live forecast
+# Testing asset-class rotation honestly: five pre-registered rounds, one live forecast
 
 *Nima Rotzer · ETH Zürich, BSc Mathematics · October 2026 · code and data: github.com/Nimarotzer05/Asset-Rotation*
 
@@ -15,7 +15,7 @@ One engine runs backtests, walk-forwards and the live forecast; trades execute a
 per-instrument costs and financing of leverage. About 400 tests, golden tests that pin each published number, and a
 look-ahead harness (the future is replaced by noise; no decision may change) guard the code.
 
-## Four rounds
+## Five rounds
 **Round 1 – ranking four classes.** A composite of 3/6/12-month momentum, 10-month trend and low volatility ranks US
 equities, Treasuries, gold and silver. In-sample (1973–2018) the rank IC is +0.098 [+0.051, +0.141] over 548 months.
 In the held-out period 2019–2025, evaluated once, it is −0.03 – not replicated. A paper portfolio on the ranking
@@ -38,8 +38,18 @@ Newey-West test as stand-alone rank portfolios.
 Sharpe (Δ −0.001 [−0.07, +0.06], correlation 0.96): the edge is the 12-month trend filter, a known effect
 (Moskowitz, Ooi & Pedersen 2012), not the signals. It comes from 1977–2007; since 2008 the difference is +0.08
 [−0.18, +0.28] and the allocator trails equal weight and 60/40 (0.59 vs. 0.72). Passive risk parity was the weakest
-of four baselines. The deflated Sharpe probability is 0.895 against the 70 trials counted at the time (0.90 with
-the 71 of today's register), below the 0.95 bar. No live use.
+of four baselines. The deflated Sharpe probability is 0.895 against the 70 trials counted at the time (0.87 with
+the 79 of today's register), below the 0.95 bar. No live use.
+
+**Round 5 – the Fed category.** Five Fed decision variables (Fed funds change, real policy rate, inflation change,
+Sahm indicator, curve change) mapped to each class by a ridge regression fitted on the expanding past, blended 50/50
+with round 1's composite, every score computed pointwise. 1978–2018: rank IC 0.092 → 0.034, Δ −0.058 [−0.108,
+−0.006] – worse, not better; in the already-seen 2019–2025 +0.07. Not established. It runs live as a second forecast,
+as decided before the test; the published forecast stays round 1.
+
+**A leveraged long-short on the ranking.** Rank 1 long 1.5×, last rank short 1.5×, held while the ranking stands,
+with borrow, financing and costs: Sharpe 0.31 [+0.05, +0.52] in 1974–2018 – the Sharpe of equal weight at three times
+its volatility, with an −82 % drawdown – and −12 % a year in 2019–2025. Profitable in-sample only.
 
 ## Checks on the result
 - **Tradable instruments (pre-registered).** The round-4 book rebuilt with ETFs, 2008–2026: filter vs. no filter
@@ -60,8 +70,8 @@ needs about ten years to reach t = 1.65; the live record demonstrates process, n
 ## Lessons
 A strong in-sample result is a hypothesis. Ablations decide what a result means. Every trial has to be counted,
 including the discarded ones. Research data should be checked against tradable instruments, and headline numbers
-against an independent implementation. Above all: stop when the data are used up – a fifth round on the same history
-would lower the evidential value of the first four.
+against an independent implementation. Above all: stop when the data are used up – the fifth round, run because the Fed
+variables seemed indispensable, lowered every earlier round's deflated Sharpe and found nothing.
 
 *Built with Claude (Anthropic) as AI coding and research assistant; questions, standards and decisions at each gate
 are the author's. Full decision log (German): docs/ADR.md.*

@@ -819,3 +819,24 @@ Prognose hat sich nicht verändert“), Entscheide 04:40: letzter Platz short, R
 
 Nicht gelaufen und erst nach dem Merge erlaubt: `scripts/round5_fed.py`, `scripts/long_short_check.py`. Register:
 8 Versuche als `planned` (N 71 → 79).
+
+## Runde 5 und Long-Short gerechnet (2026-10-29, ADR 064)
+
+Beide Skripte liefen auf `main@a4b2fed`, nach dem Merge der Vorregistrierung (PR #8, CI grün).
+
+| Prüfpunkt | Ergebnis |
+|---|---|
+| Runde 5, Kriterium 1 (Δ IC 1978–2018, Intervall > 0) | **nein**: −0.058 [−0.108, −0.006] – die Fed-Mischung ist schlechter als das Komposit |
+| Runde 5, Kriterium 2 (Δ IC 2019–2025 > 0, gesehen) | formal ja: +0.070 [−0.000, +0.186] – Lesart vorab an Kriterium 1 gebunden → **nicht belegt** |
+| Long-Short, Sharpe 1974–2018 mit Intervall > 0 | **ja**: +0.313 [+0.051, +0.518] |
+| Long-Short, Sharpe 2019–2025 > 0 | **nein**: −0.237 → **nur in-sample profitabel**; Max-Drawdown −82.5 % in-sample, −84 % 2019–2025 |
+| Buchhaltung gegen Rohrenditen | die drei schlechtesten Monate (1980-03, 1987-10, 1980-09) von Hand aus den Store-Renditen nachgerechnet: exakt gleich |
+| Wiederholung | zweiter Lauf mit geändertem Tabellenformat: `monthly.csv` bytegleich |
+| Absturz nach dem Merge | `picks` auf leerer Rangzeile (Panelanfang) – behoben vor jeder Zahl, Test ergänzt (ADR 063 d) |
+| Register | 3 Prognose-Versuche `unstored`, 5 Long-Short-Reihen `stored`; N = 79 |
+| Unabhängige Prüfung (frischer Prüfer, eigener Code) | IC je Zeitraum und Long-Short-Kennzahlen aller Läufe nachgerechnet (≤ 5e-9), eigene Rangfolge = gespeicherte Beine (0 Abweichungen), kein Look-ahead an 7 Stichtagen (abgeschnittener und verrauschter Store); Hinweise: Makrodaten sind revidierte FRED-MD-Werte (ADR 063 b „punktgenau“ korrigiert in ADR 064), Beindrift und Netto-Exposure jetzt im Bericht, „signifikant schlechter“ und „plausible Steigungen“ abgeschwächt |
+
+**Verifiziert:** 420 Tests grün (392 + 28 Golden), ruff, mypy; beide Läufe reproduzierbar.
+
+**Offen bleibt:** ob Nima `forecast_fed` als veröffentlichte Prognose wählt (Empfehlung: nein, die vorab gesetzte Schwelle
+ist nicht erreicht). Die zweite Liveprognose läuft ab der Entscheidung 2026-10-31 so oder so mit.
