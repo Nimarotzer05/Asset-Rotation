@@ -838,5 +838,5 @@ Beide Skripte liefen auf `main@a4b2fed`, nach dem Merge der Vorregistrierung (PR
 
 **Verifiziert:** 420 Tests grün (392 + 28 Golden), ruff, mypy; beide Läufe reproduzierbar.
 
-**Offen bleibt:** ob Nima `forecast_fed` als veröffentlichte Prognose wählt (Empfehlung: nein, die vorab gesetzte Schwelle
-ist nicht erreicht). Die zweite Liveprognose läuft ab der Entscheidung 2026-10-31 so oder so mit.
+**Entscheid Nima (29.10., 06:57):** `forecast_fed` ersetzt Runde 1 nicht; die zweite Liveprognose läuft ab der
+Entscheidung 2026-10-31 mit.
