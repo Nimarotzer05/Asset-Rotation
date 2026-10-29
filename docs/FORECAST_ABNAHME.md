@@ -882,3 +882,15 @@ Lauf auf `main@c1397a7` nach dem Merge der Vorregistrierung (PR #11, CI grün).
 | ohne Stop bis Monatsende | grün |
 
 Nicht gelaufen: `scripts/long_short_dollar.py` (erst nach dem Merge). Register: 2 Versuche `planned` (N 82 → 84).
+
+## Long-Short in Dollar ohne Gebühren gerechnet (2026-10-29, ADR 068)
+
+Lauf auf `main@7af8af1` nach dem Merge der Vorregistrierung (PR #13, CI grün).
+
+| Prüfpunkt | Ergebnis |
+|---|---|
+| Kriterium 1974–2018 (Sharpe, Intervall > 0) | **nein**: +0.247 [−0.021, +0.470]; +$5,297 |
+| Kriterium 2019–2025 (Sharpe > 0) | **nein**: −0.180; −$484 |
+| Herkunft des Gewinns | 1979 +$2,867, 1974–79 +$3,742; 1980–2025 +$1,070 |
+| Stop gegen ohne Stop | ohne Stop +$1,583 mehr (1974–2018) – der Stop schadet auch ohne Kosten |
+| Register | 2 Reihen `stored`, N = 84 |

@@ -38,8 +38,8 @@ Newey-West test as stand-alone rank portfolios.
 Sharpe (Δ −0.001 [−0.07, +0.06], correlation 0.96): the edge is the 12-month trend filter, a known effect
 (Moskowitz, Ooi & Pedersen 2012), not the signals. It comes from 1977–2007; since 2008 the difference is +0.08
 [−0.18, +0.28] and the allocator trails equal weight and 60/40 (0.59 vs. 0.72). Passive risk parity was the weakest
-of four baselines. The deflated Sharpe probability is 0.895 against the 70 trials counted at the time (0.82 with
-the 82 of today's register), below the 0.95 bar. No live use.
+of four baselines. The deflated Sharpe probability is 0.895 against the 70 trials counted at the time (0.83 with
+the 84 of today's register), below the 0.95 bar. No live use.
 
 **Round 5 – the Fed category.** Five Fed decision variables (Fed funds change, real policy rate, inflation change,
 Sahm indicator, curve change) mapped to each class by a ridge regression fitted on the expanding past, blended 50/50
@@ -50,7 +50,8 @@ as decided before the test; the published forecast stays round 1.
 **A leveraged long-short on the ranking.** Rank 1 long 1.5×, last rank short 1.5×, held while the ranking stands,
 with borrow, financing and costs: Sharpe 0.31 [+0.05, +0.52] in 1974–2018 – the Sharpe of equal weight at three times
 its volatility, with an −82 % drawdown – and −12 % a year in 2019–2025. Profitable in-sample only. Closed and reopened every
-month with a 20 % stop on daily closes it does worse (Sharpe 0.11 [−0.20, +0.32], drawdown −99 %).
+month with a 20 % stop on daily closes it does worse (Sharpe 0.11 [−0.20, +0.32], drawdown −99 %); in dollars and without
+any fees, $1500 a side with a $200 stop earns $5,297 in 1974–2018, mostly in 1979, and loses $484 in 2019–2025.
 
 ## Checks on the result
 - **Tradable instruments (pre-registered).** The round-4 book rebuilt with ETFs, 2008–2026: filter vs. no filter

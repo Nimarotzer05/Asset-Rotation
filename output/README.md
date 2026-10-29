@@ -14,6 +14,7 @@ numbers).
 | `forecast_fed/` | Round 5: round-1 composite + Fed category (rate decisions, real policy rate, inflation, Sahm indicator, curve), pointwise, pre-registered | `scripts/round5_fed.py` | not established (in-sample worse: Δ IC −0.058 [−0.108, −0.006]); runs live as a second forecast |
 | `long_short/` | rank 1 long 1.5×, last rank short 1.5×, hold unless the forecast changes – explicit accounting, pre-registered | `scripts/long_short_check.py` | profitable in-sample only (Sharpe 0.31 [+0.05, +0.52], drawdown −82 %), negative 2019–2025 |
 | `long_short_stop/` | the same long-short, closed and reopened every month, 20 % stop on daily closes (both legs out), pre-registered | `scripts/long_short_stop.py` | not established (Sharpe 0.11 [−0.20, +0.32], drawdown −99 %); worse than holding each leg |
+| `long_short_dollar/` | the long-short in dollars: $1500 long / $1500 short each month, stop at a $200 leg loss, no fees, pre-registered | `scripts/long_short_dollar.py` | not established: +$5,297 1974–2018 (Sharpe 0.25 [−0.02, +0.47]), −$484 2019–2025; most of the profit is 1979 |
 | `execution/` | timing of execution (decision close vs. next session) | `scripts/execution_timing_study.py` | reference |
 | `precious/` | gold/silver hedge variants | `scripts/precious_hedge_study.py` | reference |
 | `revisions/` | real-time vs. revised macro data (FRED-MD vintages) | `scripts/revision_study.py` | reference |
