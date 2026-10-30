@@ -80,7 +80,12 @@ offen berichtet; ohne sie +0.145 [−0.146, +0.353], Lesart unverändert (`outpu
 dieser Zeile auf Runde 4 (tägliche Silber-Volatilität). **Long-Short in Dollar ohne Gebühren (ADR 067/068):**
 $1500 long / $1500 short je Monat, Stop bei $200 Verlust eines Beins: 1974–2018 +$5,297 (Sharpe +0.247 [−0.021, +0.470]),
 davon 1979 allein +$2,867; 2019–2025 −$484 → **nicht belegt**; ohne Stop mehr Gewinn (+$6,880), also schadet der Stop
-auch ohne Kosten (`output/long_short_dollar/DOLLAR.md`). Register N = 84; Runde 4 jetzt Deflated Sharpe 0.83.
+auch ohne Kosten (`output/long_short_dollar/DOLLAR.md`). **Frische Daten (ADR 069/070):** auf den nie benutzten Jahren 1885–1926 der täglichen
+US-Aktienreihe: Trendfilter gleiche Rendite bei weniger Risiko, Sharpe-Differenz +0.078 [−0.082, +0.240] → nicht
+bestätigt; **Monatswechsel-Effekt** (Aktien nur vom letzten bis zum dritten Handelstag, 19 % der Zeit) Sharpe +0.570
+[+0.315, +0.866] vor der Entdeckung und +0.524 [+0.234, +0.773] 1988–2025 nach der Veröffentlichung → **bestätigt**,
+im reinen Kursindex, kein Dividenden-Artefakt (`output/fresh_data/FRESH.md`). Register N = 87; Runde 4 jetzt Deflated
+Sharpe 0.85.
 
 ```bash
 python -m rotationlab.cli forecast run                    # Prognose am letzten Monatsende, fällige abrechnen, Report (täglich in Actions)
@@ -99,6 +104,7 @@ python scripts/round5_fed.py                               # Runde 5: Fed-Katego
 python scripts/long_short_check.py                         # Long-Short 1.5/1.5 mit offener Buchhaltung (≈ 5 s)
 python scripts/long_short_stop.py                          # Long-Short monatlich neu mit 20-%-Stop auf Tagesschlusskursen
 python scripts/long_short_dollar.py                        # Long-Short in Dollar, Stop $200, ohne Gebühren
+python scripts/fresh_data_check.py                         # frische Daten: Trendfilter 1886–1926, Monatswechsel
 python -m rotationlab.cli forecast run --config forecast_fed   # zweite Liveprognose (täglich in Actions)
 ```
 

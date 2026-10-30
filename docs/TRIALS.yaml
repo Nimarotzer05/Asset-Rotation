@@ -58,6 +58,7 @@ stored:
   # ADR 067 – entered as `planned` before its run (2026-10-29, PR #13), stored after it (ADR 068)
   - { round: "Long-Short Dollar (ADR 067)", name: "LS $1500/$1500, Stop $200 (Regel)", file: output/long_short_dollar/monthly.csv, column: "LS $1500/$1500, Stop $200 (Regel)", baseline: "Equal Weight (4 Klassen)" }
   - { round: "Long-Short Dollar (ADR 067)", name: "LS $1500/$1500, ohne Stop", file: output/long_short_dollar/monthly.csv, column: "LS $1500/$1500, ohne Stop", baseline: "Equal Weight (4 Klassen)" }
-# ADR 069 – entered before the first run (2026-10-30); stored after it
-planned:
-  - { round: "Frische Daten (ADR 069)", name: "Trendfilter 1886–1926, Monatswechsel 1885–1926 und 1988–2025", count: 3 }
+  # ADR 069 – entered as `planned` before its run (2026-10-30, PR #15), stored after it (ADR 070)
+  - { round: "Frische Daten (ADR 069)", name: "Trendfilter 1886–1926", file: output/fresh_data/monthly.csv, column: "Trendfilter 1886–1926", baseline: "Buy & Hold" }
+  - { round: "Frische Daten (ADR 069)", name: "Monatswechsel 1885–1926", file: output/fresh_data/monthly.csv, column: "Monatswechsel 1885–1926", baseline: "Buy & Hold" }
+  - { round: "Frische Daten (ADR 069)", name: "Monatswechsel 1988–2025", file: output/fresh_data/monthly.csv, column: "Monatswechsel 1988–2025", baseline: "Buy & Hold" }

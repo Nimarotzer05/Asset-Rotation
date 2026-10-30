@@ -38,8 +38,8 @@ Newey-West test as stand-alone rank portfolios.
 Sharpe (Δ −0.001 [−0.07, +0.06], correlation 0.96): the edge is the 12-month trend filter, a known effect
 (Moskowitz, Ooi & Pedersen 2012), not the signals. It comes from 1977–2007; since 2008 the difference is +0.08
 [−0.18, +0.28] and the allocator trails equal weight and 60/40 (0.59 vs. 0.72). Passive risk parity was the weakest
-of four baselines. The deflated Sharpe probability is 0.895 against the 70 trials counted at the time (0.83 with
-the 84 of today's register), below the 0.95 bar. No live use.
+of four baselines. The deflated Sharpe probability is 0.895 against the 70 trials counted at the time (0.85 with
+the 87 of today's register), below the 0.95 bar. No live use.
 
 **Round 5 – the Fed category.** Five Fed decision variables (Fed funds change, real policy rate, inflation change,
 Sahm indicator, curve change) mapped to each class by a ridge regression fitted on the expanding past, blended 50/50
@@ -52,6 +52,12 @@ with borrow, financing and costs: Sharpe 0.31 [+0.05, +0.52] in 1974–2018 – 
 its volatility, with an −82 % drawdown – and −12 % a year in 2019–2025. Profitable in-sample only. Closed and reopened every
 month with a 20 % stop on daily closes it does worse (Sharpe 0.11 [−0.20, +0.32], drawdown −99 %); in dollars and without
 any fees, $1500 a side with a $200 stop earns $5,297 in 1974–2018, mostly in 1979, and loses $484 in 2019–2025.
+
+**Fresh data.** A daily US equity series from 1885 gave 41 years no study had touched. There the 10-month trend filter
+earned the same return as buy and hold with a quarter less risk (Sharpe difference +0.08 [−0.08, +0.24], not
+significant), and the turn-of-the-month effect – equities only around month-end, 19 % of days – had a Sharpe of 0.57
+[+0.32, +0.87] before its discovery and 0.52 [+0.23, +0.77] after its publication (1988–2025): the one pre-registered
+positive result on untouched data, and a calendar effect, not a forecast.
 
 ## Checks on the result
 - **Tradable instruments (pre-registered).** The round-4 book rebuilt with ETFs, 2008–2026: filter vs. no filter
