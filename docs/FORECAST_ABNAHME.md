@@ -894,3 +894,15 @@ Lauf auf `main@7af8af1` nach dem Merge der Vorregistrierung (PR #13, CI grün).
 | Herkunft des Gewinns | 1979 +$2,867, 1974–79 +$3,742; 1980–2025 +$1,070 |
 | Stop gegen ohne Stop | ohne Stop +$1,583 mehr (1974–2018) – der Stop schadet auch ohne Kosten |
 | Register | 2 Reihen `stored`, N = 84 |
+
+## Frische Daten vorab fixiert (2026-10-30, ADR 069)
+
+| Prüfpunkt | Ergebnis |
+|---|---|
+| Unberührt? | Studien des Projekts beginnen 1927 (erste Aktienstudie) oder 1959–1979; 1885–1926 nie ausgewertet |
+| Tagesreihe 1885–1927 echt, nicht aus Monatswerten interpoliert | Vol 14–16 % p.a., Autokorrelation −0.07 bis 0.01, keine linearen Abschnitte |
+| Cash vor 1926 | `static:usmkt:RF` neu katalogisiert (Spalte „Risk Free Return“ derselben Datei), 35 254 Tage 1885–2025; Herkunft vor 1926 als offen vermerkt |
+| Trendfilter: Entscheid bei t, Ertrag in t+1, erster Einstieg als Wechsel, kein Look-ahead bei geänderter Zukunft | grün, von Hand |
+| Monatswechsel-Tage (letzter + erste drei Handelstage), Ein-/Ausstieg, Monatsaggregation | grün, von Hand |
+
+Nicht gelaufen: `scripts/fresh_data_check.py` (erst nach dem Merge). Register: 3 Versuche `planned` (N 84 → 87).

@@ -32,6 +32,7 @@ assets:
   FF_HLTH:      { name: Healthcare (French),            asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_HLTH" } }
   FF_UTILS:     { name: Utilities (French),             asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_UTILS" } }
   FF_OTHER:     { name: Other incl. finance (French),   asset_class: equity, instrument: index, tradable: false, cost_bps: 0, series: { return: "static:FF_OTHER" } }
+  US_RF:        { name: "US short-term cash, daily, from 1885 (ADR 069)", asset_class: cash, instrument: index, tradable: false, cost_bps: 0, series: { total_return: "static:usmkt:RF" } }
   TBILL:        { name: 3M T-Bill index,         asset_class: cash,       instrument: index, tradable: false, cost_bps: 0, series: { total_return: "static:TBILL" } }
   TBILL_IY:     { name: "3M T-Bill index, investment yield (round 4, ADR 058)", asset_class: cash, instrument: index, tradable: false, cost_bps: 0, series: { total_return: "static:TBILL_IY" } }
   FF_RF:        { name: 1M T-Bill (French RF),   asset_class: cash,       instrument: index, tradable: false, cost_bps: 0, series: { return: "static:french:ff3:RF" } }

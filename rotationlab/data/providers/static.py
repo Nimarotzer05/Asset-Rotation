@@ -391,6 +391,14 @@ def _build_catalog(r4_countries: tuple[str, ...] | None = None) -> dict[SeriesId
         name="US equities total return (S&P, dividends reinvested)",
     )
     add("static:usmkt:CLOSE", "usmkt", "Close", SeriesKind.INDEX, D, name="US equities price index")
+    add(
+        "static:usmkt:RF",
+        "usmkt",
+        "Risk Free Return",
+        SeriesKind.TOTAL_RETURN,
+        D,
+        name="US short-term cash, daily index of the same file (ADR 069: the only cash series before 1926)",
+    )
     add("static:cboe:VIX", "vix", "CLOSE", SeriesKind.INDEX, D, name="CBOE VIX close")
     add(
         "static:ice:HY_OAS",
@@ -804,7 +812,7 @@ class StaticProvider(BaseProvider):
 
     def _load_usmkt(self) -> pd.DataFrame:
         df = pd.read_csv(self._path("us_market_data_daily.csv"), parse_dates=["Date"]).set_index("Date")
-        return df[["Close", "Adjusted Close"]].sort_index()
+        return df[["Close", "Adjusted Close", "Risk Free Return"]].sort_index()
 
     def _load_vix(self) -> pd.DataFrame:
         df = pd.read_csv(self._path("vix_daily.csv"), parse_dates=["DATE"]).set_index("DATE")
