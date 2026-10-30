@@ -906,3 +906,15 @@ Lauf auf `main@7af8af1` nach dem Merge der Vorregistrierung (PR #13, CI grün).
 | Monatswechsel-Tage (letzter + erste drei Handelstage), Ein-/Ausstieg, Monatsaggregation | grün, von Hand |
 
 Nicht gelaufen: `scripts/fresh_data_check.py` (erst nach dem Merge). Register: 3 Versuche `planned` (N 84 → 87).
+
+## Frische Daten gerechnet (2026-10-30, ADR 070)
+
+Lauf auf `main@478a4fe` nach dem Merge der Vorregistrierung (PR #15, CI grün).
+
+| Prüfpunkt | Ergebnis |
+|---|---|
+| Trendfilter 1886–1926, Trend − Buy & Hold | +0.078 [−0.082, +0.240] → nicht bestätigt (gleiche Rendite, weniger Risiko) |
+| Monatswechsel 1885–1926 (unberührt) | Sharpe +0.570 [+0.315, +0.866] → ja |
+| Monatswechsel 1988–2025 (nach Veröffentlichung) | Sharpe +0.524 [+0.234, +0.773] → ja |
+| Artefakt der Dividendenbuchung? | nein: Effekt im reinen Kursindex (t 2.65 / 2.07), Dividendenanteil je Tag gleich |
+| Register | 3 Reihen `stored`, N = 87 |

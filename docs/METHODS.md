@@ -66,9 +66,9 @@ were tested in round 4, so the p-values are adjusted with Holm's method (multipl
 **Idea.** If you try N variants, the best one looks good by luck. The deflated Sharpe (Bailey & López de Prado 2014)
 asks: what is the probability that the observed Sharpe exceeds the maximum expected from N unskilled tries, given
 how much the tries vary? It is a probability (≥ 0.95 = survives), not a p-value. **Here.** N = every variant ever
-run on this history (`docs/TRIALS.yaml`; 70 when round 4 ran, 84 today); the statistic is the Sharpe of the return net of the baseline
-(beta-adjusted residual), so a strategy cannot win by simply taking more risk. Round 4: 0.895 at N = 70, 0.83 with
-today's register (N = 84).
+run on this history (`docs/TRIALS.yaml`; 70 when round 4 ran, 87 today); the statistic is the Sharpe of the return net of the baseline
+(beta-adjusted residual), so a strategy cannot win by simply taking more risk. Round 4: 0.895 at N = 70, 0.85 with
+today's register (N = 87).
 
 ## 9. Pre-registration and the trial register
 Before a round touches its data, its rules, criterion, baselines and variants are written into the decision log and
@@ -101,3 +101,12 @@ borrow·S/12 − cost·traded. Short-sale proceeds earn the cash rate; a leg who
 drifts (L ← L(1 + r_long)/(1 + R)); equity ≤ 0 would be ruin. **Volatility drag.** The compound return is roughly the
 mean minus half the variance, so going from 1.0× to 1.5× raises the mean by half and the variance by 125 % – here
 both end at 9.3 % a year. **Where.** `rotationlab/forecast/long_short.py`, `scripts/long_short_check.py`.
+
+## 14. Testing on untouched data – the turn of the month
+**Why.** After 84 trials on 1973–2025 any new winner there is likely luck. A daily US equity series from 1885 offered
+41 years (1885–1926) that no study had used. **Rules** with a literature prior and fixed parameters: the 10-month
+trend filter, and the turn of the month (equities from the close before the last trading day to the close of the
+third trading day, Ariel 1987, Lakonishok & Smidt 1988). **Result.** Turn of the month: Sharpe 0.57 in 1885–1926 and
+0.52 in 1988–2025 with 19 % of days invested; the trend filter +0.08 [−0.08, +0.24] over buy and hold. **Artifact
+check:** the effect is in the price index; the dividend share per day is the same on turn-of-month and other days.
+**Where.** `rotationlab/forecast/fresh_data.py`, `scripts/fresh_data_check.py`.

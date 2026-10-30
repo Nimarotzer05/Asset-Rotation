@@ -13,11 +13,15 @@ Its historical edge (rank IC +0.10, 1973–2018) did **not** replicate in a held
 research rounds, each fixed in writing before its data was evaluated, exactly one pre-registered primary criterion
 passed: risk parity with a 12-month trend filter beats passive risk parity, 1977–2025. Ablations show where that comes from –
 the trend filter, not the cross-sectional signals – and that it is not significant since 2008, neither on research
-indices nor on tradable ETFs. The project's result is a documented negative: careful testing, nothing overstated.
-(That round's two secondary signal tests also passed as stand-alone rank portfolios; they add nothing to the book.)
-Two later questions were pre-registered the same way: adding the Fed's decision variables (rate changes, real policy
-rate, inflation, unemployment, curve) made the ranking *worse* in-sample; and a leveraged long-short on the ranking
-(rank 1 long 1.5×, last rank short 1.5×) was profitable in-sample only, with an −82 % drawdown.
+indices nor on tradable ETFs. For forecasting, the result is a documented negative: careful testing, nothing
+overstated. (That round's two secondary signal tests also passed as stand-alone rank portfolios; they add nothing to
+the book.) Adding the Fed's decision variables (rate changes, real policy rate, inflation, unemployment, curve) made
+the ranking *worse* in-sample, and a leveraged long-short on the ranking (rank 1 long 1.5×, last rank short 1.5×) was
+profitable in-sample only, with an −82 % drawdown.
+
+**The one positive result on data the project had never touched** is a calendar effect, not a forecast: holding US
+equities only around the turn of the month (19 % of trading days) earned a Sharpe of 0.57 [+0.32, +0.87] in
+1885–1926, before the effect was discovered, and 0.52 [+0.23, +0.77] in 1988–2025, after it was published.
 
 ![Primary tests and key breakdowns](docs/figures/tests.png)
 
@@ -37,11 +41,13 @@ rate, inflation, unemployment, curve) made the ranking *worse* in-sample; and a 
 | L/S | Rank 1 long 1.5×, last rank short 1.5×, held unless the ranking changes, with borrow, financing and costs | 1974–2018 + 2019–25 (seen) | Sharpe > 0 in-sample (interval) **and** in 2019–25 | +0.31 [+0.05, +0.52], drawdown −82 %; 2019–25 −0.24 – in-sample only |
 | L/S stop | The same, closed and reopened every month, 20 % stop on daily closes (both legs out) | 1974–2018 + 2019–25 (seen) | as L/S | +0.11 [−0.20, +0.32], drawdown −99 % – not established; the stop does not help (Δ −0.06) |
 | L/S $ | $1500 long / $1500 short every month, stop at a $200 leg loss, no fees, no compounding | 1974–2018 + 2019–25 (seen) | as L/S | +$5,297, Sharpe +0.25 [−0.02, +0.47]; −$484 in 2019–25 – not established; $2,867 of the profit is 1979 alone |
+| Fresh | Trend filter on US equities **1886–1926** – 41 years no study had touched | 1886–1926 | trend − buy & hold, interval > 0 | +0.08 [−0.08, +0.24] – same return, less risk, not significant |
+| Fresh | Turn of the month: equities only from the last to the third trading day (19 % of days), cash otherwise | 1885–1926 (before discovery) + 1988–2025 (after publication) | Sharpe > 0 in each period | **+0.57 [+0.32, +0.87] and +0.52 [+0.23, +0.77] – met in both**; not a dividend artifact |
 
 Intervals are 90 % moving-block bootstrap (block 12) of paired monthly differences. Every trial ever run on this
-history is counted in a register (`docs/TRIALS.yaml`, N = 84); the deflated Sharpe probability (Bailey & López de
+history is counted in a register (`docs/TRIALS.yaml`, N = 87); the deflated Sharpe probability (Bailey & López de
 Prado) is 0.56 / 0.84 / 0.22 for rounds 1–3 (computed when the register held 58 trials) and 0.895 for round 4 (70);
-with today's register of 84 round 4 stands at 0.83, the long-short rules at 0.04 or less – none reaches 0.95. Round 4's passive risk parity is the
+with today's register of 87 round 4 stands at 0.85, the long-short rules at 0.04 or less – none reaches 0.95. Round 4's passive risk parity is the
 weakest of its four baselines (Sharpe 0.51 vs. equal weight 0.61, 60/40 0.56); against equal weight and 60/40 the
 allocator's interval includes zero, and since 2008 it trails both (0.59 vs. 0.72).
 
@@ -81,7 +87,10 @@ power. The live track demonstrates an honest, tamper-evident process; it will no
    6.8 % a year, stops that sell silver spikes at the top). Even without any fees, $1500 a side with a $200 stop
    earns $5,297 over 1974–2018 – $2,867 of it in 1979 – and loses $484 in 2019–2025. The stop test also surfaced a data error – a Saturday
    silver print in 1983 – reported next to the pre-registered run rather than quietly fixed.
-7. **Rebuild the headline independently.** A short pandas version (`examples/trend_filter_from_scratch.py`)
+7. **When the data are used up, test on data that are not.** 1885–1926 had never been looked at. There, the trend
+   filter kept its character (same return, a quarter less risk) without significance, and the turn-of-the-month
+   effect held – before its discovery and 35 years after its publication.
+8. **Rebuild the headline independently.** A short pandas version (`examples/trend_filter_from_scratch.py`)
    reproduces the engine (Sharpe 0.79 vs. 0.80, ρ = 0.98) – after finding a pandas alignment bug in the rebuild itself.
 
 ## Method
@@ -114,6 +123,7 @@ python scripts/round5_fed.py                               # round 5, Fed catego
 python scripts/long_short_check.py                         # leveraged long-short on the ranking (≈ 5 s) → output/long_short/
 python scripts/long_short_stop.py                          # the same, monthly reopen + 20 % stop on daily closes → output/long_short_stop/
 python scripts/long_short_dollar.py                        # the same in dollars, $200 stop, no fees → output/long_short_dollar/
+python scripts/fresh_data_check.py                         # trend 1886–1926, turn of the month → output/fresh_data/
 python -m rotationlab.cli golden --strategy sleeve_allocator_v2   # reproduces 0.7911 / 10.83 % / −13.09 %
 pytest                                                     # 420 tests, about 12 min (golden tests included)
 ```

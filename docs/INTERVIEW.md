@@ -25,10 +25,10 @@ README and in ADR 060. The defensible statement is narrow: a trend filter on a l
 
 **2. "Walk me through the deflated Sharpe. What is N, and what does 0.895 mean?"**
 N counts every variant ever computed on this history, including ones whose results I saw and discarded: 70 when
-round 4 ran, 84 today (after the ETF check, round 5 and the long-short studies). The tested
+round 4 ran, 87 today (after the ETF check, round 5, the long-short studies and the fresh-data tests). The tested
 statistic is the Sharpe of the allocator's return net of its beta to the baseline, so extra risk doesn't count as
 skill. Given how much the trials vary, 0.895 is the probability that the observed Sharpe beats the best of 70 unskilled
-tries (0.83 with today's 84 – the wild long-short trials raise the variance of the trials, which raises the bar). It's a probability, not a p-value, and it's below the 0.95 I set as the bar – so round 4 does not
+tries (0.85 with today's 87 – the wild long-short trials raise the variance of the trials, which raises the bar). It's a probability, not a p-value, and it's below the 0.95 I set as the bar – so round 4 does not
 survive the multiple-testing correction. *File:* `docs/METHODS.md` §8, `docs/TRIALS.yaml`.
 
 **3. "Which parts did you write yourself?"**
@@ -40,11 +40,11 @@ result, there is a 120-line pandas rebuild of it that I can walk you through." T
 
 **4. "Isn't this overfit? Five rounds on the same 50 years."**
 Yes, that is the main risk, and it is handled, not avoided: each round was fixed before its run (git timestamps), all
-84 trials are counted, the deflated Sharpe uses all of them, and no failed round was re-tested with tweaked
+87 trials are counted, the deflated Sharpe uses all of them, and no failed round was re-tested with tweaked
 parameters. What the register cannot count are the *design* choices between rounds, made knowing earlier results –
 the garden of forking paths. I ran a fifth round anyway, because the Fed variables were a category I considered
 indispensable and had not tested properly; its cost is visible – every earlier round's deflated Sharpe went down
-(round 4: 0.90 → 0.83) – and it came out negative, which is itself a check that the process does not just confirm.
+(round 4: 0.90 → 0.85) – and it came out negative, which is itself a check that the process does not just confirm.
 
 **5. "Why a moving-block bootstrap, and why block length 12?"**
 Monthly returns are autocorrelated and two strategies on the same months are correlated. Resampling single months
@@ -128,6 +128,16 @@ of any extreme number. The stop-loss test showed a −68 % month in February 198
 fixing in the frozen LBMA file (403.6 between 757.6 and 732.9). The pre-registered result stays as computed; the run
 without that row is reported next to it and counted as an extra trial; the conclusion did not change. Monthly
 studies never touch that day; whether round 4's daily silver volatility is affected is listed as open.
+
+**17. "So does anything in here actually work?"**
+One thing, tested the clean way: the turn-of-the-month effect. After 84 trials on 1973–2025 I stopped searching
+there and took rules with a literature prior to data the project had never touched: US equities 1885–1926 from a daily
+series that starts in 1885. Holding equities only from the last trading day to the third trading day of the next
+month – 19 % of the time – gave a Sharpe of 0.57 [+0.32, +0.87] in 1885–1926, before anyone had described the effect,
+and 0.52 [+0.23, +0.77] in 1988–2025, after its publication. It is in the price index, not a dividend artifact. It is
+not a free lunch: since 1988 buy and hold has the higher Sharpe (0.61), and 5 bp per switch takes it to 0.36. The trend
+filter on the same 41 years kept its character – same return, a quarter less risk – but was not significant.
+*File:* `output/fresh_data/FRESH.md`, ADR 069/070.
 
 ## Likely follow-ups to prepare
 - Volatility drag: geometric ≈ arithmetic return − σ²/2 – why 1.5× and 1.0× end at the same 9.3 % (σ 43 % vs. 31 %).
