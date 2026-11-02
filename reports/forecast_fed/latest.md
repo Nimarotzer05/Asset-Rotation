@@ -1,26 +1,22 @@
-<!-- copy of 2026-09.md -->
-# Prognose der Anlageklassen – Entscheidung 2026-09-30
+<!-- copy of 2026-10.md -->
+# Prognose der Anlageklassen – Entscheidung 2026-10-31
 
-Erstellt 2026-10-30 · Modell `composite_fed` v1 · Datenstand `2026-10-30T13:16:50Z/70f1c2af19` · gerankt SPY, IEF, GLD, SLV · nur Trend CPER · Cash BIL
+Erstellt 2026-11-02 · Modell `composite_fed` v1 · Datenstand `2026-11-02T16:24:22Z/9dfd943af9` · gerankt SPY, IEF, GLD, SLV · nur Trend CPER · Cash BIL
 
 ## 1 Monat (Hauptprognose) – Status: `signal` (mindestens eine Wahrscheinlichkeit weicht um mehr als die Marge von 50 % ab; beschreibend, kein Verlässlichkeitsmass)
 
 | Rang | Klasse | P(obere Hälfte) | Score | Mittel des Rangs bisher [90-%-KI des Mittels] | Trend |
 |---|---|---|---|---|---|
-| 1 | SLV | 49 % | +0.43 | +0.17 % [-0.39, +0.75] | ab ▼ (-15.9 % zum 10M-Schnitt) |
-| 2 | SPY | 57 % | +0.23 | +0.03 % [-0.38, +0.39] | auf ▲ (+6.3 % zum 10M-Schnitt) |
-| 3 | GLD | 53 % | -0.15 | +0.46 % [+0.15, +0.96] | ab ▼ (-7.7 % zum 10M-Schnitt) |
-| 4 | IEF | 41 % | -0.52 | -0.66 % [-1.30, -0.12] | ab ▼ (-4.0 % zum 10M-Schnitt) |
-
-**Nachgeholt (ADR 050):** Diese Prognose wurde mehr als die erlaubte Frist nach dem Entscheidungsdatum geschrieben. Sie ist korrekt aus der Sicht am Entscheidungsdatum berechnet, zählt aber nicht zur Live-Bilanz.
-
-- backfilled: written 2026-10-29, 29 days after the decision date (limit 7); computed from the view at 2026-09-30 like any forecast, but not counted in the live track record
+| 1 | SPY | 60 % | +0.65 | +0.07 % [-0.37, +0.76] | auf ▲ (+4.2 % zum 10M-Schnitt) |
+| 2 | IEF | 46 % | +0.11 | +0.07 % [-0.36, +0.40] | ab ▼ (-0.9 % zum 10M-Schnitt) |
+| 3 | GLD | 55 % | +0.08 | +0.44 % [+0.14, +0.94] | ab ▼ (-12.9 % zum 10M-Schnitt) |
+| 4 | SLV | 39 % | -0.84 | -0.58 % [-1.30, -0.12] | ab ▼ (-29.1 % zum 10M-Schnitt) |
 
 Nur Trend (beschreibend, kein belegter Prognosevorteil – P5):
 
 | Klasse | Trend |
 |---|---|
-| CPER | auf ▲ (+6.0 % zum 10M-Schnitt) |
+| CPER | auf ▲ (+2.8 % zum 10M-Schnitt) |
 
 Lesart: P(obere Hälfte) = Wahrscheinlichkeit, dass die Klasse über den Horizont zu den besseren zwei der vier gehört (kalibriert auf der Geschichte bis zum Entscheidungsdatum). Rangfolge = Komposit von Runde 1 plus Fed-Kategorie (Zinsentscheide, realer Leitzins, Inflation, Arbeitsmarkt, Zinskurve; ADR 063); in Runde 5 **nicht belegt** – in-sample 1978–2018 schlechter als das Komposit allein (Δ IC −0.058 [−0.108, −0.006], `output/forecast_fed/ROUND5.md`, ADR 064); zweite Liveprognose neben Runde 1; ob sie live hält, zeigt allein die Bilanz unten. „Mittel des Rangs bisher“ = mittlere relative Rendite, die dieser Rang in den bis dahin bekannten Monaten erzielte, mit dem Block-Bootstrap-Intervall dieses Mittels – kein Vorhersageintervall für den kommenden Monat, dessen Streuung um ein Vielfaches grösser ist.
 
@@ -28,19 +24,19 @@ Lesart: P(obere Hälfte) = Wahrscheinlichkeit, dass die Klasse über den Horizon
 
 | Rang | Klasse | P(obere Hälfte) | Score | Mittel des Rangs bisher [90-%-KI des Mittels] | Trend |
 |---|---|---|---|---|---|
-| 1 | SLV | 47 % | +0.43 | +0.30 % [-0.94, +1.61] | ab ▼ (-15.9 % zum 10M-Schnitt) |
-| 2 | SPY | 62 % | +0.23 | +0.79 % [-0.41, +2.16] | auf ▲ (+6.3 % zum 10M-Schnitt) |
-| 3 | GLD | 55 % | -0.15 | +1.32 % [+0.46, +2.50] | ab ▼ (-7.7 % zum 10M-Schnitt) |
-| 4 | IEF | 36 % | -0.52 | -2.41 % [-4.15, -1.12] | ab ▼ (-4.0 % zum 10M-Schnitt) |
+| 1 | SPY | 64 % | +0.65 | +0.33 % [-0.92, +1.61] | auf ▲ (+4.2 % zum 10M-Schnitt) |
+| 2 | IEF | 39 % | +0.11 | +0.78 % [-0.35, +2.21] | ab ▼ (-0.9 % zum 10M-Schnitt) |
+| 3 | GLD | 55 % | +0.08 | +1.36 % [+0.48, +2.49] | ab ▼ (-12.9 % zum 10M-Schnitt) |
+| 4 | SLV | 41 % | -0.84 | -2.47 % [-4.16, -1.12] | ab ▼ (-29.1 % zum 10M-Schnitt) |
 
 ## 6 Monate (Nebenauswertung) – Status `signal`
 
 | Rang | Klasse | P(obere Hälfte) | Score | Mittel des Rangs bisher [90-%-KI des Mittels] | Trend |
 |---|---|---|---|---|---|
-| 1 | SLV | 50 % | +0.43 | +0.62 % [-1.27, +2.54] | ab ▼ (-15.9 % zum 10M-Schnitt) |
-| 2 | SPY | 61 % | +0.23 | +1.92 % [+0.14, +4.21] | auf ▲ (+6.3 % zum 10M-Schnitt) |
-| 3 | GLD | 61 % | -0.15 | +2.13 % [+0.76, +3.21] | ab ▼ (-7.7 % zum 10M-Schnitt) |
-| 4 | IEF | 28 % | -0.52 | -4.67 % [-7.52, -2.29] | ab ▼ (-4.0 % zum 10M-Schnitt) |
+| 1 | SPY | 65 % | +0.65 | +0.58 % [-1.24, +2.51] | auf ▲ (+4.2 % zum 10M-Schnitt) |
+| 2 | IEF | 33 % | +0.11 | +1.98 % [+0.20, +4.25] | ab ▼ (-0.9 % zum 10M-Schnitt) |
+| 3 | GLD | 63 % | +0.08 | +1.93 % [+0.77, +3.29] | ab ▼ (-12.9 % zum 10M-Schnitt) |
+| 4 | SLV | 39 % | -0.84 | -4.49 % [-7.51, -2.34] | ab ▼ (-29.1 % zum 10M-Schnitt) |
 
 ## Bilanz bisher (abgerechnete Prognosen)
 
@@ -50,8 +46,19 @@ Lesart: P(obere Hälfte) = Wahrscheinlichkeit, dass die Klasse über den Horizon
 | 3 M | 0 | – | – | – | – | – |
 | 6 M | 0 | – | – | – | – | – |
 
+Nicht in der Bilanz (nachgeholt, ADR 050 – mehr als die erlaubte Frist nach dem Entscheidungsdatum geschrieben): 1 M: 1
+
 ## Letztes Ergebnis
 
-Noch keine Prognose abgerechnet.
+Prognose vom 2026-09-30 (1 M), abgerechnet per 2026-10-31 – nachgeholt, nicht in der Bilanz:
+
+| Klasse | prognostizierter Rang | P(obere Hälfte) | realisierte relative Rendite | realisierter Rang | obere Hälfte |
+|---|---|---|---|---|---|
+| IEF | 4 | 41 % | +8.74 % | 1 | ja |
+| SPY | 2 | 57 % | +4.74 % | 2 | ja |
+| GLD | 3 | 53 % | -0.94 % | 3 | nein |
+| SLV | 1 | 49 % | -12.54 % | 4 | nein |
+
+Rang-IC -0.80; Rang 1 schlug den letzten nicht; Brier 0.2643 (0.5: 0.2500); Vormonatsrang-IC +0.80; Trend: CPER falsch.
 
 Journal: `journal/forecast/forecasts.jsonl` und `outcomes.jsonl` (append-only, Hash-Kette; `rotationlab forecast verify`; die Kette erkennt Änderungen im Innern der Datei, eine Kürzung am Ende nur gegen den Anker aus dem Actions-Log).
