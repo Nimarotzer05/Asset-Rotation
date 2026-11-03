@@ -1,7 +1,7 @@
 <!-- copy of 2026-10.md -->
 # Prognose der Anlageklassen – Entscheidung 2026-10-31
 
-Erstellt 2026-11-02 · Modell `composite_fed` v1 · Datenstand `2026-11-02T16:24:22Z/9dfd943af9` · gerankt SPY, IEF, GLD, SLV · nur Trend CPER · Cash BIL
+Erstellt 2026-11-03 · Modell `composite_fed` v1 · Datenstand `2026-11-03T14:30:52Z/3b208b26b7` · gerankt SPY, IEF, GLD, SLV · nur Trend CPER · Cash BIL
 
 ## 1 Monat (Hauptprognose) – Status: `signal` (mindestens eine Wahrscheinlichkeit weicht um mehr als die Marge von 50 % ab; beschreibend, kein Verlässlichkeitsmass)
 
