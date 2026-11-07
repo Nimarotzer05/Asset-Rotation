@@ -1,19 +1,19 @@
 {
- "recorded_on": "2026-10-25",
+ "recorded_on": "2026-11-07",
  "series": [
   {
    "provider": "yahoo",
    "series_id": "yahoo:SPY:close",
-   "since": "2026-09-10",
-   "rows": 32,
-   "first": "2026-09-10",
-   "last": "2026-10-23",
+   "since": "2026-09-23",
+   "rows": 33,
+   "first": "2026-09-23",
+   "last": "2026-11-06",
    "error": null
   },
   {
    "provider": "yahoo",
    "series_id": "yahoo:SPY:dividend",
-   "since": "2025-09-20",
+   "since": "2025-10-03",
    "rows": 4,
    "first": "2025-12-19",
    "last": "2026-09-18",
@@ -31,26 +31,26 @@
   {
    "provider": "stooq",
    "series_id": "stooq:SPY:close",
-   "since": "2026-09-10",
+   "since": "2026-09-23",
    "rows": null,
    "error": "RuntimeError: provider disabled"
   },
   {
    "provider": "fred",
    "series_id": "fred:DGS10",
-   "since": "2026-09-10",
-   "rows": 30,
-   "first": "2026-09-10",
-   "last": "2026-10-22",
+   "since": "2026-09-23",
+   "rows": 31,
+   "first": "2026-09-23",
+   "last": "2026-11-05",
    "error": null
   },
   {
    "provider": "fred",
    "series_id": "fred:TB3MS",
-   "since": "2025-09-20",
+   "since": "2025-10-03",
    "rows": 13,
-   "first": "2025-09-30",
-   "last": "2026-09-30",
+   "first": "2025-10-31",
+   "last": "2026-10-31",
    "error": null
   },
   {
@@ -66,35 +66,37 @@
    "provider": "french",
    "series_id": "french:ff3:RF",
    "since": null,
-   "rows": 1202,
+   "rows": 1203,
    "first": "1926-07-31",
-   "last": "2026-08-31",
+   "last": "2026-09-30",
    "error": null
   },
   {
    "provider": "french",
    "series_id": "french:ind10:HITEC",
    "since": null,
-   "rows": 1202,
+   "rows": 1203,
    "first": "1926-07-31",
-   "last": "2026-08-31",
+   "last": "2026-09-30",
    "error": null
   },
   {
    "provider": "cftc",
    "series_id": "cftc:088691:noncomm_net",
-   "since": "2026-06-27",
+   "since": "2026-07-10",
    "rows": 17,
-   "first": "2026-06-30",
-   "last": "2026-10-20",
+   "first": "2026-07-14",
+   "last": "2026-11-03",
    "error": null
   },
   {
    "provider": "bls",
    "series_id": "bls:CUSR0000SA0",
    "since": null,
-   "rows": null,
-   "error": "DataError: giving up after 4 attempts: https://api.bls.gov/publicAPI/v2/timeseries/data/ (HTTP Error 503: Service Unavailable)"
+   "rows": 116,
+   "first": "2017-01-31",
+   "last": "2026-09-30",
+   "error": null
   },
   {
    "provider": "shiller",
